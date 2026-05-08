@@ -11,6 +11,10 @@ export interface Product {
   imagem: string;
   categoria: string;
   ativo: boolean;
+  descricao_produto?: string;
+  info_nutricional?: string;
+  modo_uso?: string;
+  sobre_marca?: string;
 }
 
 export interface CategoryInfo {
