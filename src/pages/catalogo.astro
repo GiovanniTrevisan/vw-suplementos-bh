@@ -502,7 +502,7 @@ import { ChevronDown, X, Search } from '@lucide/astro';
     background: var(--c-paper); font-family: var(--font-ui); font-size: 13px; color: var(--c-ink);
     outline: none; transition: border-color var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out);
   }
-  .search-input:focus { border-color: var(--c-yellow); box-shadow: 0 0 0 3px rgba(245, 195, 0, 0.18); }
+  .search-input:focus { border-color: var(--c-master); box-shadow: 0 0 0 3px rgba(245, 195, 0, 0.18); }
 
   .filter-pills { display: flex; flex-direction: column; gap: 8px; }
 
@@ -517,7 +517,7 @@ import { ChevronDown, X, Search } from '@lucide/astro';
     cursor: pointer;
     transition: border-color var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out);
   }
-  .sort-select:focus { outline: none; border-color: var(--c-yellow); box-shadow: 0 0 0 3px rgba(245, 195, 0, 0.18); }
+  .sort-select:focus { outline: none; border-color: var(--c-master); box-shadow: 0 0 0 3px rgba(245, 195, 0, 0.18); }
 
   .clear-link {
     display: flex; align-items: center; justify-content: center; gap: 6px;
@@ -548,7 +548,7 @@ import { ChevronDown, X, Search } from '@lucide/astro';
 
   .loader {
     width: 36px; height: 36px;
-    border: 3px solid var(--c-line); border-top-color: var(--c-yellow);
+    border: 3px solid var(--c-line); border-top-color: var(--c-master);
     border-radius: 50%; animation: spin 800ms linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -559,7 +559,7 @@ import { ChevronDown, X, Search } from '@lucide/astro';
     border-radius: var(--radius-pill);
     font-family: var(--font-display); font-size: 13px; font-weight: 800; letter-spacing: 1px;
   }
-  .btn-retry:hover { background: var(--c-yellow); color: var(--c-ink); }
+  .btn-retry:hover { background: var(--c-master); color: var(--c-ink); }
 
   .product-grid {
     display: grid;
@@ -586,7 +586,7 @@ import { ChevronDown, X, Search } from '@lucide/astro';
   }
   .load-more:hover {
     transform: translateY(-2px);
-    background: var(--c-yellow); color: var(--c-ink);
+    background: var(--c-master); color: var(--c-ink);
     box-shadow: 0 14px 28px -12px rgba(245, 195, 0, 0.55);
   }
   .pagination-info {
@@ -625,7 +625,7 @@ import { ChevronDown, X, Search } from '@lucide/astro';
   }
   .pill:hover { border-color: var(--c-ink); }
   .pill.active {
-    background: var(--c-yellow); border-color: var(--c-yellow);
+    background: var(--c-master); border-color: var(--c-master);
     font-weight: 600;
   }
   .pill-count {
@@ -696,7 +696,7 @@ import { ChevronDown, X, Search } from '@lucide/astro';
   .product-btn {
     display: flex; align-items: center; justify-content: center; gap: 8px;
     width: 100%; padding: 12px 16px;
-    background: var(--c-yellow);
+    background: var(--c-master);
     border: none; border-radius: var(--radius-pill);
     color: var(--c-ink);
     font-family: var(--font-display);
@@ -712,5 +712,5 @@ import { ChevronDown, X, Search } from '@lucide/astro';
     transform: translateY(-2px);
     box-shadow: 0 10px 22px -8px rgba(245, 195, 0, 0.55);
   }
-  .product-btn.added { background: var(--c-ink); color: var(--c-yellow); }
+  .product-btn.added { background: var(--c-ink); color: var(--c-master); }
 </style>
