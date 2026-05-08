@@ -10,7 +10,7 @@ const orderNumber = '#VW-20260508-042';
   <Header />
 
   <section class="main-confirm">
-    <div class="center-col">
+    <div class="center-col" data-reveal="scale">
       <div class="check-circle">
         <CircleCheck size={64} color="var(--c-yellow)" />
       </div>
@@ -75,15 +75,22 @@ const orderNumber = '#VW-20260508-042';
 <style>
   .main-confirm {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    min-height: calc(100vh - 150px); padding: 40px 48px; background: var(--c-paper);
+    min-height: calc(100vh - 150px);
+    padding: clamp(40px, 6vw, 80px) var(--gutter);
+    background: var(--c-paper);
   }
 
   .center-col {
-    width: 560px; display: flex; flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+    display: flex; flex-direction: column;
     gap: 24px; align-items: center; text-align: center;
   }
 
-  .check-circle { margin-bottom: 8px; }
+  .check-circle {
+    margin-bottom: 8px;
+    animation: scaleIn var(--t-slow) var(--ease-out) both, floatY 4s var(--ease-in-out) infinite 600ms;
+  }
 
   .confirm-kicker {
     font-family: var(--font-mono); font-size: 12px; font-weight: 700;
@@ -91,7 +98,7 @@ const orderNumber = '#VW-20260508-042';
   }
 
   .confirm-title {
-    font-family: var(--font-display); font-size: 96px; font-weight: 800;
+    font-family: var(--font-display); font-size: clamp(48px, 8vw, 112px); font-weight: 800;
     font-style: italic; line-height: 0.9; letter-spacing: -3px; color: var(--c-ink);
   }
 
@@ -125,21 +132,18 @@ const orderNumber = '#VW-20260508-042';
 
   .confirm-btns { display: flex; gap: 12px; width: 100%; }
 
-  .cb-primary {
-    flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px;
-    padding: 18px 24px; background: var(--c-yellow); border-radius: var(--radius-sm);
-    font-family: var(--font-display); font-size: 15px; font-weight: 800; letter-spacing: 1px;
-    color: var(--c-ink); transition: opacity 0.2s;
-  }
-  .cb-primary:hover { opacity: 0.85; }
-
+  .cb-primary,
   .cb-secondary {
-    flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px;
-    padding: 18px 24px; border: 2px solid var(--c-ink); border-radius: var(--radius-sm);
+    flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 18px 24px; border-radius: var(--radius-sm);
     font-family: var(--font-display); font-size: 15px; font-weight: 800; letter-spacing: 1px;
-    color: var(--c-ink); transition: background 0.2s;
+    color: var(--c-ink);
+    transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out), background var(--t-fast) var(--ease-out);
   }
-  .cb-secondary:hover { background: #0A0A0910; }
+  .cb-primary { background: var(--c-yellow); }
+  .cb-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 28px -10px rgba(245, 195, 0, 0.55); }
+  .cb-secondary { border: 2px solid var(--c-ink); background: transparent; }
+  .cb-secondary:hover { background: var(--c-ink); color: var(--c-paper); transform: translateY(-3px); }
 
   .store-info {
     display: flex; align-items: center; gap: 8px;
@@ -148,15 +152,15 @@ const orderNumber = '#VW-20260508-042';
 
   .footer-strip {
     display: flex; justify-content: space-between; align-items: center;
-    height: 60px; padding: 0 40px; background: var(--c-ink);
+    min-height: 60px; padding: 16px var(--gutter); background: var(--c-ink);
+    flex-wrap: wrap; gap: 12px;
   }
   .footer-strip span {
     font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; color: var(--c-paper-muted);
   }
 
-  @media (max-width: 700px) {
-    .center-col { width: 100%; }
-    .confirm-title { font-size: 56px; }
+  @media (max-width: 600px) {
     .confirm-btns { flex-direction: column; }
+    .footer-strip { justify-content: center; text-align: center; }
   }
 </style>

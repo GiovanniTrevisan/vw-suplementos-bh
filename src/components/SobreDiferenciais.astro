@@ -2,61 +2,54 @@
 import { Check } from '@lucide/astro';
 
 const diferenciais = [
-  {
-    title: 'Atendimento especializado',
-    desc: 'Equipe que treina e conhece cada produto da loja.',
-  },
-  {
-    title: 'Produtos originais com nota fiscal',
-    desc: 'Trabalhamos só com marcas autorizadas. Sem falsificação.',
-  },
-  {
-    title: 'Entrega em BH ou retirada na loja',
-    desc: 'Recebe no mesmo dia ou retira no Castelo no horário que quiser.',
-  },
-  {
-    title: 'PIX, cartão ou boleto',
-    desc: 'Em até 12x ou 5% de desconto no PIX. Você escolhe.',
-  },
+  { title: 'Atendimento especializado',         desc: 'Equipe que treina e conhece cada produto da loja.' },
+  { title: 'Produtos originais com nota fiscal', desc: 'Trabalhamos só com marcas autorizadas. Sem falsificação.' },
+  { title: 'Entrega em BH ou retirada na loja',  desc: 'Recebe no mesmo dia ou retira no Castelo no horário que quiser.' },
+  { title: 'PIX, cartão ou boleto',              desc: 'Em até 12x ou 5% de desconto no PIX. Você escolhe.' },
 ];
 ---
 
 <section class="sobre" id="sobre">
-  <div class="about-left">
-    <span class="about-kicker">QUEM SOMOS</span>
-    <h2 class="about-title">ESPECIALISTAS EM SUPLEMENTAÇÃO DESDE 2019.</h2>
-    <p class="about-desc">Nascemos em Belo Horizonte com uma missão simples: dar acesso a quem treina sério aos melhores suplementos do mercado, pelo preço justo, com atendimento de gente que entende. Hoje somos referência no Castelo e estamos em 7 lojas em MG e PR.</p>
-  </div>
+  <div class="sobre-inner container">
+    <div class="about-left" data-reveal="left">
+      <span class="about-kicker">QUEM SOMOS</span>
+      <h2 class="about-title">ESPECIALISTAS EM SUPLEMENTAÇÃO DESDE 2019.</h2>
+      <p class="about-desc">Nascemos em Belo Horizonte com uma missão simples: dar acesso a quem treina sério aos melhores suplementos do mercado, pelo preço justo, com atendimento de gente que entende. Hoje somos referência no Castelo e estamos em 7 lojas em MG e PR.</p>
+    </div>
 
-  <div class="about-right">
-    {diferenciais.map((d, i) => (
-      <div class:list={['diff', { 'no-border': i === diferenciais.length - 1 }]}>
-        <div class="diff-icon">
-          <Check size={18} color="var(--c-ink)" />
+    <div class="about-right" data-reveal-stagger>
+      {diferenciais.map((d, i) => (
+        <div class:list={['diff', { 'no-border': i === diferenciais.length - 1 }]}>
+          <div class="diff-icon">
+            <Check size={18} color="var(--c-ink)" />
+          </div>
+          <div class="diff-text">
+            <span class="diff-title">{d.title}</span>
+            <span class="diff-desc">{d.desc}</span>
+          </div>
         </div>
-        <div class="diff-text">
-          <span class="diff-title">{d.title}</span>
-          <span class="diff-desc">{d.desc}</span>
-        </div>
-      </div>
-    ))}
+      ))}
+    </div>
   </div>
 </section>
 
 <style>
   .sobre {
-    display: flex;
-    gap: 80px;
-    padding: 100px 80px;
     background: var(--c-ink);
     width: 100%;
   }
 
+  .sobre-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(40px, 6vw, 96px);
+    padding: var(--section-y) var(--gutter);
+  }
+
   .about-left {
-    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: clamp(16px, 2vw, 28px);
   }
 
   .about-kicker {
@@ -69,23 +62,22 @@ const diferenciais = [
 
   .about-title {
     font-family: var(--font-display);
-    font-size: 64px;
+    font-size: clamp(36px, 5vw, 68px);
     font-weight: 800;
     font-style: italic;
-    line-height: 0.92;
+    line-height: 0.95;
     letter-spacing: -2px;
     color: var(--c-paper);
   }
 
   .about-desc {
     font-family: var(--font-ui);
-    font-size: 16px;
-    line-height: 1.6;
+    font-size: clamp(15px, 1vw, 17px);
+    line-height: 1.65;
     color: #F5F0E8B3;
   }
 
   .about-right {
-    flex: 1;
     display: flex;
     flex-direction: column;
     border-top: 1px solid #F5F0E833;
@@ -94,8 +86,13 @@ const diferenciais = [
   .diff {
     display: flex;
     gap: 20px;
-    padding: 24px 0;
+    padding: 22px 0;
     border-bottom: 1px solid #F5F0E833;
+    transition: padding var(--t-med) var(--ease-out);
+  }
+
+  .diff:hover {
+    padding-left: 12px;
   }
 
   .diff.no-border {
@@ -111,6 +108,11 @@ const diferenciais = [
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    transition: transform var(--t-med) var(--ease-out);
+  }
+
+  .diff:hover .diff-icon {
+    transform: rotate(360deg) scale(1.1);
   }
 
   .diff-text {
@@ -121,7 +123,7 @@ const diferenciais = [
 
   .diff-title {
     font-family: var(--font-display);
-    font-size: 22px;
+    font-size: clamp(18px, 1.5vw, 22px);
     font-weight: 700;
     letter-spacing: -0.5px;
     color: var(--c-paper);
@@ -130,12 +132,11 @@ const diferenciais = [
   .diff-desc {
     font-family: var(--font-ui);
     font-size: 14px;
-    line-height: 1.5;
+    line-height: 1.55;
     color: #F5F0E8B3;
   }
 
   @media (max-width: 900px) {
-    .sobre { flex-direction: column; gap: 40px; padding: 60px 20px; }
-    .about-title { font-size: 40px; }
+    .sobre-inner { grid-template-columns: 1fr; }
   }
 </style>

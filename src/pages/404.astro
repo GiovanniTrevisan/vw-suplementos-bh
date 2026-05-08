@@ -8,9 +8,9 @@ import { ArrowLeft, Home, MessageCircle } from '@lucide/astro';
   <Header />
 
   <section class="main-404">
-    <div class="glyph-404">404</div>
+    <div class="glyph-404" aria-hidden="true">404</div>
 
-    <div class="content-404">
+    <div class="content-404 container" data-reveal="scale">
       <span class="kicker-404">// PÁGINA NÃO ENCONTRADA</span>
 
       <h1 class="title-404">EITA, ESSA<br/>ROTA NÃO<br/>EXISTE.</h1>
@@ -57,12 +57,20 @@ import { ArrowLeft, Home, MessageCircle } from '@lucide/astro';
   .main-404 {
     position: relative;
     width: 100%;
-    min-height: 840px;
+    min-height: clamp(640px, 80vh, 880px);
     background: var(--c-ink);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    padding: clamp(32px, 5vw, 64px) var(--gutter);
+  }
+  .main-404::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(245, 195, 0, 0.08), transparent 60%);
+    pointer-events: none;
   }
 
   .glyph-404 {
@@ -71,16 +79,17 @@ import { ArrowLeft, Home, MessageCircle } from '@lucide/astro';
     left: 50%;
     transform: translate(-50%, -50%);
     font-family: var(--font-display);
-    font-size: clamp(200px, 38vw, 560px);
+    font-size: clamp(180px, 32vw, 520px);
     font-weight: 800;
     font-style: italic;
     line-height: 0.85;
-    letter-spacing: -30px;
+    letter-spacing: -0.06em;
     color: var(--c-yellow);
     opacity: 0.12;
     text-align: center;
     user-select: none;
     pointer-events: none;
+    animation: floatY 6s var(--ease-in-out) infinite;
   }
 
   .content-404 {
@@ -89,9 +98,8 @@ import { ArrowLeft, Home, MessageCircle } from '@lucide/astro';
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 32px;
+    gap: 28px;
     text-align: center;
-    padding: 24px 48px;
   }
 
   .kicker-404 {
@@ -104,7 +112,7 @@ import { ArrowLeft, Home, MessageCircle } from '@lucide/astro';
 
   .title-404 {
     font-family: var(--font-display);
-    font-size: 80px;
+    font-size: clamp(40px, 7vw, 96px);
     font-weight: 800;
     font-style: italic;
     line-height: 0.9;
@@ -126,29 +134,35 @@ import { ArrowLeft, Home, MessageCircle } from '@lucide/astro';
   }
 
   .btn-404 {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 10px;
-    padding: 18px 28px;
+    padding: 16px 26px;
     border-radius: var(--radius-sm);
     font-family: var(--font-display);
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 800;
     letter-spacing: 1px;
-    transition: opacity 0.2s;
+    transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out), background var(--t-fast) var(--ease-out), border-color var(--t-fast) var(--ease-out);
   }
 
   .btn-404.primary {
     background: var(--c-yellow);
     color: var(--c-ink);
   }
+  .btn-404.primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 36px -12px rgba(245, 195, 0, 0.55);
+  }
 
   .btn-404.secondary {
     border: 2px solid #F5F0E833;
     color: var(--c-paper);
   }
-
-  .btn-404:hover { opacity: 0.8; }
+  .btn-404.secondary:hover {
+    border-color: var(--c-paper);
+    transform: translateY(-3px);
+  }
 
   .links-404 {
     display: flex;
@@ -179,10 +193,12 @@ import { ArrowLeft, Home, MessageCircle } from '@lucide/astro';
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 60px;
-    padding: 0 40px;
+    min-height: 60px;
+    padding: 16px var(--gutter);
     background: var(--c-ink);
     border-top: 1px solid #FFFFFF1F;
+    flex-wrap: wrap;
+    gap: 12px;
   }
 
   .f-left {
@@ -219,9 +235,10 @@ import { ArrowLeft, Home, MessageCircle } from '@lucide/astro';
     gap: 14px;
   }
 
-  @media (max-width: 700px) {
-    .title-404 { font-size: 48px; }
-    .btns-404 { flex-direction: column; }
-    .content-404 { padding: 24px 20px; }
+  @media (max-width: 600px) {
+    .btns-404 { flex-direction: column; width: 100%; }
+    .btn-404 { justify-content: center; }
+    .footer-404 { justify-content: center; text-align: center; }
+    .f-left { justify-content: center; }
   }
 </style>

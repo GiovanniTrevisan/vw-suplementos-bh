@@ -38,18 +38,20 @@ const related = [
 <Layout title={`${product.name} — VW Suplementos BH`}>
   <Header />
 
-  <div class="breadcrumb">
-    <span>INÍCIO</span>
-    <ChevronRight size={12} />
-    <span>CATÁLOGO</span>
-    <ChevronRight size={12} />
-    <span>PROTEÍNAS</span>
-    <ChevronRight size={12} />
-    <span class="active">WHEY MAX TITANIUM</span>
+  <div class="breadcrumb-wrap">
+    <div class="breadcrumb container">
+      <span>INÍCIO</span>
+      <ChevronRight size={12} />
+      <span>CATÁLOGO</span>
+      <ChevronRight size={12} />
+      <span>PROTEÍNAS</span>
+      <ChevronRight size={12} />
+      <span class="active">WHEY MAX TITANIUM</span>
+    </div>
   </div>
 
-  <section class="product-block">
-    <div class="gallery">
+  <section class="product-block container">
+    <div class="gallery" data-reveal="left">
       <div class="gallery-main">
         <div class="gallery-placeholder"></div>
       </div>
@@ -60,7 +62,7 @@ const related = [
       </div>
     </div>
 
-    <div class="info">
+    <div class="info" data-reveal="right">
       <div class="info-meta">
         <span class="info-brand">{product.brand}</span>
         <span class="info-sku">SKU: {product.sku}</span>
@@ -139,7 +141,7 @@ const related = [
 
   <div class="big-divider"></div>
 
-  <section class="accordion-section">
+  <section class="accordion-section container" data-reveal>
     <div class="acc-left">
       <span class="acc-kicker">// DETALHES</span>
       <h2 class="acc-title">TUDO SOBRE O PRODUTO.</h2>
@@ -159,76 +161,89 @@ const related = [
   </section>
 
   <section class="related-section">
-    <div class="rel-header">
-      <div class="rel-title-wrap">
-        <span class="rel-kicker">TALVEZ VOCÊ GOSTE</span>
-        <h2 class="rel-title">PRODUTOS RELACIONADOS.</h2>
+    <div class="rel-inner container">
+      <div class="rel-header" data-reveal>
+        <div class="rel-title-wrap">
+          <span class="rel-kicker">TALVEZ VOCÊ GOSTE</span>
+          <h2 class="rel-title">PRODUTOS RELACIONADOS.</h2>
+        </div>
       </div>
-    </div>
-    <div class="rel-grid">
-      {related.map((r) => (
-        <a href="/produto" class="rel-card">
-          <div class="rel-img"></div>
-          <div class="rel-body">
-            <span class="rel-cat">{r.category}</span>
-            <span class="rel-name">{r.name}</span>
-            <span class="rel-price">{r.price}</span>
-            <button class="rel-btn">
-              <Plus size={14} />
-              <span>ADICIONAR</span>
-            </button>
-          </div>
-        </a>
-      ))}
+      <div class="rel-grid" data-reveal-stagger>
+        {related.map((r) => (
+          <a href="/produto" class="rel-card">
+            <div class="rel-img"></div>
+            <div class="rel-body">
+              <span class="rel-cat">{r.category}</span>
+              <span class="rel-name">{r.name}</span>
+              <span class="rel-price">{r.price}</span>
+              <button class="rel-btn">
+                <Plus size={14} />
+                <span>ADICIONAR</span>
+              </button>
+            </div>
+          </a>
+        ))}
+      </div>
     </div>
   </section>
 
   <footer class="mini-footer">
-    <div class="mf-left">
-      <span class="mf-logo">VW</span>
-      <span>VW SUPLEMENTOS BH</span>
-    </div>
-    <div class="mf-right">
-      <span>TERMOS</span>
-      <span>PRIVACIDADE</span>
-      <span>© 2026</span>
+    <div class="mf-inner container">
+      <div class="mf-left">
+        <span class="mf-logo">VW</span>
+        <span>VW SUPLEMENTOS BH</span>
+      </div>
+      <div class="mf-right">
+        <span>TERMOS</span>
+        <span>PRIVACIDADE</span>
+        <span>© 2026</span>
+      </div>
     </div>
   </footer>
 </Layout>
 
 <style>
+  .breadcrumb-wrap { background: var(--c-paper); border-bottom: 1px solid var(--c-line); }
   .breadcrumb {
     display: flex; align-items: center; gap: 10px;
-    padding: 20px 48px; background: var(--c-paper);
-    border-bottom: 1px solid var(--c-line);
+    padding: 18px var(--gutter);
     font-family: var(--font-mono); font-size: 11px; font-weight: 500;
     letter-spacing: 1.5px; color: var(--c-muted);
+    flex-wrap: wrap;
   }
   .breadcrumb .active { color: var(--c-ink); font-weight: 700; }
 
   .product-block {
-    display: flex; gap: 64px; padding: 48px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: clamp(32px, 5vw, 80px);
+    padding: clamp(28px, 4vw, 56px) var(--gutter);
     background: var(--c-paper);
   }
 
-  .gallery { width: 640px; flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; }
-  .gallery-main { width: 100%; aspect-ratio: 1; background: var(--c-mid); border-radius: var(--radius-md); }
-  .gallery-placeholder { width: 100%; height: 100%; }
-  .gallery-thumbs { display: flex; gap: 12px; }
-  .thumb {
-    width: 80px; height: 80px; background: var(--c-mid);
-    border-radius: var(--radius-sm); border: 2px solid transparent;
-    cursor: pointer;
+  .gallery { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .gallery-main {
+    width: 100%; aspect-ratio: 1; background: var(--c-mid);
+    border-radius: var(--radius-md); overflow: hidden;
+    box-shadow: 0 30px 80px -40px rgba(10, 10, 9, 0.4);
   }
+  .gallery-placeholder { width: 100%; height: 100%; }
+  .gallery-thumbs { display: flex; gap: 12px; flex-wrap: wrap; }
+  .thumb {
+    width: clamp(60px, 7vw, 80px); height: clamp(60px, 7vw, 80px); background: var(--c-mid);
+    border-radius: var(--radius-sm); border: 2px solid transparent;
+    cursor: pointer; transition: border-color var(--t-fast) var(--ease-out), transform var(--t-fast) var(--ease-out);
+  }
+  .thumb:hover { transform: translateY(-2px); }
   .thumb.active { border-color: var(--c-yellow); }
 
-  .info { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+  .info { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
   .info-meta { display: flex; justify-content: space-between; align-items: center; }
   .info-brand { font-family: var(--font-mono); font-size: 12px; font-weight: 700; letter-spacing: 2px; color: var(--c-muted); }
   .info-sku { font-family: var(--font-mono); font-size: 11px; color: var(--c-muted); }
 
   .info-name {
-    font-family: var(--font-display); font-size: 48px; font-weight: 800;
+    font-family: var(--font-display); font-size: clamp(32px, 4vw, 56px); font-weight: 800;
     font-style: italic; line-height: 0.95; letter-spacing: -2px; color: var(--c-ink);
   }
 
@@ -258,6 +273,7 @@ const related = [
     font-family: var(--font-ui); font-size: 13px; font-weight: 500; background: var(--c-paper); color: var(--c-ink);
     cursor: pointer; transition: all 0.2s;
   }
+  .flavor-btn:hover { transform: translateY(-2px); border-color: var(--c-ink); }
   .flavor-btn.active { background: var(--c-ink); color: var(--c-paper); border-color: var(--c-ink); }
 
   .qty-section { display: flex; flex-direction: column; gap: 12px; }
@@ -273,18 +289,23 @@ const related = [
   .action-btns { display: flex; flex-direction: column; gap: 12px; }
   .btn-add {
     display: flex; align-items: center; justify-content: center; gap: 10px;
-    padding: 20px; background: var(--c-yellow); border-radius: var(--radius-sm);
+    padding: 18px; background: var(--c-yellow); border-radius: var(--radius-sm);
     font-family: var(--font-display); font-size: 16px; font-weight: 800; letter-spacing: 1px;
-    color: var(--c-ink); cursor: pointer; transition: opacity 0.2s;
+    color: var(--c-ink); cursor: pointer;
+    transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out);
   }
-  .btn-add:hover { opacity: 0.85; }
+  .btn-add:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 36px -12px rgba(245, 195, 0, 0.55);
+  }
   .btn-whatsapp {
     display: flex; align-items: center; justify-content: center; gap: 10px;
-    padding: 20px; border: 2px solid var(--c-ink); border-radius: var(--radius-sm);
+    padding: 18px; border: 2px solid var(--c-ink); border-radius: var(--radius-sm);
     font-family: var(--font-display); font-size: 16px; font-weight: 800; letter-spacing: 1px;
-    color: var(--c-ink); background: transparent; cursor: pointer; transition: background 0.2s;
+    color: var(--c-ink); background: transparent; cursor: pointer;
+    transition: background var(--t-fast) var(--ease-out), color var(--t-fast) var(--ease-out), transform var(--t-med) var(--ease-out);
   }
-  .btn-whatsapp:hover { background: #0A0A0910; }
+  .btn-whatsapp:hover { background: var(--c-ink); color: var(--c-paper); transform: translateY(-3px); }
 
   .quick-info { display: flex; flex-direction: column; gap: 8px; }
   .qi-item { display: flex; align-items: center; gap: 8px; font-family: var(--font-ui); font-size: 13px; color: var(--c-muted); }
@@ -298,45 +319,67 @@ const related = [
 
   .big-divider { height: 1px; background: var(--c-line); width: 100%; }
 
-  .accordion-section { display: flex; gap: 64px; padding: 80px 48px; background: var(--c-paper); }
-  .acc-left { width: 380px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; }
+  .accordion-section {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: clamp(32px, 5vw, 64px);
+    padding: clamp(48px, 6vw, 80px) var(--gutter);
+    background: var(--c-paper);
+  }
+  .acc-left { display: flex; flex-direction: column; gap: 8px; }
   .acc-kicker { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--c-muted); }
   .acc-title {
-    font-family: var(--font-display); font-size: 48px; font-weight: 800;
+    font-family: var(--font-display); font-size: clamp(32px, 4vw, 56px); font-weight: 800;
     font-style: italic; line-height: 0.95; letter-spacing: -2px; color: var(--c-ink);
   }
   .acc-bar { width: 80px; height: 4px; background: var(--c-yellow); margin-top: 8px; }
 
-  .acc-right { flex: 1; border-top: 1px solid var(--c-line); }
+  .acc-right { border-top: 1px solid var(--c-line); min-width: 0; }
   .acc-item { border-bottom: 1px solid var(--c-line); }
   .acc-head {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 24px 0; cursor: pointer;
+    padding: 22px 0; cursor: pointer;
     font-family: var(--font-display); font-size: 18px; font-weight: 800; letter-spacing: 1px;
     color: var(--c-ink); list-style: none;
+    transition: padding-left var(--t-med) var(--ease-out);
   }
+  .acc-head:hover { padding-left: 8px; }
+  .acc-head :global(svg) { transition: transform var(--t-med) var(--ease-out); }
+  .acc-item[open] .acc-head :global(svg) { transform: rotate(180deg); }
   .acc-head::-webkit-details-marker { display: none; }
   .acc-body {
     padding: 0 0 24px; font-family: var(--font-ui); font-size: 15px; line-height: 1.6; color: var(--c-muted);
+    animation: fadeUp var(--t-med) var(--ease-out);
   }
 
   .related-section {
-    display: flex; flex-direction: column; gap: 40px;
-    padding: 80px 48px; background: var(--c-ink);
+    background: var(--c-ink);
   }
-  .rel-header { display: flex; justify-content: space-between; align-items: flex-end; }
+  .rel-inner {
+    display: flex; flex-direction: column; gap: clamp(24px, 3vw, 40px);
+    padding: clamp(48px, 6vw, 80px) var(--gutter);
+  }
+  .rel-header { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
   .rel-title-wrap { display: flex; flex-direction: column; gap: 8px; }
   .rel-kicker { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 2px; color: var(--c-yellow); }
-  .rel-title { font-family: var(--font-display); font-size: 48px; font-weight: 800; font-style: italic; line-height: 0.92; letter-spacing: -2px; color: var(--c-paper); }
+  .rel-title { font-family: var(--font-display); font-size: clamp(32px, 4vw, 56px); font-weight: 800; font-style: italic; line-height: 0.92; letter-spacing: -2px; color: var(--c-paper); }
 
-  .rel-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .rel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: clamp(14px, 1.4vw, 20px);
+  }
   .rel-card {
     display: flex; flex-direction: column;
     border: 1px solid #F5F0E833; border-radius: var(--radius-md); overflow: hidden;
-    transition: transform 0.2s;
+    transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out), border-color var(--t-med) var(--ease-out);
   }
-  .rel-card:hover { transform: translateY(-4px); }
-  .rel-img { width: 100%; height: 200px; background: var(--c-mid); }
+  .rel-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 48px -20px rgba(0, 0, 0, 0.5);
+    border-color: var(--c-yellow);
+  }
+  .rel-img { width: 100%; aspect-ratio: 1 / 1; background: var(--c-mid); }
   .rel-body { display: flex; flex-direction: column; gap: 10px; padding: 16px; }
   .rel-cat { font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; color: #F5F0E8B3; }
   .rel-name { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--c-paper); letter-spacing: -0.5px; }
@@ -348,8 +391,14 @@ const related = [
   }
 
   .mini-footer {
+    background: var(--c-ink);
+    border-top: 1px solid #F5F0E81A;
+  }
+  .mf-inner {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 28px 48px; background: var(--c-ink); border-top: 1px solid #F5F0E81A;
+    padding: 24px var(--gutter);
+    flex-wrap: wrap;
+    gap: 14px;
   }
   .mf-left { display: flex; align-items: center; gap: 14px; }
   .mf-logo {
@@ -361,12 +410,8 @@ const related = [
   }
   .mf-right { display: flex; align-items: center; gap: 24px; }
 
-  @media (max-width: 1100px) {
-    .product-block { flex-direction: column; padding: 24px; }
-    .gallery { width: 100%; }
-    .info-name { font-size: 36px; }
-    .accordion-section { flex-direction: column; padding: 40px 24px; }
-    .acc-left { width: 100%; }
-    .rel-grid { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 960px) {
+    .product-block { grid-template-columns: 1fr; }
+    .accordion-section { grid-template-columns: 1fr; }
   }
 </style>

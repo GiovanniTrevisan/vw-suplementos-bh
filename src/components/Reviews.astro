@@ -2,62 +2,59 @@
 import { Star } from '@lucide/astro';
 
 const reviews = [
-  {
-    text: 'Atendimento muito bom, o pessoal entende o que vende. Comprei meu whey e já chegou no mesmo dia em casa. Voltarei sempre.',
-    author: 'LUCAS R.',
-  },
-  {
-    text: 'Loja referência aqui no Castelo. Preço justo, produto original com nota e o time é parceiro de verdade. Recomendo demais.',
-    author: 'ANA C.',
-  },
-  {
-    text: 'Sempre que preciso de creatina ou pré-treino, é aqui que eu venho. Nunca tive problema, atendimento top e desconto no PIX.',
-    author: 'PEDRO M.',
-  },
+  { text: 'Atendimento muito bom, o pessoal entende o que vende. Comprei meu whey e já chegou no mesmo dia em casa. Voltarei sempre.', author: 'LUCAS R.' },
+  { text: 'Loja referência aqui no Castelo. Preço justo, produto original com nota e o time é parceiro de verdade. Recomendo demais.', author: 'ANA C.' },
+  { text: 'Sempre que preciso de creatina ou pré-treino, é aqui que eu venho. Nunca tive problema, atendimento top e desconto no PIX.', author: 'PEDRO M.' },
 ];
 ---
 
 <section class="reviews">
-  <div class="rev-header">
-    <div class="rev-title-wrap">
-      <span class="rev-kicker">PROVA SOCIAL · 4.7★</span>
-      <h2 class="rev-title">QUEM TREINA, RECOMENDA.</h2>
-    </div>
-    <div class="rev-stars">
-      {[1,2,3,4,5].map(() => <Star size={18} fill="var(--c-yellow)" color="var(--c-yellow)" />)}
-      <span class="rev-rating">4,7 / 5 · 312 avaliações</span>
-    </div>
-  </div>
-
-  <div class="rev-inset">
-    {reviews.map((r) => (
-      <div class="review-card">
-        <span class="review-quote">"</span>
-        <p class="review-text">{r.text}</p>
-        <div class="review-foot">
-          <span class="review-author">{r.author}</span>
-          <span class="review-stars">★★★★★</span>
-        </div>
+  <div class="rev-inner-wrap container">
+    <div class="rev-header" data-reveal>
+      <div class="rev-title-wrap">
+        <span class="rev-kicker">PROVA SOCIAL · 4.7★</span>
+        <h2 class="rev-title">QUEM TREINA, RECOMENDA.</h2>
       </div>
-    ))}
+      <div class="rev-stars">
+        {[1,2,3,4,5].map(() => <Star size={18} fill="var(--c-yellow)" color="var(--c-yellow)" />)}
+        <span class="rev-rating">4,7 / 5 · 312 avaliações</span>
+      </div>
+    </div>
+
+    <div class="rev-inset" data-reveal-stagger>
+      {reviews.map((r) => (
+        <div class="review-card">
+          <span class="review-quote">"</span>
+          <p class="review-text">{r.text}</p>
+          <div class="review-foot">
+            <span class="review-author">{r.author}</span>
+            <span class="review-stars">★★★★★</span>
+          </div>
+        </div>
+      ))}
+    </div>
   </div>
 </section>
 
 <style>
   .reviews {
-    display: flex;
-    flex-direction: column;
-    gap: 48px;
-    padding: 100px 80px;
     background: var(--c-paper);
     width: 100%;
+  }
+
+  .rev-inner-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(32px, 3.5vw, 56px);
+    padding: var(--section-y) var(--gutter);
   }
 
   .rev-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    width: 100%;
+    gap: 24px;
+    flex-wrap: wrap;
   }
 
   .rev-title-wrap {
@@ -76,10 +73,10 @@ const reviews = [
 
   .rev-title {
     font-family: var(--font-display);
-    font-size: 64px;
+    font-size: clamp(36px, 5vw, 68px);
     font-weight: 800;
     font-style: italic;
-    line-height: 0.92;
+    line-height: 0.95;
     letter-spacing: -2px;
     color: var(--c-ink);
   }
@@ -96,26 +93,33 @@ const reviews = [
     font-weight: 500;
     letter-spacing: 1px;
     color: var(--c-mid);
+    margin-left: 4px;
   }
 
   .rev-inset {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    padding: 32px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(14px, 1.4vw, 20px);
+    padding: clamp(20px, 2.5vw, 32px);
     background: var(--c-ink);
     border-radius: var(--radius-md);
-    width: 100%;
+    box-shadow: 0 30px 80px -40px rgba(10, 10, 9, 0.5);
   }
 
   .review-card {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 18px;
     padding: 24px 24px 24px 28px;
     background: var(--c-mid);
     border-radius: var(--radius-sm);
     border-left: 4px solid var(--c-yellow);
+    transition: transform var(--t-med) var(--ease-out), border-left-width var(--t-med) var(--ease-out);
+  }
+
+  .review-card:hover {
+    transform: translateY(-4px);
+    border-left-width: 8px;
   }
 
   .review-quote {
@@ -129,9 +133,9 @@ const reviews = [
 
   .review-text {
     font-family: var(--font-ui);
-    font-size: 16px;
+    font-size: 15px;
     font-style: italic;
-    line-height: 1.55;
+    line-height: 1.6;
     color: var(--c-paper);
   }
 
@@ -139,7 +143,6 @@ const reviews = [
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
   }
 
   .review-author {
@@ -158,9 +161,6 @@ const reviews = [
   }
 
   @media (max-width: 900px) {
-    .reviews { padding: 60px 20px; }
-    .rev-title { font-size: 40px; }
-    .rev-inset { grid-template-columns: 1fr; padding: 16px; }
-    .rev-header { flex-direction: column; gap: 16px; align-items: flex-start; }
+    .rev-inset { grid-template-columns: 1fr; }
   }
 </style>

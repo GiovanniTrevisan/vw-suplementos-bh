@@ -27,15 +27,17 @@ const products = [
 <Layout title="Catálogo — VW Suplementos BH">
   <Header />
 
-  <div class="breadcrumb">
-    <a href="/">Início</a>
-    <span>›</span>
-    <span class="active">Catálogo</span>
+  <div class="breadcrumb-wrap">
+    <div class="breadcrumb container">
+      <a href="/">Início</a>
+      <span>›</span>
+      <span class="active">Catálogo</span>
+    </div>
   </div>
 
   <div class="divider"></div>
 
-  <div class="title-block">
+  <div class="title-block container" data-reveal>
     <div class="title-left">
       <span class="title-kicker">// CATÁLOGO COMPLETO</span>
       <h1 class="title-heading">TODOS OS PRODUTOS</h1>
@@ -48,7 +50,7 @@ const products = [
     </div>
   </div>
 
-  <div class="main-area">
+  <div class="main-area container">
     <aside class="sidebar">
       <div class="sb-header">
         <span class="sb-title">FILTROS</span>
@@ -162,17 +164,18 @@ const products = [
 </Layout>
 
 <style>
+  .breadcrumb-wrap { background: var(--c-paper); }
   .breadcrumb {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 16px 40px;
-    background: var(--c-paper);
+    padding: 16px var(--gutter);
     font-family: var(--font-mono);
     font-size: 12px;
     color: var(--c-muted);
   }
-  .breadcrumb a { color: var(--c-muted); }
+  .breadcrumb a { color: var(--c-muted); transition: color var(--t-fast) var(--ease-out); }
+  .breadcrumb a:hover { color: var(--c-ink); }
   .breadcrumb .active { color: var(--c-ink); font-weight: 600; }
   .divider { height: 1px; background: var(--c-line); width: 100%; }
 
@@ -180,36 +183,41 @@ const products = [
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    padding: 48px 48px 40px;
+    padding: clamp(28px, 4vw, 56px) var(--gutter) clamp(24px, 3vw, 40px);
     gap: 32px;
     background: var(--c-paper);
+    flex-wrap: wrap;
   }
-  .title-left { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .title-left { flex: 1 1 360px; display: flex; flex-direction: column; gap: 8px; }
   .title-kicker { font-family: var(--font-mono); font-size: 13px; letter-spacing: 1px; color: var(--c-red); }
   .title-heading {
-    font-family: var(--font-display); font-size: 80px; font-weight: 800;
+    font-family: var(--font-display); font-size: clamp(40px, 6vw, 88px); font-weight: 800;
     font-style: italic; line-height: 0.95; letter-spacing: -1px; color: var(--c-ink);
   }
-  .title-sub { font-family: var(--font-ui); font-size: 16px; line-height: 1.4; color: var(--c-muted); }
+  .title-sub { font-family: var(--font-ui); font-size: 16px; line-height: 1.4; color: var(--c-muted); max-width: 560px; }
 
   .results-count { display: flex; flex-direction: column; align-items: flex-end; }
   .results-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; color: var(--c-muted); }
-  .results-number { font-family: var(--font-display); font-size: 64px; font-weight: 800; font-style: italic; line-height: 0.95; color: var(--c-ink); }
+  .results-number { font-family: var(--font-display); font-size: clamp(40px, 5vw, 64px); font-weight: 800; font-style: italic; line-height: 0.95; color: var(--c-ink); }
   .results-text { font-family: var(--font-ui); font-size: 13px; color: var(--c-muted); }
 
   .main-area {
-    display: flex; gap: 32px; padding: 48px 40px;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: clamp(20px, 2.5vw, 40px);
+    padding: clamp(28px, 4vw, 56px) var(--gutter);
     background: var(--c-paper);
   }
 
   .sidebar {
-    width: 280px; flex-shrink: 0;
     display: flex; flex-direction: column; gap: 32px;
     padding: 24px;
     border: 1px solid var(--c-line);
     border-radius: var(--radius-md);
     background: var(--c-paper);
     align-self: flex-start;
+    position: sticky;
+    top: 88px;
   }
 
   .sb-header { display: flex; justify-content: space-between; align-items: center; }
@@ -254,7 +262,7 @@ const products = [
 
   .filter-divider { height: 1px; background: var(--c-line); }
 
-  .grid-area { flex: 1; display: flex; flex-direction: column; gap: 24px; }
+  .grid-area { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
 
   .active-filters {
     display: flex; align-items: center; gap: 8px;
@@ -268,19 +276,27 @@ const products = [
   }
 
   .product-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: clamp(14px, 1.4vw, 20px);
   }
 
   .product-card {
     display: flex; flex-direction: column;
     border: 1px solid var(--c-line-hard);
     border-radius: var(--radius-md); background: var(--c-paper);
-    overflow: hidden; transition: transform 0.2s;
+    overflow: hidden;
+    transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out), border-color var(--t-med) var(--ease-out);
   }
-  .product-card:hover { transform: translateY(-4px); }
+  .product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 48px -20px rgba(10, 10, 9, 0.25);
+    border-color: var(--c-ink);
+  }
 
   .product-img {
-    position: relative; width: 100%; height: 220px;
+    position: relative; width: 100%;
+    aspect-ratio: 1 / 1;
     background: var(--c-mid);
   }
   .product-tag {
@@ -300,7 +316,13 @@ const products = [
     background: var(--c-yellow); border-radius: var(--radius-pill);
     font-family: var(--font-display); font-size: 13px; font-weight: 800; letter-spacing: 1px; color: var(--c-ink);
   }
-  .product-btn:hover { opacity: 0.85; }
+  .product-btn {
+    transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out);
+  }
+  .product-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px -8px rgba(245, 195, 0, 0.55);
+  }
 
   .pagination {
     display: flex; justify-content: center; gap: 8px; padding-top: 24px;
@@ -311,14 +333,16 @@ const products = [
     border-radius: var(--radius-sm); border: 1px solid var(--c-line-hard);
     font-family: var(--font-mono); font-size: 13px; font-weight: 700;
     cursor: pointer;
+    transition: background var(--t-fast) var(--ease-out), color var(--t-fast) var(--ease-out), transform var(--t-fast) var(--ease-out);
   }
+  .page:hover { transform: translateY(-2px); }
   .page.active { background: var(--c-ink); color: var(--c-paper); border-color: var(--c-ink); }
 
   @media (max-width: 900px) {
-    .main-area { flex-direction: column; padding: 24px 16px; }
-    .sidebar { width: 100%; }
-    .product-grid { grid-template-columns: repeat(2, 1fr); }
-    .title-block { flex-direction: column; padding: 24px 20px; }
-    .title-heading { font-size: 48px; }
+    .main-area { grid-template-columns: 1fr; }
+    .sidebar { position: static; }
+  }
+  @media (max-width: 480px) {
+    .product-grid { grid-template-columns: 1fr; }
   }
 </style>

@@ -3,36 +3,51 @@ import { ArrowRight } from '@lucide/astro';
 ---
 
 <section class="cta-final">
-  <div class="cta-left">
-    <span class="cta-kick">// PRÓXIMO PASSO</span>
-    <h2 class="cta-heading">PRONTO PARA<br/>EVOLUIR?</h2>
-    <p class="cta-sub">Monte seu pedido no catálogo e nos mande pelo WhatsApp.<br/>Entregamos em BH ou você retira na loja do Castelo.</p>
-  </div>
-  <div class="cta-right">
-    <a href="/catalogo" class="cta-btn-pri">
-      <ArrowRight size={18} color="var(--c-yellow)" />
-      <span>ACESSAR O CATÁLOGO</span>
-    </a>
-    <span class="cta-sub2">FRETE A COMBINAR · WHATSAPP DIRETO</span>
+  <div class="cta-inner container" data-reveal>
+    <div class="cta-left">
+      <span class="cta-kick">// PRÓXIMO PASSO</span>
+      <h2 class="cta-heading">PRONTO PARA<br/>EVOLUIR?</h2>
+      <p class="cta-sub">Monte seu pedido no catálogo e nos mande pelo WhatsApp.<br/>Entregamos em BH ou você retira na loja do Castelo.</p>
+    </div>
+    <div class="cta-right">
+      <a href="/catalogo" class="cta-btn-pri">
+        <ArrowRight size={18} color="var(--c-yellow)" />
+        <span>ACESSAR O CATÁLOGO</span>
+      </a>
+      <span class="cta-sub2">FRETE A COMBINAR · WHATSAPP DIRETO</span>
+    </div>
   </div>
 </section>
 
 <style>
   .cta-final {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 60px;
-    padding: 100px 80px;
     background: var(--c-yellow);
     width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-final::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 20% 80%, rgba(10, 10, 9, 0.08), transparent 60%);
+    pointer-events: none;
+  }
+
+  .cta-inner {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    align-items: center;
+    gap: clamp(32px, 5vw, 80px);
+    padding: var(--section-y) var(--gutter);
+    position: relative;
   }
 
   .cta-left {
-    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: clamp(16px, 2vw, 28px);
   }
 
   .cta-kick {
@@ -44,7 +59,7 @@ import { ArrowRight } from '@lucide/astro';
 
   .cta-heading {
     font-family: var(--font-display);
-    font-size: 96px;
+    font-size: clamp(48px, 8vw, 112px);
     font-weight: 800;
     font-style: italic;
     line-height: 0.9;
@@ -54,8 +69,8 @@ import { ArrowRight } from '@lucide/astro';
 
   .cta-sub {
     font-family: var(--font-ui);
-    font-size: 18px;
-    line-height: 1.5;
+    font-size: clamp(15px, 1.2vw, 18px);
+    line-height: 1.55;
     color: var(--c-ink);
   }
 
@@ -67,22 +82,27 @@ import { ArrowRight } from '@lucide/astro';
   }
 
   .cta-btn-pri {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
-    padding: 24px 40px;
+    padding: 22px 36px;
     background: var(--c-ink);
     border-radius: var(--radius-sm);
     color: var(--c-paper);
     font-family: var(--font-display);
-    font-size: 18px;
+    font-size: clamp(15px, 1.2vw, 18px);
     font-weight: 800;
     letter-spacing: 2px;
-    transition: opacity 0.2s;
+    transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out);
   }
 
-  .cta-btn-pri:hover { opacity: 0.85; }
+  .cta-btn-pri:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px -14px rgba(10, 10, 9, 0.5);
+  }
+  .cta-btn-pri :global(svg) { transition: transform var(--t-med) var(--ease-out); }
+  .cta-btn-pri:hover :global(svg) { transform: translateX(5px); }
 
   .cta-sub2 {
     font-family: var(--font-mono);
@@ -92,8 +112,9 @@ import { ArrowRight } from '@lucide/astro';
   }
 
   @media (max-width: 900px) {
-    .cta-final { flex-direction: column; padding: 60px 20px; gap: 40px; }
-    .cta-heading { font-size: 56px; }
+    .cta-inner { grid-template-columns: 1fr; }
     .cta-right { align-items: stretch; }
+    .cta-btn-pri { justify-content: center; }
+    .cta-sub2 { text-align: center; }
   }
 </style>

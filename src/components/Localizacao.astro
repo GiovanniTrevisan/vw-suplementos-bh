@@ -3,80 +3,76 @@ import { MapPin, Clock, Phone, Map, MessageCircle } from '@lucide/astro';
 ---
 
 <section class="localizacao" id="localizacao">
-  <div class="loc-left">
-    <span class="loc-kicker">VENHA NA LOJA</span>
-    <h2 class="loc-title">ONDE ESTAMOS.</h2>
+  <div class="loc-inner container">
+    <div class="loc-left" data-reveal="left">
+      <span class="loc-kicker">VENHA NA LOJA</span>
+      <h2 class="loc-title">ONDE ESTAMOS.</h2>
 
-    <div class="addr-block">
-      <div class="addr-line">
-        <MapPin size={22} color="var(--c-yellow)" />
-        <div class="addr-text">
-          <span class="addr-label">ENDEREÇO</span>
-          <span class="addr-value">Av. Pres. Tancredo Neves, 2337 — Loja 8, Castelo, BH/MG</span>
+      <div class="addr-block">
+        <div class="addr-line">
+          <MapPin size={22} color="var(--c-yellow)" />
+          <div class="addr-text">
+            <span class="addr-label">ENDEREÇO</span>
+            <span class="addr-value">Av. Pres. Tancredo Neves, 2337 - Castelo, Belo Horizonte - MG, 31330-472</span>
+          </div>
+        </div>
+        <div class="addr-line">
+          <Clock size={22} color="var(--c-yellow)" />
+          <div class="addr-text">
+            <span class="addr-label">HORÁRIO</span>
+            <span class="addr-value">Seg–Sex 9h–19h · Sáb 9h–14h · Dom fechado</span>
+          </div>
+        </div>
+        <div class="addr-line">
+          <Phone size={22} color="var(--c-yellow)" />
+          <div class="addr-text">
+            <span class="addr-label">WHATSAPP</span>
+            <span class="addr-phone">(31) 99267-0586</span>
+          </div>
         </div>
       </div>
-      <div class="addr-line">
-        <Clock size={22} color="var(--c-yellow)" />
-        <div class="addr-text">
-          <span class="addr-label">HORÁRIO</span>
-          <span class="addr-value">Seg–Sex 9h–19h · Sáb 9h–14h · Dom fechado</span>
-        </div>
-      </div>
-      <div class="addr-line">
-        <Phone size={22} color="var(--c-yellow)" />
-        <div class="addr-text">
-          <span class="addr-label">WHATSAPP</span>
-          <span class="addr-phone">(31) 9 9999-9999</span>
-        </div>
+
+      <div class="loc-btns">
+        <a href="https://www.google.com/maps?vet=10CAAQoqAOahcKEwiYkbWNgKqUAxUAAAAAHQAAAAAQCQ..i&sca_esv=9b0cec2fe7cd0d24&pvq=Cg0vZy8xMXJ0eWticWgwIhQKDnZ3IHN1cGxlbWVudG9zEAIYAw&lqi=Chh2dyBzdXBsZW1lbnRvcyBlbmRlcmXDp28iAkgBSOCz1djnt4CACFoYEAAQARgAGAEiDnZ3IHN1cGxlbWVudG9zkgEddml0YW1pbl9hbmRfc3VwcGxlbWVudHNfc3RvcmU&fvr=1&cs=1&um=1&ie=UTF-8&fb=1&gl=br&sa=X&ftid=0xa69108f4ed16e3:0x90cd24d786c2c9be" class="loc-btn outline" target="_blank" rel="noopener noreferrer">
+          <Map size={16} />
+          <span>VER NO GOOGLE MAPS</span>
+        </a>
+        <a href="https://wa.me/313992670586" class="loc-btn filled" target="_blank" rel="noopener noreferrer">
+          <MessageCircle size={16} />
+          <span>CHAMAR NO WHATSAPP</span>
+        </a>
       </div>
     </div>
 
-    <div class="loc-btns">
-      <a href="#" class="loc-btn outline">
-        <Map size={16} />
-        <span>VER NO GOOGLE MAPS</span>
-      </a>
-      <a href="#" class="loc-btn filled">
-        <MessageCircle size={16} />
-        <span>CHAMAR NO WHATSAPP</span>
-      </a>
-    </div>
-  </div>
-
-  <div class="map-placeholder">
-    <div class="map-grid">
-      {[80,160,240,320,400].map(y => <div class="grid-h" style={`top: ${y}px`}></div>)}
-      {[80,160,240,320,400,480,560].map(x => <div class="grid-v" style={`left: ${x}px`}></div>)}
-    </div>
-    <div class="road-h"></div>
-    <div class="road-v"></div>
-    <div class="pin">
-      <div class="pin-head">
-        <MapPin size={24} color="var(--c-ink)" />
-      </div>
-    </div>
-    <div class="pin-shadow"></div>
-    <div class="map-badge">
-      <span>VW · CASTELO BH</span>
-    </div>
+    <iframe
+      src="https://www.google.com/maps?vet=10CAAQoqAOahcKEwiYkbWNgKqUAxUAAAAAHQAAAAAQCQ..i&sca_esv=9b0cec2fe7cd0d24&pvq=Cg0vZy8xMXJ0eWticWgwIhQKDnZ3IHN1cGxlbWVudG9zEAIYAw&lqi=Chh2dyBzdXBsZW1lbnRvcyBlbmRlcmXDp28iAkgBSOCz1djnt4CACFoYEAAQARgAGAEiDnZ3IHN1cGxlbWVudG9zkgEddml0YW1pbl9hbmRfc3VwcGxlbWVudHNfc3RvcmU&fvr=1&cs=1&um=1&ie=UTF-8&fb=1&gl=br&sa=X&ftid=0xa69108f4ed16e3:0x90cd24d786c2c9be"
+      width="100%"
+      height="450"
+      style="border:0;"
+      allowfullscreen=""
+      loading="lazy"
+    ></iframe>
   </div>
 </section>
 
 <style>
   .localizacao {
-    display: flex;
-    gap: 60px;
-    padding: 100px 80px;
     background: var(--c-paper);
     border-top: 1px solid var(--c-line);
     width: 100%;
   }
 
+  .loc-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 4vw, 64px);
+    padding: var(--section-y) var(--gutter);
+  }
+
   .loc-left {
-    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: clamp(16px, 2vw, 24px);
   }
 
   .loc-kicker {
@@ -89,10 +85,10 @@ import { MapPin, Clock, Phone, Map, MessageCircle } from '@lucide/astro';
 
   .loc-title {
     font-family: var(--font-display);
-    font-size: 64px;
+    font-size: clamp(36px, 5vw, 68px);
     font-weight: 800;
     font-style: italic;
-    line-height: 0.92;
+    line-height: 0.95;
     letter-spacing: -2px;
     color: var(--c-ink);
   }
@@ -101,13 +97,15 @@ import { MapPin, Clock, Phone, Map, MessageCircle } from '@lucide/astro';
     display: flex;
     flex-direction: column;
     gap: 18px;
-    padding-top: 24px;
+    padding-top: 16px;
   }
 
   .addr-line {
     display: flex;
     gap: 14px;
+    transition: transform var(--t-med) var(--ease-out);
   }
+  .addr-line:hover { transform: translateX(4px); }
 
   .addr-text {
     display: flex;
@@ -141,42 +139,50 @@ import { MapPin, Clock, Phone, Map, MessageCircle } from '@lucide/astro';
 
   .loc-btns {
     display: flex;
+    flex-wrap: wrap;
     gap: 12px;
-    padding-top: 16px;
+    padding-top: 8px;
   }
 
   .loc-btn {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 10px;
-    padding: 16px 24px;
+    padding: 14px 22px;
     border-radius: var(--radius-pill);
     font-family: var(--font-display);
     font-size: 14px;
     font-weight: 800;
     letter-spacing: 1px;
     color: var(--c-ink);
-    transition: opacity 0.2s;
+    transition: transform var(--t-med) var(--ease-out), background var(--t-fast) var(--ease-out), box-shadow var(--t-med) var(--ease-out);
   }
 
-  .loc-btn:hover { opacity: 0.8; }
+  .loc-btn:hover {
+    transform: translateY(-2px);
+  }
 
   .loc-btn.outline {
     border: 2px solid var(--c-ink);
     background: transparent;
   }
+  .loc-btn.outline:hover { background: var(--c-ink); color: var(--c-paper); }
 
   .loc-btn.filled {
     background: var(--c-yellow);
   }
+  .loc-btn.filled:hover { box-shadow: 0 12px 26px -10px rgba(245, 195, 0, 0.55); }
 
   .map-placeholder {
-    flex: 1;
     position: relative;
-    height: 480px;
+    width: 100%;
+    min-height: 420px;
+    aspect-ratio: 5 / 4;
+    max-height: 560px;
     background: var(--c-mid);
     border-radius: var(--radius-md);
     overflow: hidden;
+    box-shadow: 0 30px 80px -40px rgba(10, 10, 9, 0.4);
   }
 
   .grid-h {
@@ -198,10 +204,11 @@ import { MapPin, Clock, Phone, Map, MessageCircle } from '@lucide/astro';
   .road-h {
     position: absolute;
     left: 0;
-    top: 230px;
+    top: 50%;
     width: 100%;
     height: 6px;
     background: #0A0A0959;
+    transform: translateY(-50%);
   }
 
   .road-v {
@@ -211,12 +218,15 @@ import { MapPin, Clock, Phone, Map, MessageCircle } from '@lucide/astro';
     width: 6px;
     height: 100%;
     background: #0A0A0959;
+    transform: translateX(-50%);
   }
 
   .pin {
     position: absolute;
-    left: calc(50% - 24px);
-    top: 200px;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+    animation: floatY 3.5s var(--ease-in-out) infinite;
   }
 
   .pin-head {
@@ -228,16 +238,19 @@ import { MapPin, Clock, Phone, Map, MessageCircle } from '@lucide/astro';
     display: flex;
     align-items: center;
     justify-content: center;
+    animation: pulseDot 2.4s var(--ease-in-out) infinite;
   }
 
   .pin-shadow {
     position: absolute;
-    left: calc(50% - 8px);
-    top: 255px;
+    left: 50%;
+    top: calc(45% + 30px);
     width: 16px;
     height: 6px;
     background: #0A0A0959;
     border-radius: var(--radius-pill);
+    transform: translateX(-50%);
+    filter: blur(2px);
   }
 
   .map-badge {
@@ -247,6 +260,7 @@ import { MapPin, Clock, Phone, Map, MessageCircle } from '@lucide/astro';
     background: var(--c-paper);
     border-radius: var(--radius-sm);
     padding: 8px 12px;
+    box-shadow: 0 8px 18px -6px rgba(0,0,0,0.25);
   }
 
   .map-badge span {
@@ -258,9 +272,9 @@ import { MapPin, Clock, Phone, Map, MessageCircle } from '@lucide/astro';
   }
 
   @media (max-width: 900px) {
-    .localizacao { flex-direction: column; padding: 60px 20px; }
-    .loc-title { font-size: 40px; }
+    .loc-inner { grid-template-columns: 1fr; }
     .loc-btns { flex-direction: column; }
-    .map-placeholder { height: 300px; }
+    .loc-btn { justify-content: center; }
+    .map-placeholder { min-height: 320px; aspect-ratio: 16 / 11; }
   }
 </style>

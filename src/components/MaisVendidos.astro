@@ -2,86 +2,71 @@
 import { Plus } from '@lucide/astro';
 
 const products = [
-  {
-    tag: '🔥 MAIS VENDIDO',
-    category: 'PROTEÍNA',
-    name: 'Whey Protein 900g',
-    price: 'R$ 149,90',
-    hasTag: true,
-  },
-  {
-    category: 'FORÇA',
-    name: 'Creatina Monohidratada 300g',
-    price: 'R$ 89,90',
-    hasTag: false,
-  },
-  {
-    category: 'PRÉ-TREINO',
-    name: 'Pré-treino HardCore 300g',
-    price: 'R$ 119,90',
-    hasTag: false,
-  },
-  {
-    category: 'COMBO',
-    name: 'Kit Iniciante Completo',
-    price: 'R$ 249,90',
-    hasTag: false,
-  },
+  { tag: '🔥 MAIS VENDIDO', category: 'PROTEÍNA',   name: 'Whey Protein 900g',          price: 'R$ 149,90', hasTag: true },
+  {                         category: 'FORÇA',      name: 'Creatina Monohidratada 300g', price: 'R$ 89,90',  hasTag: false },
+  {                         category: 'PRÉ-TREINO', name: 'Pré-treino HardCore 300g',    price: 'R$ 119,90', hasTag: false },
+  {                         category: 'COMBO',      name: 'Kit Iniciante Completo',      price: 'R$ 249,90', hasTag: false },
 ];
 ---
 
 <section class="mais-vendidos">
-  <div class="sellers-header">
-    <div class="sellers-title-wrap">
-      <span class="sellers-kicker">BEST SELLERS · 2026</span>
-      <div class="sellers-title-row">
-        <h2 class="sellers-title">MAIS VENDIDOS.</h2>
-        <div class="yellow-bar"></div>
+  <div class="sellers-inner container">
+    <div class="sellers-header" data-reveal>
+      <div class="sellers-title-wrap">
+        <span class="sellers-kicker">BEST SELLERS · 2026</span>
+        <div class="sellers-title-row">
+          <h2 class="sellers-title">MAIS VENDIDOS.</h2>
+          <div class="yellow-bar"></div>
+        </div>
       </div>
+      <p class="sellers-sub">O que está saindo da loja toda semana.</p>
     </div>
-    <p class="sellers-sub">O que está saindo da loja toda semana.</p>
-  </div>
 
-  <div class="prod-grid">
-    {products.map((p) => (
-      <div class="product-card">
-        <div class="product-img">
-          {p.hasTag && (
-            <div class="product-tag">
-              <span>{p.tag}</span>
-            </div>
-          )}
+    <div class="prod-grid" data-reveal-stagger>
+      {products.map((p) => (
+        <div class="product-card">
+          <div class="product-img">
+            {p.hasTag && (
+              <div class="product-tag">
+                <span>{p.tag}</span>
+              </div>
+            )}
+          </div>
+          <div class="product-body">
+            <span class="product-cat">{p.category}</span>
+            <span class="product-name">{p.name}</span>
+            <span class="product-price">{p.price}</span>
+            <button class="product-btn">
+              <Plus size={14} />
+              <span>ADICIONAR</span>
+            </button>
+          </div>
         </div>
-        <div class="product-body">
-          <span class="product-cat">{p.category}</span>
-          <span class="product-name">{p.name}</span>
-          <span class="product-price">{p.price}</span>
-          <button class="product-btn">
-            <Plus size={14} />
-            <span>ADICIONAR</span>
-          </button>
-        </div>
-      </div>
-    ))}
+      ))}
+    </div>
   </div>
 </section>
 
 <style>
   .mais-vendidos {
-    display: flex;
-    flex-direction: column;
-    gap: 48px;
-    padding: 100px 80px;
     background: var(--c-paper);
     border-top: 1px solid var(--c-line);
     width: 100%;
+  }
+
+  .sellers-inner {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(32px, 3.5vw, 56px);
+    padding: var(--section-y) var(--gutter);
   }
 
   .sellers-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    width: 100%;
+    gap: 24px;
+    flex-wrap: wrap;
   }
 
   .sellers-title-wrap {
@@ -106,7 +91,7 @@ const products = [
 
   .sellers-title {
     font-family: var(--font-display);
-    font-size: 72px;
+    font-size: clamp(40px, 6vw, 80px);
     font-weight: 800;
     font-style: italic;
     line-height: 0.9;
@@ -118,7 +103,10 @@ const products = [
     width: 120px;
     height: 4px;
     background: var(--c-yellow);
+    transform-origin: left;
+    animation: scaleX-grow 800ms var(--ease-out) 200ms both;
   }
+  @keyframes scaleX-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
   .sellers-sub {
     max-width: 280px;
@@ -130,9 +118,8 @@ const products = [
 
   .prod-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    width: 100%;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(14px, 1.4vw, 20px);
   }
 
   .product-card {
@@ -142,27 +129,46 @@ const products = [
     border-radius: var(--radius-md);
     background: var(--c-paper);
     overflow: hidden;
-    transition: transform 0.2s;
+    transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out), border-color var(--t-med) var(--ease-out);
   }
 
-  .product-card:hover { transform: translateY(-4px); }
+  .product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 48px -20px rgba(10, 10, 9, 0.25);
+    border-color: var(--c-ink);
+  }
 
   .product-img {
     position: relative;
     width: 100%;
-    height: 280px;
+    aspect-ratio: 1 / 1;
     background: var(--c-mid);
+    overflow: hidden;
     border-radius: var(--radius-md) var(--radius-md) 0 0;
   }
+
+  .product-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 30%, rgba(245, 195, 0, 0.12) 50%, transparent 70%);
+    background-size: 200% 100%;
+    opacity: 0;
+    transition: opacity var(--t-med) var(--ease-out);
+    animation: shimmer 2.5s linear infinite;
+  }
+  .product-card:hover .product-img::after { opacity: 1; }
 
   .product-tag {
     position: absolute;
     top: 16px;
     left: 16px;
+    z-index: 1;
     background: var(--c-yellow);
     border-radius: var(--radius-sm);
     padding: 6px 12px;
     transform: rotate(-8deg);
+    box-shadow: 0 6px 14px -4px rgba(0,0,0,0.25);
   }
 
   .product-tag span {
@@ -190,7 +196,7 @@ const products = [
 
   .product-name {
     font-family: var(--font-display);
-    font-size: 24px;
+    font-size: clamp(20px, 1.6vw, 24px);
     font-weight: 700;
     letter-spacing: -1px;
     line-height: 1.05;
@@ -219,15 +225,20 @@ const products = [
     font-size: 13px;
     font-weight: 800;
     letter-spacing: 1px;
-    transition: opacity 0.2s;
+    transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out);
   }
 
-  .product-btn:hover { opacity: 0.85; }
+  .product-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px -8px rgba(245, 195, 0, 0.55);
+  }
+  .product-btn :global(svg) { transition: transform var(--t-med) var(--ease-out); }
+  .product-btn:hover :global(svg) { transform: rotate(90deg); }
 
   @media (max-width: 900px) {
-    .mais-vendidos { padding: 60px 20px; }
-    .prod-grid { grid-template-columns: repeat(2, 1fr); }
-    .sellers-title { font-size: 48px; }
-    .sellers-header { flex-direction: column; gap: 16px; align-items: flex-start; }
+    .prod-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 480px) {
+    .prod-grid { grid-template-columns: 1fr; }
   }
 </style>

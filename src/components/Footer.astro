@@ -3,89 +3,92 @@ import { Camera, MessageCircle } from '@lucide/astro';
 ---
 
 <footer class="footer">
-  <div class="footer-top">
-    <div class="fc fc1">
-      <div class="f-logo">
-        <div class="f-logo-box">
-          <span class="f-logo-vw">VW</span>
+  <div class="footer-inner container">
+    <div class="footer-top">
+      <div class="fc fc1">
+        <div class="f-logo">
+          <div class="f-logo-box">
+            <span class="f-logo-vw">VW</span>
+          </div>
+          <span class="f-logo-txt">SUPLEMENTOS BH</span>
         </div>
-        <span class="f-logo-txt">SUPLEMENTOS BH</span>
+        <p class="f-tag">Loja física no Castelo, BH. Suplementos originais, atendimento técnico e entrega rápida na Grande BH.</p>
+        <div class="f-social">
+          <a href="#" class="social-btn" aria-label="Instagram">
+            <Camera size={18} color="var(--c-paper)" />
+          </a>
+          <a href="#" class="social-btn" aria-label="WhatsApp">
+            <MessageCircle size={18} color="var(--c-paper)" />
+          </a>
+        </div>
       </div>
-      <p class="f-tag">Loja física no Castelo, BH. Suplementos originais, atendimento técnico e entrega rápida na Grande BH.</p>
-      <div class="f-social">
-        <a href="#" class="social-btn" aria-label="Instagram">
-          <Camera size={18} color="var(--c-paper)" />
-        </a>
-        <a href="#" class="social-btn" aria-label="WhatsApp">
-          <MessageCircle size={18} color="var(--c-paper)" />
-        </a>
+
+      <div class="fc fc2">
+        <span class="fc-title">// NAVEGAR</span>
+        <a href="/catalogo">Catálogo</a>
+        <a href="/#sobre">Sobre nós</a>
+        <a href="/#localizacao">Localização</a>
+        <a href="#">Política de privacidade</a>
+      </div>
+
+      <div class="fc fc3">
+        <span class="fc-title">// CONTATO</span>
+        <p class="fc-addr">Av. Pres. Tancredo Neves, 2337 — Loja 8<br/>Castelo, Belo Horizonte/MG</p>
+        <span class="fc-wa">WhatsApp: (31) 9XXXX-XXXX</span>
+        <span class="fc-email">contato@vwsuplementos.com.br</span>
+      </div>
+
+      <div class="fc fc4">
+        <span class="fc-title">// HORÁRIO</span>
+        <div class="hrs-row">
+          <span class="hrs-label">SEG–SEX</span>
+          <span class="hrs-value">08–19h</span>
+        </div>
+        <div class="hrs-row">
+          <span class="hrs-label">SÁBADO</span>
+          <span class="hrs-value">08–14h</span>
+        </div>
+        <div class="hrs-row">
+          <span class="hrs-label">DOMINGO</span>
+          <span class="hrs-value closed">FECHADO</span>
+        </div>
       </div>
     </div>
 
-    <div class="fc fc2">
-      <span class="fc-title">// NAVEGAR</span>
-      <a href="/catalogo">Catálogo</a>
-      <a href="/#sobre">Sobre nós</a>
-      <a href="/#localizacao">Localização</a>
-      <a href="#">Política de privacidade</a>
+    <div class="footer-bottom">
+      <span>© 2026 VW SUPLEMENTOS · CNPJ XX.XXX.XXX/0001-XX · TODOS OS DIREITOS RESERVADOS</span>
+      <span>FEITO EM BELO HORIZONTE</span>
     </div>
-
-    <div class="fc fc3">
-      <span class="fc-title">// CONTATO</span>
-      <p class="fc-addr">Av. Pres. Tancredo Neves, 2337 — Loja 8<br/>Castelo, Belo Horizonte/MG</p>
-      <span class="fc-wa">WhatsApp: (31) 9XXXX-XXXX</span>
-      <span class="fc-email">contato@vwsuplementos.com.br</span>
-    </div>
-
-    <div class="fc fc4">
-      <span class="fc-title">// HORÁRIO</span>
-      <div class="hrs-row">
-        <span class="hrs-label">SEG–SEX</span>
-        <span class="hrs-value">08–19h</span>
-      </div>
-      <div class="hrs-row">
-        <span class="hrs-label">SÁBADO</span>
-        <span class="hrs-value">08–14h</span>
-      </div>
-      <div class="hrs-row">
-        <span class="hrs-label">DOMINGO</span>
-        <span class="hrs-value closed">FECHADO</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="footer-bottom">
-    <span>© 2026 VW SUPLEMENTOS · CNPJ XX.XXX.XXX/0001-XX · TODOS OS DIREITOS RESERVADOS</span>
-    <span>FEITO EM BELO HORIZONTE</span>
   </div>
 </footer>
 
 <style>
   .footer {
-    display: flex;
-    flex-direction: column;
-    gap: 60px;
-    padding: 80px 80px 32px 80px;
     background: var(--c-ink);
     width: 100%;
   }
 
-  .footer-top {
+  .footer-inner {
     display: flex;
-    gap: 80px;
-    width: 100%;
+    flex-direction: column;
+    gap: clamp(36px, 4vw, 60px);
+    padding: clamp(48px, 6vw, 80px) var(--gutter) 28px;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1.2fr 1fr;
+    gap: clamp(28px, 4vw, 64px);
   }
 
   .fc {
-    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 14px;
+    min-width: 0;
   }
 
-  .fc1 {
-    gap: 20px;
-  }
+  .fc1 { gap: 20px; }
 
   .f-logo {
     display: flex;
@@ -129,7 +132,7 @@ import { Camera, MessageCircle } from '@lucide/astro';
   .f-social {
     display: flex;
     gap: 12px;
-    padding-top: 8px;
+    padding-top: 4px;
   }
 
   .social-btn {
@@ -140,12 +143,14 @@ import { Camera, MessageCircle } from '@lucide/astro';
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: opacity 0.2s;
+    transition: transform var(--t-med) var(--ease-out), background var(--t-fast) var(--ease-out);
   }
 
   .social-btn:hover {
-    opacity: 0.7;
+    background: var(--c-yellow);
+    transform: translateY(-3px) rotate(-4deg);
   }
+  .social-btn:hover :global(svg) { color: var(--c-ink); }
 
   .fc-title {
     color: var(--c-yellow);
@@ -158,11 +163,12 @@ import { Camera, MessageCircle } from '@lucide/astro';
     color: var(--c-paper-muted);
     font-family: var(--font-ui);
     font-size: 14px;
-    transition: color 0.2s;
+    transition: color var(--t-fast) var(--ease-out), padding-left var(--t-med) var(--ease-out);
   }
 
   .fc2 a:hover {
     color: var(--c-paper);
+    padding-left: 4px;
   }
 
   .fc-addr {
@@ -183,12 +189,12 @@ import { Camera, MessageCircle } from '@lucide/astro';
     color: var(--c-paper-muted);
     font-family: var(--font-mono);
     font-size: 13px;
+    word-break: break-all;
   }
 
   .hrs-row {
     display: flex;
     justify-content: space-between;
-    width: 100%;
   }
 
   .hrs-label {
@@ -213,8 +219,10 @@ import { Camera, MessageCircle } from '@lucide/astro';
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 12px;
     padding-top: 24px;
     border-top: 1px solid #F5F0E833;
+    flex-wrap: wrap;
   }
 
   .footer-bottom span {
@@ -225,8 +233,10 @@ import { Camera, MessageCircle } from '@lucide/astro';
   }
 
   @media (max-width: 900px) {
-    .footer { padding: 40px 20px 24px; }
-    .footer-top { flex-direction: column; gap: 40px; }
-    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 540px) {
+    .footer-top { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; text-align: center; }
   }
 </style>

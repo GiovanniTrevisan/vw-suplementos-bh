@@ -1,5 +1,5 @@
 ---
-import { ShoppingBag, ArrowRight } from '@lucide/astro';
+import { ShoppingBag, ArrowRight, Menu, X } from '@lucide/astro';
 
 interface Props {
   variant?: 'dark' | 'light';
@@ -8,46 +8,116 @@ interface Props {
 const { variant = 'dark' } = Astro.props;
 ---
 
-<header class:list={['header', variant]}>
-  <a href="/" class="logo">
-    <img src="/logo_dark.png" alt="VW Suplementos" class="logo-img" />
-    <span class="logo-badge">BH</span>
-  </a>
-
-  <nav class="nav">
-    <a href="/#inicio">Início</a>
-    <a href="/catalogo">Produtos</a>
-    <a href="/#sobre">Sobre</a>
-    <a href="/#localizacao">Localização</a>
-  </nav>
-
-  <div class="actions">
-    <a href="/catalogo" class="cta-catalogo">
-      <span>VER CATÁLOGO</span>
-      <ArrowRight size={16} />
+<header class:list={['header', variant]} data-header>
+  <div class="header-inner container">
+    <a href="/" class="logo">
+      <img src="/logo_dark.png" alt="VW Suplementos" class="logo-img" />
+      <span class="logo-badge">BH</span>
     </a>
-    <a href="/checkout" class="cart">
-      <ShoppingBag size={22} color="var(--c-paper)" />
-      <span class="cart-badge">2</span>
+
+    <nav class="nav">
+      <a href="/#inicio">Início</a>
+      <a href="/catalogo">Produtos</a>
+      <a href="/#sobre">Sobre</a>
+      <a href="/#localizacao">Localização</a>
+    </nav>
+
+    <div class="actions">
+      <a href="/catalogo" class="cta-catalogo">
+        <span>VER CATÁLOGO</span>
+        <ArrowRight size={16} />
+      </a>
+      <a href="/checkout" class="cart" aria-label="Carrinho">
+        <ShoppingBag size={22} color="var(--c-paper)" />
+        <span class="cart-badge">2</span>
+      </a>
+      <button class="menu-toggle" aria-label="Menu" data-menu-toggle>
+        <Menu size={24} color="var(--c-paper)" class="icon-open" />
+        <X size={24} color="var(--c-paper)" class="icon-close" />
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-menu" data-mobile-menu>
+    <nav class="mobile-nav">
+      <a href="/#inicio">Início</a>
+      <a href="/catalogo">Produtos</a>
+      <a href="/#sobre">Sobre</a>
+      <a href="/#localizacao">Localização</a>
+    </nav>
+    <a href="/catalogo" class="mobile-cta">
+      <span>VER CATÁLOGO</span>
+      <ArrowRight size={18} />
     </a>
   </div>
 </header>
 
+<script is:inline>
+  (() => {
+    const header = document.querySelector('[data-header]');
+    const toggle = document.querySelector('[data-menu-toggle]');
+    const menu = document.querySelector('[data-mobile-menu]');
+    if (!header) return;
+
+    let lastY = 0;
+    const onScroll = () => {
+      const y = window.scrollY;
+      header.classList.toggle('is-scrolled', y > 8);
+      header.classList.toggle('is-hidden', y > 200 && y > lastY);
+      lastY = y;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    if (toggle && menu) {
+      toggle.addEventListener('click', () => {
+        const open = header.classList.toggle('menu-open');
+        document.body.style.overflow = open ? 'hidden' : '';
+      });
+      menu.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          header.classList.remove('menu-open');
+          document.body.style.overflow = '';
+        });
+      });
+    }
+  })();
+</script>
+
 <style>
   .header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--c-ink);
+    width: 100%;
+    transition: transform var(--t-med) var(--ease-out), background var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out);
+    animation: fadeIn var(--t-slow) var(--ease-out) both;
+  }
+
+  .header.is-scrolled {
+    box-shadow: 0 8px 24px -16px rgba(0,0,0,0.5);
+  }
+
+  .header.is-hidden:not(.menu-open) {
+    transform: translate3d(0, -100%, 0);
+  }
+
+  .header-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 40px;
-    background: var(--c-ink);
-    width: 100%;
+    padding: 18px var(--gutter);
+    gap: 24px;
   }
 
   .logo {
     display: flex;
     align-items: center;
     gap: 10px;
+    transition: opacity var(--t-fast) var(--ease-out);
   }
+  .logo:hover { opacity: 0.85; }
 
   .logo-img {
     width: 180px;
@@ -66,32 +136,46 @@ const { variant = 'dark' } = Astro.props;
   .nav {
     display: flex;
     align-items: center;
-    gap: 36px;
+    gap: clamp(20px, 2.5vw, 36px);
   }
 
   .nav a {
+    position: relative;
     color: var(--c-paper);
     font-family: var(--font-ui);
     font-size: 14px;
     font-weight: 500;
-    transition: opacity 0.2s;
+    padding: 6px 2px;
+    transition: color var(--t-fast) var(--ease-out);
   }
 
-  .nav a:hover {
-    opacity: 0.7;
+  .nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1.5px;
+    background: var(--c-yellow);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--t-med) var(--ease-out);
   }
+
+  .nav a:hover { color: var(--c-yellow); }
+  .nav a:hover::after { transform: scaleX(1); }
 
   .actions {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: clamp(12px, 1.5vw, 20px);
   }
 
   .cta-catalogo {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 14px 22px;
+    padding: 13px 22px;
     background: var(--c-yellow);
     border-radius: var(--radius-pill);
     color: var(--c-ink);
@@ -99,35 +183,112 @@ const { variant = 'dark' } = Astro.props;
     font-size: 14px;
     font-weight: 800;
     letter-spacing: 1px;
-    transition: opacity 0.2s;
+    transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out), background var(--t-fast) var(--ease-out);
   }
 
   .cta-catalogo:hover {
-    opacity: 0.85;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px -8px rgba(245, 195, 0, 0.5);
   }
+  .cta-catalogo:active { transform: translateY(0); }
+  .cta-catalogo :global(svg) { transition: transform var(--t-med) var(--ease-out); }
+  .cta-catalogo:hover :global(svg) { transform: translateX(3px); }
 
   .cart {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 6px;
+    padding: 8px;
+    transition: transform var(--t-fast) var(--ease-out);
   }
+  .cart:hover { transform: scale(1.08); }
 
   .cart-badge {
+    position: absolute;
+    top: 0;
+    right: -2px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     background: var(--c-yellow);
     border-radius: var(--radius-pill);
     color: var(--c-ink);
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
+    animation: pulseDot 2.4s var(--ease-in-out) infinite;
   }
 
-  @media (max-width: 900px) {
+  .menu-toggle {
+    display: none;
+    position: relative;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+  }
+  .menu-toggle :global(.icon-open),
+  .menu-toggle :global(.icon-close) {
+    position: absolute;
+    transition: opacity var(--t-fast) var(--ease-out), transform var(--t-fast) var(--ease-out);
+  }
+  .menu-toggle :global(.icon-close) { opacity: 0; transform: rotate(-45deg); }
+  .header.menu-open .menu-toggle :global(.icon-open) { opacity: 0; transform: rotate(45deg); }
+  .header.menu-open .menu-toggle :global(.icon-close) { opacity: 1; transform: rotate(0); }
+
+  .mobile-menu {
+    display: none;
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px var(--gutter) 40px;
+    background: var(--c-ink);
+    border-top: 1px solid #F5F0E81A;
+  }
+  .mobile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .mobile-nav a {
+    color: var(--c-paper);
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    padding: 10px 0;
+    border-bottom: 1px solid #F5F0E81A;
+    transition: color var(--t-fast) var(--ease-out), padding-left var(--t-med) var(--ease-out);
+  }
+  .mobile-nav a:hover { color: var(--c-yellow); padding-left: 8px; }
+  .mobile-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 24px;
+    background: var(--c-yellow);
+    border-radius: var(--radius-pill);
+    color: var(--c-ink);
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 960px) {
     .nav { display: none; }
-    .header { padding: 16px 20px; }
+    .cta-catalogo { display: none; }
+    .menu-toggle { display: inline-flex; }
+
+    .header.menu-open .mobile-menu {
+      display: flex;
+      animation: fadeUp var(--t-med) var(--ease-out);
+    }
+  }
+
+  @media (min-width: 1920px) {
+    .logo-img { width: 200px; height: 44px; }
   }
 </style>
