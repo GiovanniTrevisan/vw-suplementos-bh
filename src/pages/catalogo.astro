@@ -650,8 +650,7 @@ import { ChevronDown, X, Search } from '@lucide/astro';
 
   .product-card {
     display: flex; flex-direction: column;
-    border: 1px solid var(--c-line-hard);
-    border-radius: var(--radius-md);
+    border: 1px solid var(--c-line);
     background: var(--c-paper);
     overflow: hidden;
     transition:
@@ -660,22 +659,19 @@ import { ChevronDown, X, Search } from '@lucide/astro';
       border-color var(--t-med) var(--ease-out);
   }
   .product-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 24px 48px -20px rgba(10, 10, 9, 0.25);
-    border-color: var(--c-ink);
+    box-shadow: 0 24px 48px -20px rgba(5, 5, 3, 0.15);
+    border-color: var(--c-line-hard);
   }
 
   .product-img {
     position: relative; width: 100%; aspect-ratio: 1 / 1;
     background: var(--c-mid); overflow: hidden;
-    border-radius: var(--radius-md) var(--radius-md) 0 0;
   }
   .product-img img {
     width: 100%; height: 100%;
     object-fit: cover;
     transition: transform var(--t-med) var(--ease-out);
   }
-  .product-card:hover .product-img img { transform: scale(1.04); }
 
   .product-body {
     display: flex; flex-direction: column; gap: 12px;

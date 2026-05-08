@@ -14,15 +14,15 @@
       <p class="sellers-sub">O que está saindo da loja toda semana.</p>
     </div>
 
-    <div data-mv-loading class="mv-state">
+    <div data-product-loading class="product-state">
       <div class="loader"></div>
     </div>
 
-    <div data-mv-empty class="mv-state mv-empty" hidden>
+    <div data-product-empty class="product-state product-empty" hidden>
       <span>Nenhum produto cadastrado na planilha.</span>
     </div>
 
-    <div class="mv-grid" data-mv-grid hidden></div>
+    <div class="product-grid" data-product-grid hidden></div>
   </div>
 </section>
 
@@ -31,9 +31,9 @@
   import { cart } from '../lib/cart';
   import { formatBRL } from '../lib/format';
 
-  const grid = document.querySelector<HTMLElement>('[data-mv-grid]')!;
-  const loading = document.querySelector<HTMLElement>('[data-mv-loading]')!;
-  const empty = document.querySelector<HTMLElement>('[data-mv-empty]')!;
+  const grid = document.querySelector<HTMLElement>('[data-product-grid]')!;
+  const loading = document.querySelector<HTMLElement>('[data-product-loading]')!;
+  const empty = document.querySelector<HTMLElement>('[data-product-empty]')!;
 
   async function load() {
     const data = await fetchCatalog();
@@ -48,29 +48,25 @@
     grid.innerHTML = '';
     top.forEach((p, i) => {
       const card = document.createElement('a');
-      card.className = 'mv-card';
+      card.className = 'product-card';
       card.href = `/produto?id=${encodeURIComponent(p.id)}`;
-      const tag = i === 0
-        ? `<div class="mv-tag"><span>🔥 MAIS VENDIDO</span></div>`
-        : '';
       card.innerHTML = `
-        <div class="mv-img">
+        <div class="product-img">
           ${p.imagem ? `<img src="${p.imagem}" alt="" loading="lazy" />` : ''}
-          ${tag}
         </div>
-        <div class="mv-body">
-          <span class="mv-cat"></span>
-          <span class="mv-name"></span>
-          <span class="mv-price"></span>
-          <button class="mv-btn" type="button" data-add>
+        <div class="product-body">
+          <span class="product-cat"></span>
+          <span class="product-name"></span>
+          <span class="product-price"></span>
+          <button class="product-btn" type="button" data-add>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
             <span>ADICIONAR</span>
           </button>
         </div>
       `;
-      (card.querySelector('.mv-cat')!).textContent = (p.categoria || '').toUpperCase();
-      (card.querySelector('.mv-name')!).textContent = p.nome;
-      (card.querySelector('.mv-price')!).textContent = formatBRL(p.preco);
+      (card.querySelector('.product-cat')!).textContent = (p.categoria || '').toUpperCase();
+      (card.querySelector('.product-name')!).textContent = p.nome;
+      (card.querySelector('.product-price')!).textContent = formatBRL(p.preco);
       card.querySelector<HTMLButtonElement>('[data-add]')!.addEventListener('click', (ev) => {
         ev.preventDefault();
         cart.add(p, 1);
@@ -122,11 +118,11 @@
   @keyframes scaleX-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
   .sellers-sub { max-width: 280px; font-family: var(--font-ui); font-size: 15px; line-height: 1.4; color: var(--c-mid); }
 
-  .mv-state {
+  .product-state {
     display: flex; align-items: center; justify-content: center;
     min-height: 200px; font-family: var(--font-ui); color: var(--c-muted);
   }
-  .mv-empty {
+  .product-empty {
     border: 1px dashed var(--c-line-hard); border-radius: var(--radius-md);
     padding: 24px; text-align: center;
   }
@@ -138,7 +134,7 @@
   estático, então classes adicionadas dinamicamente ficariam sem estilo.
 -->
 <style is:global>
-  .mv-state .loader,
+  .product-state .loader,
   .cats-loading .loader {
     width: 36px; height: 36px;
     border: 3px solid var(--c-line); border-top-color: var(--c-yellow);
@@ -146,16 +142,15 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  .mv-grid {
+  .product-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: clamp(14px, 1.4vw, 20px);
   }
 
-  .mv-card {
+  .product-card {
     display: flex; flex-direction: column;
-    border: 1px solid var(--c-line-hard);
-    border-radius: var(--radius-md);
+    border: 1px solid var(--c-line);
     background: var(--c-paper);
     overflow: hidden;
     transition:
@@ -163,54 +158,52 @@
       box-shadow var(--t-med) var(--ease-out),
       border-color var(--t-med) var(--ease-out);
   }
-  .mv-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 24px 48px -20px rgba(10, 10, 9, 0.25);
-    border-color: var(--c-ink);
+  .product-card:hover {
+    box-shadow: 0 24px 48px -20px rgba(5, 5, 3, 0.15);
+    border-color: var(--c-line-hard);
   }
 
-  .mv-img {
+  .product-img {
     position: relative; width: 100%; aspect-ratio: 1 / 1;
     background: var(--c-mid); overflow: hidden;
-    border-radius: var(--radius-md) var(--radius-md) 0 0;
   }
-  .mv-img img {
+  .product-img img {
     width: 100%; height: 100%;
     object-fit: cover;
     transition: transform var(--t-med) var(--ease-out);
   }
-  .mv-card:hover .mv-img img { transform: scale(1.04); }
+  .product-card:hover .product-img img { transform: scale(1.04); }
 
-  .mv-tag {
+  .product-tag {
     position: absolute; top: 16px; left: 16px; z-index: 1;
     background: var(--c-yellow); border-radius: var(--radius-sm);
     padding: 6px 12px; transform: rotate(-8deg);
     box-shadow: 0 6px 14px -4px rgba(0,0,0,0.25);
   }
-  .mv-tag span {
+  .product-tag span {
     font-family: var(--font-mono);
     font-size: 11px; font-weight: 700; letter-spacing: 1px;
     color: var(--c-ink);
   }
 
-  .mv-body { display: flex; flex-direction: column; gap: 12px; padding: 20px; }
-  .mv-cat {
+  .product-body { display: flex; flex-direction: column; gap: 12px; padding: 20px; }
+  .product-cat {
     font-family: var(--font-mono);
     font-size: 11px; font-weight: 500; letter-spacing: 2px;
     color: var(--c-muted);
   }
-  .mv-name {
+  .product-name {
     font-family: var(--font-display);
     font-size: clamp(20px, 1.6vw, 24px);
     font-weight: 700; letter-spacing: -1px; line-height: 1.05;
     color: var(--c-ink);
   }
-  .mv-price {
+  .product-price {
     font-family: var(--font-mono);
     font-size: 22px; font-weight: 700; letter-spacing: -0.5px;
     color: var(--c-ink);
   }
-  .mv-btn {
+  .product-btn {
     display: flex; align-items: center; justify-content: center; gap: 8px;
     width: 100%; padding: 12px 16px;
     background: var(--c-yellow);
@@ -225,12 +218,12 @@
       background var(--t-fast) var(--ease-out),
       color var(--t-fast) var(--ease-out);
   }
-  .mv-btn:hover {
+  .product-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 22px -8px rgba(245, 195, 0, 0.55);
   }
-  .mv-btn.added { background: var(--c-ink); color: var(--c-yellow); }
+  .product-btn.added { background: var(--c-ink); color: var(--c-yellow); }
 
-  @media (max-width: 900px) { .mv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  @media (max-width: 480px) { .mv-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 900px) { .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 480px) { .product-grid { grid-template-columns: 1fr; } }
 </style>

@@ -38,7 +38,10 @@ const reviews = [
 
 <style>
   .reviews {
-    background: var(--c-paper);
+    background: linear-gradient(to bottom, rgba(10, 10, 9, 0.85), rgba(10, 10, 9, 0.7)), url('/wallpaper_1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     width: 100%;
   }
 
@@ -68,7 +71,7 @@ const reviews = [
     font-size: 12px;
     font-weight: 500;
     letter-spacing: 2px;
-    color: var(--c-muted);
+    color: var(--c-yellow);
   }
 
   .rev-title {
@@ -78,7 +81,7 @@ const reviews = [
     font-style: italic;
     line-height: 0.95;
     letter-spacing: -2px;
-    color: var(--c-ink);
+    color: var(--c-paper);
   }
 
   .rev-stars {
@@ -92,7 +95,7 @@ const reviews = [
     font-size: 12px;
     font-weight: 500;
     letter-spacing: 1px;
-    color: var(--c-mid);
+    color: var(--c-paper-muted);
     margin-left: 4px;
   }
 
@@ -101,9 +104,6 @@ const reviews = [
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(14px, 1.4vw, 20px);
     padding: clamp(20px, 2.5vw, 32px);
-    background: var(--c-ink);
-    border-radius: var(--radius-md);
-    box-shadow: 0 30px 80px -40px rgba(10, 10, 9, 0.5);
   }
 
   .review-card {
@@ -115,11 +115,13 @@ const reviews = [
     border-radius: var(--radius-sm);
     border-left: 4px solid var(--c-yellow);
     transition: transform var(--t-med) var(--ease-out), border-left-width var(--t-med) var(--ease-out);
+    box-shadow: 0 4px 12px rgba(10, 10, 9, 0.3);
   }
 
   .review-card:hover {
     transform: translateY(-4px);
-    border-left-width: 8px;
+    border-left-width: 14px;
+    box-shadow: 0 8px 16px rgba(10, 10, 9, 0.3);
   }
 
   .review-quote {

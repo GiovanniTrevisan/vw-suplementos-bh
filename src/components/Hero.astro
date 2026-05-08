@@ -36,7 +36,10 @@ import { ArrowRight, MessageCircle } from '@lucide/astro';
 
 <style>
   .hero {
-    background: var(--c-paper);
+    background: linear-gradient(to right, #f5c400, #f5c400a2), url('/wallpaper_2.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     width: 100%;
     overflow: hidden;
     position: relative;
@@ -129,7 +132,7 @@ import { ArrowRight, MessageCircle } from '@lucide/astro';
   }
 
   .cta-primary {
-    background: var(--c-yellow);
+    background: var(--c-paper);
   }
   .cta-primary:hover {
     transform: translateY(-3px);

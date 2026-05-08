@@ -70,7 +70,7 @@ import { ArrowRight } from '@lucide/astro';
     top.forEach((c, i) => {
       const a = document.createElement('a');
       // Segundo card (índice 1) é destacado em amarelo conforme o design.
-      a.className = 'cat-card' + (i === 1 ? ' featured' : '');
+      a.className = 'cat-card';
       a.href = `/catalogo?categoria=${encodeURIComponent(c.name)}`;
       a.innerHTML = `
         <div class="cat-icon">${ICONS[i % ICONS.length]}</div>
