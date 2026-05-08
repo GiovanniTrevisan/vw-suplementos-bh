@@ -98,6 +98,17 @@ input, select, textarea {
 }
 ::-webkit-scrollbar-thumb:hover { background: var(--c-ink); }
 
+/* Custom scrollbar for better visibility */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--c-yellow);
+  border-radius: 6px;
+}
+
 /* ---------- Animations ---------- */
 @keyframes fadeUp {
   from { opacity: 0; transform: translate3d(0, 24px, 0); }
