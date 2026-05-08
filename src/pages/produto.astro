@@ -1,121 +1,77 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { ChevronRight, Star, Plus, Minus, ShoppingBag, MessageCircle, ChevronDown, Heart, Share2, Shield } from '@lucide/astro';
-
-const product = {
-  name: 'WHEY PROTEIN CONCENTRADO 900G',
-  brand: 'Max Titanium',
-  price: 'R$ 149,90',
-  oldPrice: 'R$ 179,90',
-  pix: 'R$ 142,40',
-  installments: '3x de R$ 49,97 sem juros',
-  rating: 4.7,
-  reviews: 312,
-  category: 'PROTEÍNA',
-  sku: 'MT-WPC-900-CHO',
-};
-
-const flavors = ['Chocolate', 'Baunilha', 'Morango', 'Cookies'];
-const thumbs = [1, 2, 3, 4, 5];
-
-const accordions = [
-  { title: 'INFORMAÇÃO NUTRICIONAL', open: true, content: 'Porção de 40g (1 scoop): Valor energético 155 kcal, Proteínas 24g, Carboidratos 5g, Gorduras totais 3,5g, Sódio 55mg. Contém 5,5g de BCAAs por porção e 4g de Glutamina.' },
-  { title: 'COMO USAR', open: false, content: 'Misture 1 scoop (40g) em 200ml de água ou leite gelado. Agite bem no shaker e consuma imediatamente após o treino ou entre refeições.' },
-  { title: 'INGREDIENTES', open: false, content: 'Whey protein concentrado, cacau em pó, aromatizante, espessante goma xantana, edulcorante sucralose. ALÉRGICOS: CONTÉM DERIVADOS DE LEITE.' },
-  { title: 'GARANTIA & TROCA', open: false, content: 'Produto 100% original com nota fiscal. Prazo de 7 dias para devolução sem uso. Trocas aceitas para sabores diferentes mediante disponibilidade em loja.' },
-];
-
-const related = [
-  { category: 'FORÇA', name: 'Creatina Mono 300g', price: 'R$ 89,90' },
-  { category: 'PRÉ-TREINO', name: 'Pré-treino HardCore 300g', price: 'R$ 119,90' },
-  { category: 'COMBO', name: 'Kit Iniciante Completo', price: 'R$ 249,90' },
-  { category: 'ACESSÓRIO', name: 'Coqueteleira 600ml', price: 'R$ 29,90' },
-];
+import { ChevronRight, Plus, Minus, ShoppingBag, MessageCircle, Heart, Share2, Shield } from '@lucide/astro';
 ---
 
-<Layout title={`${product.name} — VW Suplementos BH`}>
+<Layout title="Produto — VW Suplementos BH">
   <Header />
 
   <div class="breadcrumb-wrap">
     <div class="breadcrumb container">
-      <span>INÍCIO</span>
+      <a href="/">INÍCIO</a>
       <ChevronRight size={12} />
-      <span>CATÁLOGO</span>
+      <a href="/catalogo">CATÁLOGO</a>
       <ChevronRight size={12} />
-      <span>PROTEÍNAS</span>
+      <span class="active" data-bc-cat>—</span>
       <ChevronRight size={12} />
-      <span class="active">WHEY MAX TITANIUM</span>
+      <span class="active" data-bc-name>—</span>
     </div>
   </div>
 
-  <section class="product-block container">
-    <div class="gallery" data-reveal="left">
+  <div data-state-loading class="state-block">
+    <div class="loader"></div>
+    <span>Carregando produto...</span>
+  </div>
+
+  <div data-state-error class="state-block error" hidden>
+    <span class="state-title">Produto não encontrado.</span>
+    <span class="state-msg" data-error-msg></span>
+    <a href="/catalogo" class="btn-retry">Voltar ao catálogo</a>
+  </div>
+
+  <section class="product-block container" data-state-product hidden>
+    <div class="gallery">
       <div class="gallery-main">
-        <div class="gallery-placeholder"></div>
-      </div>
-      <div class="gallery-thumbs">
-        {thumbs.map((_, i) => (
-          <div class:list={['thumb', { active: i === 0 }]}></div>
-        ))}
+        <img data-product-img alt="" />
       </div>
     </div>
 
-    <div class="info" data-reveal="right">
+    <div class="info">
       <div class="info-meta">
-        <span class="info-brand">{product.brand}</span>
-        <span class="info-sku">SKU: {product.sku}</span>
+        <span class="info-brand" data-product-cat>—</span>
+        <span class="info-sku">SKU: <span data-product-sku></span></span>
       </div>
 
-      <h1 class="info-name">{product.name}</h1>
-
-      <div class="info-rating">
-        {[1,2,3,4,5].map(() => <Star size={16} fill="var(--c-yellow)" color="var(--c-yellow)" />)}
-        <span class="rating-text">{product.rating} ({product.reviews} avaliações)</span>
-      </div>
+      <h1 class="info-name" data-product-name></h1>
 
       <div class="info-prices">
         <div class="price-row">
-          <span class="price-old">{product.oldPrice}</span>
-          <span class="price-current">{product.price}</span>
+          <span class="price-current" data-product-price></span>
         </div>
-        <div class="pix-row">
-          <span class="pix-badge">PIX</span>
-          <span class="pix-value">{product.pix}</span>
-          <span class="pix-label">(5% off)</span>
-        </div>
-        <span class="installments">{product.installments}</span>
       </div>
 
       <div class="info-divider"></div>
 
-      <div class="flavor-section">
-        <span class="flavor-label">SABOR</span>
-        <div class="flavor-options">
-          {flavors.map((f, i) => (
-            <button class:list={['flavor-btn', { active: i === 0 }]}>{f}</button>
-          ))}
-        </div>
-      </div>
+      <p class="info-desc" data-product-desc></p>
 
       <div class="info-divider"></div>
 
       <div class="qty-section">
         <span class="qty-label">QUANTIDADE</span>
         <div class="qty-controls">
-          <button class="qty-btn"><Minus size={16} /></button>
-          <span class="qty-value">1</span>
-          <button class="qty-btn"><Plus size={16} /></button>
+          <button class="qty-btn" data-qty-dec type="button"><Minus size={16} /></button>
+          <span class="qty-value" data-qty>1</span>
+          <button class="qty-btn" data-qty-inc type="button"><Plus size={16} /></button>
         </div>
       </div>
 
       <div class="action-btns">
-        <button class="btn-add">
+        <button class="btn-add" type="button" data-add-cart>
           <ShoppingBag size={18} />
           <span>ADICIONAR AO CARRINHO</span>
         </button>
-        <button class="btn-whatsapp">
+        <button class="btn-whatsapp" type="button" data-buy-wa>
           <MessageCircle size={18} />
           <span>COMPRAR VIA WHATSAPP</span>
         </button>
@@ -133,74 +89,168 @@ const related = [
       </div>
 
       <div class="share-row">
-        <button class="icon-btn"><Heart size={18} /></button>
-        <button class="icon-btn"><Share2 size={18} /></button>
+        <button class="icon-btn" type="button" aria-label="Favoritar"><Heart size={18} /></button>
+        <button class="icon-btn" type="button" aria-label="Compartilhar" data-share><Share2 size={18} /></button>
       </div>
     </div>
   </section>
 
-  <div class="big-divider"></div>
-
-  <section class="accordion-section container" data-reveal>
-    <div class="acc-left">
-      <span class="acc-kicker">// DETALHES</span>
-      <h2 class="acc-title">TUDO SOBRE O PRODUTO.</h2>
-      <div class="acc-bar"></div>
-    </div>
-    <div class="acc-right">
-      {accordions.map((a) => (
-        <details class="acc-item" open={a.open}>
-          <summary class="acc-head">
-            <span>{a.title}</span>
-            <ChevronDown size={18} />
-          </summary>
-          <p class="acc-body">{a.content}</p>
-        </details>
-      ))}
-    </div>
-  </section>
-
-  <section class="related-section">
+  <section class="related-section" data-related-section hidden>
     <div class="rel-inner container">
-      <div class="rel-header" data-reveal>
+      <div class="rel-header">
         <div class="rel-title-wrap">
           <span class="rel-kicker">TALVEZ VOCÊ GOSTE</span>
           <h2 class="rel-title">PRODUTOS RELACIONADOS.</h2>
         </div>
       </div>
-      <div class="rel-grid" data-reveal-stagger>
-        {related.map((r) => (
-          <a href="/produto" class="rel-card">
-            <div class="rel-img"></div>
-            <div class="rel-body">
-              <span class="rel-cat">{r.category}</span>
-              <span class="rel-name">{r.name}</span>
-              <span class="rel-price">{r.price}</span>
-              <button class="rel-btn">
-                <Plus size={14} />
-                <span>ADICIONAR</span>
-              </button>
-            </div>
-          </a>
-        ))}
-      </div>
+      <div class="rel-grid" data-related-grid></div>
     </div>
   </section>
-
-  <footer class="mini-footer">
-    <div class="mf-inner container">
-      <div class="mf-left">
-        <span class="mf-logo">VW</span>
-        <span>VW SUPLEMENTOS BH</span>
-      </div>
-      <div class="mf-right">
-        <span>TERMOS</span>
-        <span>PRIVACIDADE</span>
-        <span>© 2026</span>
-      </div>
-    </div>
-  </footer>
 </Layout>
+
+<script>
+  import { fetchCatalog, relatedProducts } from '../lib/api';
+  import type { Product } from '../lib/api';
+  import { cart } from '../lib/cart';
+  import { formatBRL, buildWhatsAppLink } from '../lib/format';
+  import { WHATSAPP_NUMBER } from '../lib/config';
+
+  const params = new URLSearchParams(location.search);
+  const productId = params.get('id') || '';
+
+  const stateLoad  = document.querySelector<HTMLElement>('[data-state-loading]')!;
+  const stateErr   = document.querySelector<HTMLElement>('[data-state-error]')!;
+  const stateProd  = document.querySelector<HTMLElement>('[data-state-product]')!;
+  const errMsg     = document.querySelector<HTMLElement>('[data-error-msg]')!;
+  const relSection = document.querySelector<HTMLElement>('[data-related-section]')!;
+  const relGrid    = document.querySelector<HTMLElement>('[data-related-grid]')!;
+
+  let qty = 1;
+  let current: Product | null = null;
+
+  function setQty(n: number) {
+    qty = Math.max(1, n);
+    document.querySelector<HTMLElement>('[data-qty]')!.textContent = String(qty);
+  }
+
+  function showError(msg: string) {
+    stateLoad.hidden = true;
+    stateErr.hidden = false;
+    errMsg.textContent = msg;
+  }
+
+  function hydrate(p: Product) {
+    document.title = `${p.nome} — VW Suplementos BH`;
+    document.querySelector<HTMLElement>('[data-bc-cat]')!.textContent = (p.categoria || '').toUpperCase();
+    document.querySelector<HTMLElement>('[data-bc-name]')!.textContent = p.nome.toUpperCase();
+    document.querySelector<HTMLElement>('[data-product-cat]')!.textContent = p.categoria || '';
+    document.querySelector<HTMLElement>('[data-product-sku]')!.textContent = `VW-${p.id}`;
+    document.querySelector<HTMLElement>('[data-product-name]')!.textContent = p.nome;
+    document.querySelector<HTMLElement>('[data-product-price]')!.textContent = formatBRL(p.preco);
+    document.querySelector<HTMLElement>('[data-product-desc]')!.textContent =
+      p.descricao || 'Sem descrição cadastrada.';
+    const img = document.querySelector<HTMLImageElement>('[data-product-img]')!;
+    if (p.imagem) {
+      img.src = p.imagem;
+      img.alt = p.nome;
+    } else {
+      img.removeAttribute('src');
+      img.style.display = 'none';
+    }
+  }
+
+  function renderRelated(items: Product[]) {
+    if (!items.length) {
+      relSection.hidden = true;
+      return;
+    }
+    relSection.hidden = false;
+    relGrid.innerHTML = '';
+    items.forEach((p) => {
+      const a = document.createElement('a');
+      a.className = 'rel-card';
+      a.href = `/produto?id=${encodeURIComponent(p.id)}`;
+      a.innerHTML = `
+        <div class="rel-img">${p.imagem ? `<img src="${p.imagem}" alt="" loading="lazy" />` : ''}</div>
+        <div class="rel-body">
+          <span class="rel-cat"></span>
+          <span class="rel-name"></span>
+          <span class="rel-price"></span>
+        </div>
+      `;
+      (a.querySelector('.rel-cat')!).textContent = (p.categoria || '').toUpperCase();
+      (a.querySelector('.rel-name')!).textContent = p.nome;
+      (a.querySelector('.rel-price')!).textContent = formatBRL(p.preco);
+      relGrid.appendChild(a);
+    });
+  }
+
+  document.querySelector<HTMLButtonElement>('[data-qty-inc]')!.addEventListener('click', () => setQty(qty + 1));
+  document.querySelector<HTMLButtonElement>('[data-qty-dec]')!.addEventListener('click', () => setQty(qty - 1));
+
+  document.querySelector<HTMLButtonElement>('[data-add-cart]')!.addEventListener('click', () => {
+    if (!current) return;
+    cart.add(current, qty);
+    const btn = document.querySelector<HTMLButtonElement>('[data-add-cart]')!;
+    const span = btn.querySelector('span')!;
+    const original = span.textContent;
+    span.textContent = 'ADICIONADO ✓';
+    setTimeout(() => { span.textContent = original; }, 1300);
+  });
+
+  document.querySelector<HTMLButtonElement>('[data-buy-wa]')!.addEventListener('click', () => {
+    if (!current) return;
+    const total = current.preco * qty;
+    const lines = [
+      '*Olá! Quero comprar pelo site:*',
+      '',
+      `Categoria: ${current.categoria}`,
+      `Produto: ${current.nome}`,
+      `Quantidade: ${qty}`,
+      `Subtotal: ${formatBRL(total)}`,
+      '',
+      'Aguardo confirmação de disponibilidade e forma de pagamento.',
+    ];
+    location.href = buildWhatsAppLink(WHATSAPP_NUMBER, lines.join('\n'));
+  });
+
+  document.querySelector<HTMLButtonElement>('[data-share]')!.addEventListener('click', async () => {
+    if (!current) return;
+    const url = location.href;
+    if (navigator.share) {
+      try { await navigator.share({ title: current.nome, url }); } catch { /* user canceled */ }
+    } else {
+      try {
+        await navigator.clipboard.writeText(url);
+        alert('Link copiado!');
+      } catch { /* ignore */ }
+    }
+  });
+
+  async function load() {
+    if (!productId) {
+      showError('ID do produto não informado na URL (ex.: /produto?id=1).');
+      return;
+    }
+    const data = await fetchCatalog();
+    if (!data.ok) {
+      showError(data.error || 'Não foi possível carregar o catálogo.');
+      return;
+    }
+    const p = data.products.find((x) => x.id === productId);
+    if (!p) {
+      showError('O produto pode ter sido removido ou desativado.');
+      return;
+    }
+    current = p;
+    stateLoad.hidden = true;
+    stateProd.hidden = false;
+    hydrate(p);
+    renderRelated(relatedProducts(data.products, p, 4));
+  }
+
+  load();
+</script>
 
 <style>
   .breadcrumb-wrap { background: var(--c-paper); border-bottom: 1px solid var(--c-line); }
@@ -211,7 +261,32 @@ const related = [
     letter-spacing: 1.5px; color: var(--c-muted);
     flex-wrap: wrap;
   }
+  .breadcrumb a { color: var(--c-muted); transition: color var(--t-fast) var(--ease-out); }
+  .breadcrumb a:hover { color: var(--c-ink); }
   .breadcrumb .active { color: var(--c-ink); font-weight: 700; }
+
+  .state-block {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 10px; min-height: 480px; text-align: center;
+    font-family: var(--font-ui); font-size: 14px; color: var(--c-muted);
+    background: var(--c-paper);
+  }
+  .state-title { font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--c-ink); }
+  .state-block.error .state-title { color: var(--c-red); }
+  .state-msg { max-width: 480px; font-size: 13px; }
+  .loader {
+    width: 36px; height: 36px;
+    border: 3px solid var(--c-line); border-top-color: var(--c-yellow);
+    border-radius: 50%; animation: spin 800ms linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .btn-retry {
+    margin-top: 6px; padding: 12px 22px;
+    background: var(--c-ink); color: var(--c-paper);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-display); font-size: 13px; font-weight: 800; letter-spacing: 1px;
+  }
+  .btn-retry:hover { background: var(--c-yellow); color: var(--c-ink); }
 
   .product-block {
     display: grid;
@@ -227,15 +302,7 @@ const related = [
     border-radius: var(--radius-md); overflow: hidden;
     box-shadow: 0 30px 80px -40px rgba(10, 10, 9, 0.4);
   }
-  .gallery-placeholder { width: 100%; height: 100%; }
-  .gallery-thumbs { display: flex; gap: 12px; flex-wrap: wrap; }
-  .thumb {
-    width: clamp(60px, 7vw, 80px); height: clamp(60px, 7vw, 80px); background: var(--c-mid);
-    border-radius: var(--radius-sm); border: 2px solid transparent;
-    cursor: pointer; transition: border-color var(--t-fast) var(--ease-out), transform var(--t-fast) var(--ease-out);
-  }
-  .thumb:hover { transform: translateY(-2px); }
-  .thumb.active { border-color: var(--c-yellow); }
+  .gallery-main img { width: 100%; height: 100%; object-fit: cover; }
 
   .info { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
   .info-meta { display: flex; justify-content: space-between; align-items: center; }
@@ -247,34 +314,12 @@ const related = [
     font-style: italic; line-height: 0.95; letter-spacing: -2px; color: var(--c-ink);
   }
 
-  .info-rating { display: flex; align-items: center; gap: 6px; }
-  .rating-text { font-family: var(--font-mono); font-size: 12px; color: var(--c-muted); margin-left: 4px; }
-
   .info-prices { display: flex; flex-direction: column; gap: 8px; }
   .price-row { display: flex; align-items: baseline; gap: 12px; }
-  .price-old { font-family: var(--font-mono); font-size: 16px; color: var(--c-muted); text-decoration: line-through; }
   .price-current { font-family: var(--font-mono); font-size: 32px; font-weight: 700; color: var(--c-ink); }
-  .pix-row { display: flex; align-items: center; gap: 8px; }
-  .pix-badge {
-    font-family: var(--font-mono); font-size: 11px; font-weight: 700;
-    padding: 4px 8px; background: var(--c-yellow); border-radius: var(--radius-sm); color: var(--c-ink);
-  }
-  .pix-value { font-family: var(--font-mono); font-size: 18px; font-weight: 700; color: var(--c-ink); }
-  .pix-label { font-family: var(--font-mono); font-size: 12px; color: var(--c-muted); }
-  .installments { font-family: var(--font-ui); font-size: 14px; color: var(--c-muted); }
 
   .info-divider { height: 1px; background: var(--c-line); }
-
-  .flavor-section { display: flex; flex-direction: column; gap: 12px; }
-  .flavor-label { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--c-muted); }
-  .flavor-options { display: flex; gap: 8px; flex-wrap: wrap; }
-  .flavor-btn {
-    padding: 10px 20px; border-radius: var(--radius-pill); border: 1px solid var(--c-line-hard);
-    font-family: var(--font-ui); font-size: 13px; font-weight: 500; background: var(--c-paper); color: var(--c-ink);
-    cursor: pointer; transition: all 0.2s;
-  }
-  .flavor-btn:hover { transform: translateY(-2px); border-color: var(--c-ink); }
-  .flavor-btn.active { background: var(--c-ink); color: var(--c-paper); border-color: var(--c-ink); }
+  .info-desc { font-family: var(--font-ui); font-size: 15px; line-height: 1.6; color: var(--c-muted); }
 
   .qty-section { display: flex; flex-direction: column; gap: 12px; }
   .qty-label { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--c-muted); }
@@ -282,7 +327,6 @@ const related = [
   .qty-btn {
     width: 40px; height: 40px; border: 1px solid var(--c-line-hard); border-radius: var(--radius-sm);
     display: flex; align-items: center; justify-content: center; background: var(--c-paper);
-    cursor: pointer;
   }
   .qty-value { font-family: var(--font-mono); font-size: 18px; font-weight: 700; }
 
@@ -291,18 +335,15 @@ const related = [
     display: flex; align-items: center; justify-content: center; gap: 10px;
     padding: 18px; background: var(--c-yellow); border-radius: var(--radius-sm);
     font-family: var(--font-display); font-size: 16px; font-weight: 800; letter-spacing: 1px;
-    color: var(--c-ink); cursor: pointer;
+    color: var(--c-ink);
     transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out);
   }
-  .btn-add:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 16px 36px -12px rgba(245, 195, 0, 0.55);
-  }
+  .btn-add:hover { transform: translateY(-3px); box-shadow: 0 16px 36px -12px rgba(245, 195, 0, 0.55); }
   .btn-whatsapp {
     display: flex; align-items: center; justify-content: center; gap: 10px;
     padding: 18px; border: 2px solid var(--c-ink); border-radius: var(--radius-sm);
     font-family: var(--font-display); font-size: 16px; font-weight: 800; letter-spacing: 1px;
-    color: var(--c-ink); background: transparent; cursor: pointer;
+    color: var(--c-ink); background: transparent;
     transition: background var(--t-fast) var(--ease-out), color var(--t-fast) var(--ease-out), transform var(--t-med) var(--ease-out);
   }
   .btn-whatsapp:hover { background: var(--c-ink); color: var(--c-paper); transform: translateY(-3px); }
@@ -314,47 +355,10 @@ const related = [
   .icon-btn {
     width: 40px; height: 40px; border: 1px solid var(--c-line-hard); border-radius: var(--radius-sm);
     display: flex; align-items: center; justify-content: center; background: var(--c-paper);
-    cursor: pointer; color: var(--c-muted);
+    color: var(--c-muted);
   }
 
-  .big-divider { height: 1px; background: var(--c-line); width: 100%; }
-
-  .accordion-section {
-    display: grid;
-    grid-template-columns: 380px 1fr;
-    gap: clamp(32px, 5vw, 64px);
-    padding: clamp(48px, 6vw, 80px) var(--gutter);
-    background: var(--c-paper);
-  }
-  .acc-left { display: flex; flex-direction: column; gap: 8px; }
-  .acc-kicker { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--c-muted); }
-  .acc-title {
-    font-family: var(--font-display); font-size: clamp(32px, 4vw, 56px); font-weight: 800;
-    font-style: italic; line-height: 0.95; letter-spacing: -2px; color: var(--c-ink);
-  }
-  .acc-bar { width: 80px; height: 4px; background: var(--c-yellow); margin-top: 8px; }
-
-  .acc-right { border-top: 1px solid var(--c-line); min-width: 0; }
-  .acc-item { border-bottom: 1px solid var(--c-line); }
-  .acc-head {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 22px 0; cursor: pointer;
-    font-family: var(--font-display); font-size: 18px; font-weight: 800; letter-spacing: 1px;
-    color: var(--c-ink); list-style: none;
-    transition: padding-left var(--t-med) var(--ease-out);
-  }
-  .acc-head:hover { padding-left: 8px; }
-  .acc-head :global(svg) { transition: transform var(--t-med) var(--ease-out); }
-  .acc-item[open] .acc-head :global(svg) { transform: rotate(180deg); }
-  .acc-head::-webkit-details-marker { display: none; }
-  .acc-body {
-    padding: 0 0 24px; font-family: var(--font-ui); font-size: 15px; line-height: 1.6; color: var(--c-muted);
-    animation: fadeUp var(--t-med) var(--ease-out);
-  }
-
-  .related-section {
-    background: var(--c-ink);
-  }
+  .related-section { background: var(--c-ink); }
   .rel-inner {
     display: flex; flex-direction: column; gap: clamp(24px, 3vw, 40px);
     padding: clamp(48px, 6vw, 80px) var(--gutter);
@@ -380,38 +384,13 @@ const related = [
     border-color: var(--c-yellow);
   }
   .rel-img { width: 100%; aspect-ratio: 1 / 1; background: var(--c-mid); }
+  .rel-img :global(img) { width: 100%; height: 100%; object-fit: cover; }
   .rel-body { display: flex; flex-direction: column; gap: 10px; padding: 16px; }
   .rel-cat { font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; color: #F5F0E8B3; }
   .rel-name { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--c-paper); letter-spacing: -0.5px; }
   .rel-price { font-family: var(--font-mono); font-size: 18px; font-weight: 700; color: var(--c-paper); }
-  .rel-btn {
-    display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
-    padding: 10px 14px; background: var(--c-yellow); border-radius: var(--radius-pill);
-    font-family: var(--font-display); font-size: 12px; font-weight: 800; letter-spacing: 1px; color: var(--c-ink);
-  }
-
-  .mini-footer {
-    background: var(--c-ink);
-    border-top: 1px solid #F5F0E81A;
-  }
-  .mf-inner {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 24px var(--gutter);
-    flex-wrap: wrap;
-    gap: 14px;
-  }
-  .mf-left { display: flex; align-items: center; gap: 14px; }
-  .mf-logo {
-    font-family: var(--font-display); font-size: 14px; font-weight: 800; font-style: italic;
-    background: var(--c-yellow); padding: 4px 8px; color: var(--c-ink);
-  }
-  .mf-left span:last-child, .mf-right span {
-    font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.5px; color: var(--c-paper-muted);
-  }
-  .mf-right { display: flex; align-items: center; gap: 24px; }
 
   @media (max-width: 960px) {
     .product-block { grid-template-columns: 1fr; }
-    .accordion-section { grid-template-columns: 1fr; }
   }
 </style>

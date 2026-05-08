@@ -65,6 +65,12 @@ img {
   display: block;
 }
 
+/* Garante que o atributo [hidden] sempre tenha efeito,
+   mesmo em elementos com display: flex/grid definidos por classe. */
+[hidden] {
+  display: none !important;
+}
+
 button {
   border: none;
   cursor: pointer;

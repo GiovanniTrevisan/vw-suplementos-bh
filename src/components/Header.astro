@@ -29,7 +29,7 @@ const { variant = 'dark' } = Astro.props;
       </a>
       <a href="/checkout" class="cart" aria-label="Carrinho">
         <ShoppingBag size={22} color="var(--c-paper)" />
-        <span class="cart-badge">2</span>
+        <span class="cart-badge" data-cart-badge hidden>0</span>
       </a>
       <button class="menu-toggle" aria-label="Menu" data-menu-toggle>
         <Menu size={24} color="var(--c-paper)" class="icon-open" />
@@ -51,6 +51,23 @@ const { variant = 'dark' } = Astro.props;
     </a>
   </div>
 </header>
+
+<script>
+  import { cart } from '../lib/cart';
+
+  const badge = document.querySelector<HTMLElement>('[data-cart-badge]');
+  if (badge) {
+    cart.subscribe((items) => {
+      const total = items.reduce((s, i) => s + i.qty, 0);
+      if (total > 0) {
+        badge.textContent = String(total);
+        badge.hidden = false;
+      } else {
+        badge.hidden = true;
+      }
+    });
+  }
+</script>
 
 <script is:inline>
   (() => {

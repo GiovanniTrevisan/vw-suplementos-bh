@@ -3,7 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import { CircleCheck, ArrowRight, MessageCircle, MapPin } from '@lucide/astro';
 
-const orderNumber = '#VW-20260508-042';
+const today = new Date();
+const orderNumber = `#VW-${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}-${String(Math.floor(Math.random() * 1000)).padStart(3, '0')}`;
 ---
 
 <Layout title="Pedido Enviado — VW Suplementos BH">
@@ -71,6 +72,12 @@ const orderNumber = '#VW-20260508-042';
     <span>© 2026 · CNPJ 00.000.000/0001-00</span>
   </footer>
 </Layout>
+
+<script>
+  import { cart } from '../lib/cart';
+  // Limpa o carrinho após o pedido ser enviado.
+  cart.clear();
+</script>
 
 <style>
   .main-confirm {

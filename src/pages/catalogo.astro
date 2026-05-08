@@ -2,26 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { ChevronDown, Plus, X } from '@lucide/astro';
-
-const categories = ['Proteínas', 'Creatina', 'Pré-treino', 'Vitaminas', 'Acessórios'];
-const brands = ['Max Titanium', 'Growth', 'Integralmedica', 'Darkness', 'Optimum', 'Dux Nutrition'];
-const priceRanges = ['Até R$ 50', 'R$ 50 – R$ 100', 'R$ 100 – R$ 200', 'Acima de R$ 200'];
-
-const products = [
-  { category: 'PROTEÍNA', name: 'Whey Protein 900g', price: 'R$ 149,90', tag: '🔥 MAIS VENDIDO' },
-  { category: 'FORÇA', name: 'Creatina Mono 300g', price: 'R$ 89,90', tag: '' },
-  { category: 'PRÉ-TREINO', name: 'Pré-treino HardCore 300g', price: 'R$ 119,90', tag: '' },
-  { category: 'COMBO', name: 'Kit Iniciante Completo', price: 'R$ 249,90', tag: '' },
-  { category: 'PROTEÍNA', name: 'Whey Isolado 900g', price: 'R$ 199,90', tag: '' },
-  { category: 'VITAMINA', name: 'Multivitamínico 60 caps', price: 'R$ 39,90', tag: '' },
-  { category: 'PROTEÍNA', name: 'Caseína 900g', price: 'R$ 129,90', tag: '' },
-  { category: 'ACESSÓRIO', name: 'Coqueteleira 600ml', price: 'R$ 29,90', tag: '' },
-  { category: 'FORÇA', name: 'Creatina 600g', price: 'R$ 159,90', tag: '' },
-  { category: 'PROTEÍNA', name: 'Whey Vegano 900g', price: 'R$ 169,90', tag: '' },
-  { category: 'PRÉ-TREINO', name: 'Evogen EVP 300g', price: 'R$ 189,90', tag: '' },
-  { category: 'COMBO', name: 'Kit Avançado', price: 'R$ 399,90', tag: '' },
-];
+import { ChevronDown, X, Search } from '@lucide/astro';
 ---
 
 <Layout title="Catálogo — VW Suplementos BH">
@@ -29,9 +10,9 @@ const products = [
 
   <div class="breadcrumb-wrap">
     <div class="breadcrumb container">
-      <a href="/">Início</a>
+      <a href="/">INÍCIO</a>
       <span>›</span>
-      <span class="active">Catálogo</span>
+      <span class="active">CATÁLOGO</span>
     </div>
   </div>
 
@@ -45,7 +26,7 @@ const products = [
     </div>
     <div class="results-count">
       <span class="results-label">RESULTADOS</span>
-      <span class="results-number">48</span>
+      <span class="results-number" data-results-count>0</span>
       <span class="results-text">produtos encontrados</span>
     </div>
   </div>
@@ -54,21 +35,16 @@ const products = [
     <aside class="sidebar">
       <div class="sb-header">
         <span class="sb-title">FILTROS</span>
-        <span class="sb-count">// 03</span>
+        <span class="sb-count" data-active-filter-count>// 00</span>
       </div>
 
       <div class="filter-section">
         <div class="filter-head">
-          <span>CATEGORIA</span>
-          <ChevronDown size={14} />
+          <span>BUSCA</span>
+          <Search size={14} />
         </div>
-        <div class="filter-pills">
-          {categories.map((c, i) => (
-            <div class:list={['pill', { active: i === 0 }]}>
-              <span>{c}</span>
-              <span class="pill-count">{Math.floor(Math.random() * 15) + 3}</span>
-            </div>
-          ))}
+        <div class="search-wrap">
+          <input type="search" data-search placeholder="Buscar por nome..." class="search-input" />
         </div>
       </div>
 
@@ -76,17 +52,10 @@ const products = [
 
       <div class="filter-section">
         <div class="filter-head">
-          <span>MARCA</span>
+          <span>CATEGORIA</span>
           <ChevronDown size={14} />
         </div>
-        <div class="brand-list">
-          {brands.map((b, i) => (
-            <label class="brand-item">
-              <input type="checkbox" checked={i < 2} />
-              <span>{b}</span>
-            </label>
-          ))}
-        </div>
+        <div class="filter-pills" data-category-pills></div>
       </div>
 
       <div class="filter-divider"></div>
@@ -96,14 +65,7 @@ const products = [
           <span>FAIXA DE PREÇO</span>
           <ChevronDown size={14} />
         </div>
-        <div class="brand-list">
-          {priceRanges.map((p, i) => (
-            <label class="brand-item">
-              <input type="radio" name="price" checked={i === 0} />
-              <span>{p}</span>
-            </label>
-          ))}
-        </div>
+        <div class="filter-pills" data-price-pills></div>
       </div>
 
       <div class="filter-divider"></div>
@@ -113,49 +75,51 @@ const products = [
           <span>ORDENAR POR</span>
           <ChevronDown size={14} />
         </div>
-        <div class="sort-drop">
-          <span>Mais vendidos</span>
-          <ChevronDown size={14} />
+        <div class="select-wrap">
+          <select class="sort-select" data-sort>
+            <option value="default">Mais vendidos</option>
+            <option value="price-asc">Menor preço</option>
+            <option value="price-desc">Maior preço</option>
+            <option value="name-asc">Nome (A → Z)</option>
+            <option value="name-desc">Nome (Z → A)</option>
+          </select>
         </div>
       </div>
 
-      <div class="clear-link">
+      <div class="filter-divider"></div>
+
+      <div class="clear-link" data-clear-filters>
         <X size={12} />
         <span>Limpar filtros</span>
       </div>
     </aside>
 
     <div class="grid-area">
-      <div class="active-filters">
-        <span class="af-label">FILTROS ATIVOS:</span>
-        <div class="af-tag"><span>Proteínas</span> <X size={10} /></div>
-        <div class="af-tag"><span>Max Titanium</span> <X size={10} /></div>
+      <div class="active-filters" data-active-filters></div>
+
+      <div data-state-loading class="state-block">
+        <div class="loader"></div>
+        <span>Carregando catálogo...</span>
       </div>
 
-      <div class="product-grid">
-        {products.map((p) => (
-          <a href="/produto" class="product-card">
-            <div class="product-img">
-              {p.tag && <div class="product-tag"><span>{p.tag}</span></div>}
-            </div>
-            <div class="product-body">
-              <span class="product-cat">{p.category}</span>
-              <span class="product-name">{p.name}</span>
-              <span class="product-price">{p.price}</span>
-              <button class="product-btn">
-                <Plus size={14} />
-                <span>ADICIONAR</span>
-              </button>
-            </div>
-          </a>
-        ))}
+      <div data-state-error class="state-block error" hidden>
+        <span class="state-title">Não foi possível carregar o catálogo.</span>
+        <span class="state-msg" data-error-msg></span>
+        <button class="btn-retry" data-retry>Tentar novamente</button>
       </div>
 
-      <div class="pagination">
-        <span class="page active">1</span>
-        <span class="page">2</span>
-        <span class="page">3</span>
-        <span class="page">4</span>
+      <div data-state-empty class="state-block" hidden>
+        <span class="state-title">Nenhum produto encontrado.</span>
+        <span>Tente outra busca ou remova os filtros.</span>
+      </div>
+
+      <div class="product-grid" data-product-grid hidden></div>
+
+      <div class="pagination" data-pagination hidden>
+        <button class="load-more" type="button" data-load-more>
+          <span>CARREGAR MAIS PRODUTOS</span>
+        </button>
+        <span class="pagination-info" data-pagination-info></span>
       </div>
     </div>
   </div>
@@ -163,30 +127,336 @@ const products = [
   <Footer />
 </Layout>
 
+<script>
+  import { fetchCatalog } from '../lib/api';
+  import type { Product, CategoryInfo } from '../lib/api';
+  import { cart } from '../lib/cart';
+  import { formatBRL } from '../lib/format';
+
+  const grid       = document.querySelector<HTMLElement>('[data-product-grid]')!;
+  const pillsBox   = document.querySelector<HTMLElement>('[data-category-pills]')!;
+  const pricePills = document.querySelector<HTMLElement>('[data-price-pills]')!;
+  const sortSel    = document.querySelector<HTMLSelectElement>('[data-sort]')!;
+  const searchEl   = document.querySelector<HTMLInputElement>('[data-search]')!;
+  const countEl    = document.querySelector<HTMLElement>('[data-results-count]')!;
+  const filterCnt  = document.querySelector<HTMLElement>('[data-active-filter-count]')!;
+  const activeBox  = document.querySelector<HTMLElement>('[data-active-filters]')!;
+  const stateLoad  = document.querySelector<HTMLElement>('[data-state-loading]')!;
+  const stateErr   = document.querySelector<HTMLElement>('[data-state-error]')!;
+  const stateEmpty = document.querySelector<HTMLElement>('[data-state-empty]')!;
+  const errMsg     = document.querySelector<HTMLElement>('[data-error-msg]')!;
+  const retryBtn   = document.querySelector<HTMLButtonElement>('[data-retry]')!;
+  const clearBtn   = document.querySelector<HTMLElement>('[data-clear-filters]')!;
+  const pagination = document.querySelector<HTMLElement>('[data-pagination]')!;
+  const loadMore   = document.querySelector<HTMLButtonElement>('[data-load-more]')!;
+  const pagInfo    = document.querySelector<HTMLElement>('[data-pagination-info]')!;
+
+  type SortKey = 'default' | 'price-asc' | 'price-desc' | 'name-asc' | 'name-desc';
+
+  const PRICE_RANGES: ReadonlyArray<{ id: string; label: string; min: number; max: number }> = [
+    { id: '',        label: 'Todos',             min: -Infinity, max: Infinity },
+    { id: '0-50',    label: 'R$ 0 – R$ 50',      min: 0,         max: 50 },
+    { id: '50-100',  label: 'R$ 50 – R$ 100',    min: 50,        max: 100 },
+    { id: '100-200', label: 'R$ 100 – R$ 200',   min: 100,       max: 200 },
+    { id: '200+',    label: 'Acima de R$ 200',   min: 200,       max: Infinity },
+  ];
+  const PAGE_SIZE = 12;
+
+  let allProducts: Product[] = [];
+  let categories: CategoryInfo[] = [];
+  let activeCategory = '';
+  let activePrice = '';
+  let sortBy: SortKey = 'default';
+  let searchTerm = '';
+  let visibleCount = PAGE_SIZE;
+
+  // Aceita ?categoria=Nome via URL
+  const urlParams = new URLSearchParams(location.search);
+  const initialCat = urlParams.get('categoria') || '';
+
+  function priceRangeLabel(id: string) {
+    return PRICE_RANGES.find((r) => r.id === id)?.label || '';
+  }
+
+  function activeFilterCount(): number {
+    return (activeCategory ? 1 : 0) + (searchTerm ? 1 : 0) + (activePrice ? 1 : 0);
+  }
+
+  function renderActiveFilters() {
+    const n = activeFilterCount();
+    filterCnt.textContent = `// ${String(n).padStart(2, '0')}`;
+
+    activeBox.innerHTML = '';
+    if (n === 0) return;
+
+    const label = document.createElement('span');
+    label.className = 'af-label';
+    label.textContent = 'FILTROS ATIVOS:';
+    activeBox.appendChild(label);
+
+    if (activeCategory) {
+      activeBox.appendChild(makeTag(activeCategory, () => selectCategory('')));
+    }
+    if (activePrice) {
+      activeBox.appendChild(makeTag(priceRangeLabel(activePrice), () => selectPrice('')));
+    }
+    if (searchTerm) {
+      activeBox.appendChild(
+        makeTag(`Busca: "${searchTerm}"`, () => {
+          searchEl.value = '';
+          searchTerm = '';
+          resetPaging();
+          render();
+        })
+      );
+    }
+  }
+
+  function makeTag(label: string, onClose: () => void): HTMLElement {
+    const tag = document.createElement('div');
+    tag.className = 'af-tag';
+    tag.innerHTML = `<span></span><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>`;
+    tag.querySelector('span')!.textContent = label;
+    tag.addEventListener('click', onClose);
+    return tag;
+  }
+
+  function renderCategoryPills() {
+    pillsBox.innerHTML = '';
+    const total = allProducts.length;
+
+    const todos = document.createElement('div');
+    todos.className = 'pill' + (activeCategory === '' ? ' active' : '');
+    todos.innerHTML = `<span>Todos</span><span class="pill-count">${total}</span>`;
+    todos.addEventListener('click', () => selectCategory(''));
+    pillsBox.appendChild(todos);
+
+    categories.forEach((c) => {
+      const el = document.createElement('div');
+      el.className = 'pill' + (c.name === activeCategory ? ' active' : '');
+      el.innerHTML = `<span></span><span class="pill-count">${c.count}</span>`;
+      (el.querySelector('span')!).textContent = c.name;
+      el.addEventListener('click', () => selectCategory(c.name));
+      pillsBox.appendChild(el);
+    });
+  }
+
+  function renderPricePills() {
+    pricePills.innerHTML = '';
+    PRICE_RANGES.forEach((r) => {
+      const el = document.createElement('div');
+      el.className = 'pill' + (activePrice === r.id ? ' active' : '');
+      el.innerHTML = `<span></span>`;
+      (el.querySelector('span')!).textContent = r.label;
+      el.addEventListener('click', () => selectPrice(r.id));
+      pricePills.appendChild(el);
+    });
+  }
+
+  function selectCategory(name: string) {
+    activeCategory = name;
+    const url = new URL(location.href);
+    if (name) url.searchParams.set('categoria', name);
+    else url.searchParams.delete('categoria');
+    history.replaceState(null, '', url);
+    renderCategoryPills();
+    resetPaging();
+    render();
+  }
+
+  function selectPrice(id: string) {
+    activePrice = id;
+    renderPricePills();
+    resetPaging();
+    render();
+  }
+
+  function resetPaging() {
+    visibleCount = PAGE_SIZE;
+  }
+
+  function applyFilters(): Product[] {
+    const term = searchTerm.trim().toLowerCase();
+    const range = PRICE_RANGES.find((r) => r.id === activePrice) || PRICE_RANGES[0];
+
+    let list = allProducts.filter((p) => {
+      const matchCat = activeCategory ? p.categoria === activeCategory : true;
+      const matchTerm = term ? p.nome.toLowerCase().includes(term) : true;
+      const matchPrice = p.preco >= range.min && p.preco < (range.max === Infinity ? Infinity : range.max + 0.001);
+      return matchCat && matchTerm && matchPrice;
+    });
+
+    switch (sortBy) {
+      case 'price-asc':  list = [...list].sort((a, b) => a.preco - b.preco); break;
+      case 'price-desc': list = [...list].sort((a, b) => b.preco - a.preco); break;
+      case 'name-asc':   list = [...list].sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR')); break;
+      case 'name-desc':  list = [...list].sort((a, b) => b.nome.localeCompare(a.nome, 'pt-BR')); break;
+      default: /* keep API order (mais vendidos) */ break;
+    }
+
+    return list;
+  }
+
+  function render() {
+    const list = applyFilters();
+
+    countEl.textContent = String(list.length);
+    renderActiveFilters();
+
+    grid.innerHTML = '';
+
+    if (list.length === 0) {
+      grid.hidden = true;
+      pagination.hidden = true;
+      stateEmpty.hidden = false;
+      return;
+    }
+
+    stateEmpty.hidden = true;
+    grid.hidden = false;
+
+    const slice = list.slice(0, visibleCount);
+    slice.forEach((p) => grid.appendChild(productCard(p)));
+
+    const hasMore = list.length > slice.length;
+    pagination.hidden = false;
+    loadMore.hidden = !hasMore;
+    pagInfo.textContent = `Mostrando ${slice.length} de ${list.length} ${list.length === 1 ? 'produto' : 'produtos'}`;
+  }
+
+  function productCard(p: Product): HTMLElement {
+    const a = document.createElement('a');
+    a.className = 'product-card';
+    a.href = `/produto?id=${encodeURIComponent(p.id)}`;
+    const img = p.imagem
+      ? `<img src="${p.imagem}" alt="" loading="lazy" />`
+      : '';
+    a.innerHTML = `
+      <div class="product-img">${img}</div>
+      <div class="product-body">
+        <span class="product-cat"></span>
+        <span class="product-name"></span>
+        <span class="product-price"></span>
+        <button class="product-btn" type="button" data-add>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+          <span>ADICIONAR</span>
+        </button>
+      </div>
+    `;
+    (a.querySelector('.product-cat')!).textContent = (p.categoria || '').toUpperCase();
+    (a.querySelector('.product-name')!).textContent = p.nome;
+    (a.querySelector('.product-price')!).textContent = formatBRL(p.preco);
+    a.querySelector<HTMLButtonElement>('[data-add]')!.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      cart.add(p, 1);
+      const btn = ev.currentTarget as HTMLButtonElement;
+      const span = btn.querySelector('span')!;
+      const original = span.textContent;
+      span.textContent = 'ADICIONADO ✓';
+      btn.classList.add('added');
+      setTimeout(() => { span.textContent = original; btn.classList.remove('added'); }, 1200);
+    });
+    return a;
+  }
+
+  function showLoading() {
+    stateLoad.hidden = false;
+    stateErr.hidden = true;
+    stateEmpty.hidden = true;
+    grid.hidden = true;
+    pagination.hidden = true;
+  }
+
+  function showError(msg: string) {
+    stateLoad.hidden = true;
+    stateErr.hidden = false;
+    stateEmpty.hidden = true;
+    grid.hidden = true;
+    pagination.hidden = true;
+    errMsg.textContent = msg;
+  }
+
+  async function load(force = false) {
+    showLoading();
+    const data = await fetchCatalog(force);
+    stateLoad.hidden = true;
+    if (!data.ok) {
+      showError(data.error || 'Erro desconhecido.');
+      return;
+    }
+    allProducts = data.products;
+    categories = data.categories;
+
+    if (initialCat && categories.some((c) => c.name === initialCat)) {
+      activeCategory = initialCat;
+    }
+
+    renderCategoryPills();
+    renderPricePills();
+    resetPaging();
+    render();
+  }
+
+  // Eventos
+  let searchTimer: number | undefined;
+  searchEl.addEventListener('input', () => {
+    clearTimeout(searchTimer);
+    searchTimer = window.setTimeout(() => {
+      searchTerm = searchEl.value;
+      resetPaging();
+      render();
+    }, 120);
+  });
+
+  sortSel.addEventListener('change', () => {
+    sortBy = sortSel.value as SortKey;
+    resetPaging();
+    render();
+  });
+
+  retryBtn.addEventListener('click', () => load(true));
+
+  clearBtn.addEventListener('click', () => {
+    activeCategory = '';
+    activePrice = '';
+    sortBy = 'default';
+    sortSel.value = 'default';
+    searchTerm = '';
+    searchEl.value = '';
+    const url = new URL(location.href);
+    url.searchParams.delete('categoria');
+    history.replaceState(null, '', url);
+    renderCategoryPills();
+    renderPricePills();
+    resetPaging();
+    render();
+  });
+
+  loadMore.addEventListener('click', () => {
+    visibleCount += PAGE_SIZE;
+    render();
+  });
+
+  load();
+</script>
+
 <style>
   .breadcrumb-wrap { background: var(--c-paper); }
   .breadcrumb {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 16px var(--gutter);
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--c-muted);
+    display: flex; align-items: center; gap: 10px;
+    padding: 18px var(--gutter);
+    font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+    letter-spacing: 1.5px; color: var(--c-muted);
   }
   .breadcrumb a { color: var(--c-muted); transition: color var(--t-fast) var(--ease-out); }
   .breadcrumb a:hover { color: var(--c-ink); }
-  .breadcrumb .active { color: var(--c-ink); font-weight: 600; }
+  .breadcrumb .active { color: var(--c-ink); font-weight: 700; }
   .divider { height: 1px; background: var(--c-line); width: 100%; }
 
   .title-block {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+    display: flex; justify-content: space-between; align-items: flex-end;
     padding: clamp(28px, 4vw, 56px) var(--gutter) clamp(24px, 3vw, 40px);
-    gap: 32px;
-    background: var(--c-paper);
-    flex-wrap: wrap;
+    gap: 32px; background: var(--c-paper); flex-wrap: wrap;
   }
   .title-left { flex: 1 1 360px; display: flex; flex-direction: column; gap: 8px; }
   .title-kicker { font-family: var(--font-mono); font-size: 13px; letter-spacing: 1px; color: var(--c-red); }
@@ -202,22 +472,17 @@ const products = [
   .results-text { font-family: var(--font-ui); font-size: 13px; color: var(--c-muted); }
 
   .main-area {
-    display: grid;
-    grid-template-columns: 280px 1fr;
+    display: grid; grid-template-columns: 280px 1fr;
     gap: clamp(20px, 2.5vw, 40px);
     padding: clamp(28px, 4vw, 56px) var(--gutter);
     background: var(--c-paper);
   }
 
   .sidebar {
-    display: flex; flex-direction: column; gap: 32px;
-    padding: 24px;
-    border: 1px solid var(--c-line);
-    border-radius: var(--radius-md);
-    background: var(--c-paper);
-    align-self: flex-start;
-    position: sticky;
-    top: 88px;
+    display: flex; flex-direction: column; gap: 24px;
+    padding: 24px; border: 1px solid var(--c-line);
+    border-radius: var(--radius-md); background: var(--c-paper);
+    align-self: flex-start; position: sticky; top: 88px;
   }
 
   .sb-header { display: flex; justify-content: space-between; align-items: center; }
@@ -230,63 +495,169 @@ const products = [
     font-family: var(--font-display); font-size: 14px; font-weight: 800; letter-spacing: 1px;
   }
 
+  .search-wrap { position: relative; }
+  .search-input {
+    width: 100%; padding: 12px 14px;
+    border: 1px solid var(--c-line-hard); border-radius: var(--radius-sm);
+    background: var(--c-paper); font-family: var(--font-ui); font-size: 13px; color: var(--c-ink);
+    outline: none; transition: border-color var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out);
+  }
+  .search-input:focus { border-color: var(--c-yellow); box-shadow: 0 0 0 3px rgba(245, 195, 0, 0.18); }
+
   .filter-pills { display: flex; flex-direction: column; gap: 8px; }
-  .pill {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 10px 16px; border-radius: var(--radius-pill);
-    border: 1px solid var(--c-line-hard);
-    font-family: var(--font-ui); font-size: 13px;
-    cursor: pointer; transition: all 0.2s;
-  }
-  .pill.active { background: var(--c-yellow); border-color: var(--c-yellow); font-weight: 600; }
-  .pill-count { font-family: var(--font-mono); font-size: 11px; color: var(--c-muted); }
 
-  .brand-list { display: flex; flex-direction: column; gap: 10px; }
-  .brand-item {
-    display: flex; align-items: center; gap: 8px;
-    font-family: var(--font-ui); font-size: 13px; cursor: pointer;
+  .select-wrap { position: relative; }
+  .sort-select {
+    width: 100%; padding: 12px 36px 12px 14px;
+    border: 1px solid var(--c-line-hard); border-radius: var(--radius-sm);
+    background: var(--c-paper); font-family: var(--font-ui); font-size: 13px; color: var(--c-ink);
+    appearance: none; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%230A0A09' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>");
+    background-repeat: no-repeat; background-position: right 12px center;
+    cursor: pointer;
+    transition: border-color var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out);
   }
-
-  .sort-drop {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 14px 12px; border: 1px solid var(--c-line-hard);
-    border-radius: var(--radius-sm); background: var(--c-paper);
-    font-family: var(--font-ui); font-size: 13px; font-weight: 600;
-  }
+  .sort-select:focus { outline: none; border-color: var(--c-yellow); box-shadow: 0 0 0 3px rgba(245, 195, 0, 0.18); }
 
   .clear-link {
     display: flex; align-items: center; justify-content: center; gap: 6px;
     padding: 8px 0; color: var(--c-muted);
     font-family: var(--font-ui); font-size: 12px; cursor: pointer;
+    transition: color var(--t-fast) var(--ease-out);
   }
+  .clear-link:hover { color: var(--c-ink); }
 
   .filter-divider { height: 1px; background: var(--c-line); }
 
   .grid-area { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
 
-  .active-filters {
-    display: flex; align-items: center; gap: 8px;
+  .active-filters { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-height: 24px; }
+
+  .state-block {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 10px; min-height: 280px;
+    text-align: center; font-family: var(--font-ui); font-size: 14px; color: var(--c-muted);
   }
-  .af-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; color: var(--c-muted); }
-  .af-tag {
-    display: flex; align-items: center; gap: 6px;
-    padding: 6px 10px; background: var(--c-ink); color: var(--c-paper);
+  .state-block.error { color: var(--c-red); }
+  .state-title {
+    font-family: var(--font-display); font-size: 22px; font-weight: 800;
+    letter-spacing: -0.5px; color: var(--c-ink);
+  }
+  .state-block.error .state-title { color: var(--c-red); }
+  .state-msg { max-width: 480px; font-size: 13px; }
+
+  .loader {
+    width: 36px; height: 36px;
+    border: 3px solid var(--c-line); border-top-color: var(--c-yellow);
+    border-radius: 50%; animation: spin 800ms linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .btn-retry {
+    margin-top: 4px; padding: 10px 20px;
+    background: var(--c-ink); color: var(--c-paper);
     border-radius: var(--radius-pill);
-    font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+    font-family: var(--font-display); font-size: 13px; font-weight: 800; letter-spacing: 1px;
   }
+  .btn-retry:hover { background: var(--c-yellow); color: var(--c-ink); }
 
   .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(14px, 1.4vw, 20px);
   }
+
+  .pagination {
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    padding-top: clamp(16px, 2vw, 32px);
+  }
+  .load-more {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 16px 36px;
+    background: var(--c-ink); color: var(--c-paper);
+    border: none; border-radius: var(--radius-pill);
+    font-family: var(--font-display); font-size: 14px; font-weight: 800; letter-spacing: 1.5px;
+    cursor: pointer;
+    transition:
+      transform var(--t-med) var(--ease-out),
+      background var(--t-fast) var(--ease-out),
+      color var(--t-fast) var(--ease-out),
+      box-shadow var(--t-med) var(--ease-out);
+  }
+  .load-more:hover {
+    transform: translateY(-2px);
+    background: var(--c-yellow); color: var(--c-ink);
+    box-shadow: 0 14px 28px -12px rgba(245, 195, 0, 0.55);
+  }
+  .pagination-info {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; color: var(--c-muted);
+  }
+
+  @media (max-width: 1100px) {
+    .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 900px) {
+    .main-area { grid-template-columns: 1fr; }
+    .sidebar { position: static; }
+  }
+  @media (max-width: 480px) {
+    .product-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<!--
+  Estilos abaixo são GLOBAIS porque os elementos são criados via JS em runtime
+  (cards de produto, pills de categoria/preço, chips de filtro ativo).
+  O scope do Astro só marca elementos do template estático.
+-->
+<style is:global>
+  .pill {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 12px;
+    padding: 10px 16px; border-radius: var(--radius-pill);
+    border: 1px solid var(--c-line-hard);
+    font-family: var(--font-ui); font-size: 13px; color: var(--c-ink);
+    cursor: pointer;
+    transition:
+      background var(--t-fast) var(--ease-out),
+      border-color var(--t-fast) var(--ease-out),
+      color var(--t-fast) var(--ease-out);
+  }
+  .pill:hover { border-color: var(--c-ink); }
+  .pill.active {
+    background: var(--c-yellow); border-color: var(--c-yellow);
+    font-weight: 600;
+  }
+  .pill-count {
+    font-family: var(--font-mono); font-size: 11px; color: var(--c-muted);
+  }
+  .pill.active .pill-count { color: var(--c-ink); }
+
+  .af-label {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px;
+    color: var(--c-muted);
+  }
+  .af-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 10px;
+    background: var(--c-ink); color: var(--c-paper);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+    cursor: pointer;
+    transition: opacity var(--t-fast) var(--ease-out);
+  }
+  .af-tag:hover { opacity: 0.85; }
 
   .product-card {
     display: flex; flex-direction: column;
     border: 1px solid var(--c-line-hard);
-    border-radius: var(--radius-md); background: var(--c-paper);
+    border-radius: var(--radius-md);
+    background: var(--c-paper);
     overflow: hidden;
-    transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out), border-color var(--t-med) var(--ease-out);
+    transition:
+      transform var(--t-med) var(--ease-out),
+      box-shadow var(--t-med) var(--ease-out),
+      border-color var(--t-med) var(--ease-out);
   }
   .product-card:hover {
     transform: translateY(-6px);
@@ -295,54 +666,55 @@ const products = [
   }
 
   .product-img {
-    position: relative; width: 100%;
-    aspect-ratio: 1 / 1;
-    background: var(--c-mid);
+    position: relative; width: 100%; aspect-ratio: 1 / 1;
+    background: var(--c-mid); overflow: hidden;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
   }
-  .product-tag {
-    position: absolute; top: 12px; left: 12px;
-    background: var(--c-yellow); border-radius: var(--radius-sm);
-    padding: 4px 10px; transform: rotate(-8deg);
+  .product-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform var(--t-med) var(--ease-out);
   }
-  .product-tag span { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 1px; }
+  .product-card:hover .product-img img { transform: scale(1.04); }
 
-  .product-body { display: flex; flex-direction: column; gap: 10px; padding: 16px; }
-  .product-cat { font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 2px; color: var(--c-muted); }
-  .product-name { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: -1px; line-height: 1.05; color: var(--c-ink); }
-  .product-price { font-family: var(--font-mono); font-size: 20px; font-weight: 700; letter-spacing: -0.5px; color: var(--c-ink); }
+  .product-body {
+    display: flex; flex-direction: column; gap: 12px;
+    padding: 20px;
+  }
+  .product-cat {
+    font-family: var(--font-mono);
+    font-size: 11px; font-weight: 500; letter-spacing: 2px;
+    color: var(--c-muted);
+  }
+  .product-name {
+    font-family: var(--font-display);
+    font-size: clamp(20px, 1.6vw, 24px);
+    font-weight: 700; letter-spacing: -1px; line-height: 1.05;
+    color: var(--c-ink);
+  }
+  .product-price {
+    font-family: var(--font-mono);
+    font-size: 22px; font-weight: 700; letter-spacing: -0.5px;
+    color: var(--c-ink);
+  }
   .product-btn {
     display: flex; align-items: center; justify-content: center; gap: 8px;
-    width: 100%; padding: 10px 14px;
-    background: var(--c-yellow); border-radius: var(--radius-pill);
-    font-family: var(--font-display); font-size: 13px; font-weight: 800; letter-spacing: 1px; color: var(--c-ink);
-  }
-  .product-btn {
-    transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out);
+    width: 100%; padding: 12px 16px;
+    background: var(--c-yellow);
+    border: none; border-radius: var(--radius-pill);
+    color: var(--c-ink);
+    font-family: var(--font-display);
+    font-size: 13px; font-weight: 800; letter-spacing: 1px;
+    cursor: pointer;
+    transition:
+      transform var(--t-med) var(--ease-out),
+      box-shadow var(--t-med) var(--ease-out),
+      background var(--t-fast) var(--ease-out),
+      color var(--t-fast) var(--ease-out);
   }
   .product-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 22px -8px rgba(245, 195, 0, 0.55);
   }
-
-  .pagination {
-    display: flex; justify-content: center; gap: 8px; padding-top: 24px;
-  }
-  .page {
-    width: 40px; height: 40px;
-    display: flex; align-items: center; justify-content: center;
-    border-radius: var(--radius-sm); border: 1px solid var(--c-line-hard);
-    font-family: var(--font-mono); font-size: 13px; font-weight: 700;
-    cursor: pointer;
-    transition: background var(--t-fast) var(--ease-out), color var(--t-fast) var(--ease-out), transform var(--t-fast) var(--ease-out);
-  }
-  .page:hover { transform: translateY(-2px); }
-  .page.active { background: var(--c-ink); color: var(--c-paper); border-color: var(--c-ink); }
-
-  @media (max-width: 900px) {
-    .main-area { grid-template-columns: 1fr; }
-    .sidebar { position: static; }
-  }
-  @media (max-width: 480px) {
-    .product-grid { grid-template-columns: 1fr; }
-  }
+  .product-btn.added { background: var(--c-ink); color: var(--c-yellow); }
 </style>

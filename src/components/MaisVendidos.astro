@@ -1,12 +1,4 @@
 ---
-import { Plus } from '@lucide/astro';
-
-const products = [
-  { tag: '🔥 MAIS VENDIDO', category: 'PROTEÍNA',   name: 'Whey Protein 900g',          price: 'R$ 149,90', hasTag: true },
-  {                         category: 'FORÇA',      name: 'Creatina Monohidratada 300g', price: 'R$ 89,90',  hasTag: false },
-  {                         category: 'PRÉ-TREINO', name: 'Pré-treino HardCore 300g',    price: 'R$ 119,90', hasTag: false },
-  {                         category: 'COMBO',      name: 'Kit Iniciante Completo',      price: 'R$ 249,90', hasTag: false },
-];
 ---
 
 <section class="mais-vendidos">
@@ -22,30 +14,80 @@ const products = [
       <p class="sellers-sub">O que está saindo da loja toda semana.</p>
     </div>
 
-    <div class="prod-grid" data-reveal-stagger>
-      {products.map((p) => (
-        <div class="product-card">
-          <div class="product-img">
-            {p.hasTag && (
-              <div class="product-tag">
-                <span>{p.tag}</span>
-              </div>
-            )}
-          </div>
-          <div class="product-body">
-            <span class="product-cat">{p.category}</span>
-            <span class="product-name">{p.name}</span>
-            <span class="product-price">{p.price}</span>
-            <button class="product-btn">
-              <Plus size={14} />
-              <span>ADICIONAR</span>
-            </button>
-          </div>
-        </div>
-      ))}
+    <div data-mv-loading class="mv-state">
+      <div class="loader"></div>
     </div>
+
+    <div data-mv-empty class="mv-state mv-empty" hidden>
+      <span>Nenhum produto cadastrado na planilha.</span>
+    </div>
+
+    <div class="mv-grid" data-mv-grid hidden></div>
   </div>
 </section>
+
+<script>
+  import { fetchCatalog } from '../lib/api';
+  import { cart } from '../lib/cart';
+  import { formatBRL } from '../lib/format';
+
+  const grid = document.querySelector<HTMLElement>('[data-mv-grid]')!;
+  const loading = document.querySelector<HTMLElement>('[data-mv-loading]')!;
+  const empty = document.querySelector<HTMLElement>('[data-mv-empty]')!;
+
+  async function load() {
+    const data = await fetchCatalog();
+    loading.hidden = true;
+
+    if (!data.ok || !data.products.length) {
+      empty.hidden = false;
+      return;
+    }
+
+    const top = data.products.slice(0, 4);
+    grid.innerHTML = '';
+    top.forEach((p, i) => {
+      const card = document.createElement('a');
+      card.className = 'mv-card';
+      card.href = `/produto?id=${encodeURIComponent(p.id)}`;
+      const tag = i === 0
+        ? `<div class="mv-tag"><span>🔥 MAIS VENDIDO</span></div>`
+        : '';
+      card.innerHTML = `
+        <div class="mv-img">
+          ${p.imagem ? `<img src="${p.imagem}" alt="" loading="lazy" />` : ''}
+          ${tag}
+        </div>
+        <div class="mv-body">
+          <span class="mv-cat"></span>
+          <span class="mv-name"></span>
+          <span class="mv-price"></span>
+          <button class="mv-btn" type="button" data-add>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+            <span>ADICIONAR</span>
+          </button>
+        </div>
+      `;
+      (card.querySelector('.mv-cat')!).textContent = (p.categoria || '').toUpperCase();
+      (card.querySelector('.mv-name')!).textContent = p.nome;
+      (card.querySelector('.mv-price')!).textContent = formatBRL(p.preco);
+      card.querySelector<HTMLButtonElement>('[data-add]')!.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        cart.add(p, 1);
+        const btn = ev.currentTarget as HTMLButtonElement;
+        const span = btn.querySelector('span')!;
+        const original = span.textContent;
+        span.textContent = 'ADICIONADO ✓';
+        btn.classList.add('added');
+        setTimeout(() => { span.textContent = original; btn.classList.remove('added'); }, 1200);
+      });
+      grid.appendChild(card);
+    });
+    grid.hidden = false;
+  }
+
+  load();
+</script>
 
 <style>
   .mais-vendidos {
@@ -55,190 +97,140 @@ const products = [
   }
 
   .sellers-inner {
-    display: flex;
-    flex-direction: column;
+    display: flex; flex-direction: column;
     gap: clamp(32px, 3.5vw, 56px);
     padding: var(--section-y) var(--gutter);
   }
 
   .sellers-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 24px;
-    flex-wrap: wrap;
+    display: flex; justify-content: space-between; align-items: flex-end;
+    gap: 24px; flex-wrap: wrap;
   }
-
-  .sellers-title-wrap {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .sellers-kicker {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 2px;
-    color: var(--c-muted);
-  }
-
-  .sellers-title-row {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
+  .sellers-title-wrap { display: flex; flex-direction: column; gap: 8px; }
+  .sellers-kicker { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 2px; color: var(--c-muted); }
+  .sellers-title-row { display: flex; flex-direction: column; gap: 6px; }
   .sellers-title {
-    font-family: var(--font-display);
-    font-size: clamp(40px, 6vw, 80px);
-    font-weight: 800;
-    font-style: italic;
-    line-height: 0.9;
-    letter-spacing: -2px;
-    color: var(--c-ink);
+    font-family: var(--font-display); font-size: clamp(40px, 6vw, 80px);
+    font-weight: 800; font-style: italic; line-height: 0.9;
+    letter-spacing: -2px; color: var(--c-ink);
   }
-
   .yellow-bar {
-    width: 120px;
-    height: 4px;
-    background: var(--c-yellow);
+    width: 120px; height: 4px; background: var(--c-yellow);
     transform-origin: left;
     animation: scaleX-grow 800ms var(--ease-out) 200ms both;
   }
   @keyframes scaleX-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  .sellers-sub { max-width: 280px; font-family: var(--font-ui); font-size: 15px; line-height: 1.4; color: var(--c-mid); }
 
-  .sellers-sub {
-    max-width: 280px;
-    font-family: var(--font-ui);
-    font-size: 15px;
-    line-height: 1.4;
-    color: var(--c-mid);
+  .mv-state {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 200px; font-family: var(--font-ui); color: var(--c-muted);
   }
+  .mv-empty {
+    border: 1px dashed var(--c-line-hard); border-radius: var(--radius-md);
+    padding: 24px; text-align: center;
+  }
+</style>
 
-  .prod-grid {
+<!--
+  Estilos abaixo são GLOBAIS porque os cards de produto e o loader são criados
+  via JS em runtime. Astro só aplica o scope (data-astro-cid-*) no template
+  estático, então classes adicionadas dinamicamente ficariam sem estilo.
+-->
+<style is:global>
+  .mv-state .loader,
+  .cats-loading .loader {
+    width: 36px; height: 36px;
+    border: 3px solid var(--c-line); border-top-color: var(--c-yellow);
+    border-radius: 50%; animation: spin 800ms linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .mv-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: clamp(14px, 1.4vw, 20px);
   }
 
-  .product-card {
-    display: flex;
-    flex-direction: column;
+  .mv-card {
+    display: flex; flex-direction: column;
     border: 1px solid var(--c-line-hard);
     border-radius: var(--radius-md);
     background: var(--c-paper);
     overflow: hidden;
-    transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out), border-color var(--t-med) var(--ease-out);
+    transition:
+      transform var(--t-med) var(--ease-out),
+      box-shadow var(--t-med) var(--ease-out),
+      border-color var(--t-med) var(--ease-out);
   }
-
-  .product-card:hover {
+  .mv-card:hover {
     transform: translateY(-6px);
     box-shadow: 0 24px 48px -20px rgba(10, 10, 9, 0.25);
     border-color: var(--c-ink);
   }
 
-  .product-img {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    background: var(--c-mid);
-    overflow: hidden;
+  .mv-img {
+    position: relative; width: 100%; aspect-ratio: 1 / 1;
+    background: var(--c-mid); overflow: hidden;
     border-radius: var(--radius-md) var(--radius-md) 0 0;
   }
-
-  .product-img::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(120deg, transparent 30%, rgba(245, 195, 0, 0.12) 50%, transparent 70%);
-    background-size: 200% 100%;
-    opacity: 0;
-    transition: opacity var(--t-med) var(--ease-out);
-    animation: shimmer 2.5s linear infinite;
+  .mv-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform var(--t-med) var(--ease-out);
   }
-  .product-card:hover .product-img::after { opacity: 1; }
+  .mv-card:hover .mv-img img { transform: scale(1.04); }
 
-  .product-tag {
-    position: absolute;
-    top: 16px;
-    left: 16px;
-    z-index: 1;
-    background: var(--c-yellow);
-    border-radius: var(--radius-sm);
-    padding: 6px 12px;
-    transform: rotate(-8deg);
+  .mv-tag {
+    position: absolute; top: 16px; left: 16px; z-index: 1;
+    background: var(--c-yellow); border-radius: var(--radius-sm);
+    padding: 6px 12px; transform: rotate(-8deg);
     box-shadow: 0 6px 14px -4px rgba(0,0,0,0.25);
   }
-
-  .product-tag span {
+  .mv-tag span {
     font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1px;
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
     color: var(--c-ink);
   }
 
-  .product-body {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 20px;
-  }
-
-  .product-cat {
+  .mv-body { display: flex; flex-direction: column; gap: 12px; padding: 20px; }
+  .mv-cat {
     font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 2px;
+    font-size: 11px; font-weight: 500; letter-spacing: 2px;
     color: var(--c-muted);
   }
-
-  .product-name {
+  .mv-name {
     font-family: var(--font-display);
     font-size: clamp(20px, 1.6vw, 24px);
-    font-weight: 700;
-    letter-spacing: -1px;
-    line-height: 1.05;
+    font-weight: 700; letter-spacing: -1px; line-height: 1.05;
     color: var(--c-ink);
   }
-
-  .product-price {
+  .mv-price {
     font-family: var(--font-mono);
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
+    font-size: 22px; font-weight: 700; letter-spacing: -0.5px;
     color: var(--c-ink);
   }
-
-  .product-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    width: 100%;
-    padding: 12px 16px;
+  .mv-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: 12px 16px;
     background: var(--c-yellow);
-    border-radius: var(--radius-pill);
+    border: none; border-radius: var(--radius-pill);
     color: var(--c-ink);
     font-family: var(--font-display);
-    font-size: 13px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out);
+    font-size: 13px; font-weight: 800; letter-spacing: 1px;
+    cursor: pointer;
+    transition:
+      transform var(--t-med) var(--ease-out),
+      box-shadow var(--t-med) var(--ease-out),
+      background var(--t-fast) var(--ease-out),
+      color var(--t-fast) var(--ease-out);
   }
-
-  .product-btn:hover {
+  .mv-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 22px -8px rgba(245, 195, 0, 0.55);
   }
-  .product-btn :global(svg) { transition: transform var(--t-med) var(--ease-out); }
-  .product-btn:hover :global(svg) { transform: rotate(90deg); }
+  .mv-btn.added { background: var(--c-ink); color: var(--c-yellow); }
 
-  @media (max-width: 900px) {
-    .prod-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
-  @media (max-width: 480px) {
-    .prod-grid { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 900px) { .mv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 480px) { .mv-grid { grid-template-columns: 1fr; } }
 </style>
