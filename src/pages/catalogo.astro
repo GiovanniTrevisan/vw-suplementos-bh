@@ -1,0 +1,324 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { ChevronDown, Plus, X } from '@lucide/astro';
+
+const categories = ['Proteínas', 'Creatina', 'Pré-treino', 'Vitaminas', 'Acessórios'];
+const brands = ['Max Titanium', 'Growth', 'Integralmedica', 'Darkness', 'Optimum', 'Dux Nutrition'];
+const priceRanges = ['Até R$ 50', 'R$ 50 – R$ 100', 'R$ 100 – R$ 200', 'Acima de R$ 200'];
+
+const products = [
+  { category: 'PROTEÍNA', name: 'Whey Protein 900g', price: 'R$ 149,90', tag: '🔥 MAIS VENDIDO' },
+  { category: 'FORÇA', name: 'Creatina Mono 300g', price: 'R$ 89,90', tag: '' },
+  { category: 'PRÉ-TREINO', name: 'Pré-treino HardCore 300g', price: 'R$ 119,90', tag: '' },
+  { category: 'COMBO', name: 'Kit Iniciante Completo', price: 'R$ 249,90', tag: '' },
+  { category: 'PROTEÍNA', name: 'Whey Isolado 900g', price: 'R$ 199,90', tag: '' },
+  { category: 'VITAMINA', name: 'Multivitamínico 60 caps', price: 'R$ 39,90', tag: '' },
+  { category: 'PROTEÍNA', name: 'Caseína 900g', price: 'R$ 129,90', tag: '' },
+  { category: 'ACESSÓRIO', name: 'Coqueteleira 600ml', price: 'R$ 29,90', tag: '' },
+  { category: 'FORÇA', name: 'Creatina 600g', price: 'R$ 159,90', tag: '' },
+  { category: 'PROTEÍNA', name: 'Whey Vegano 900g', price: 'R$ 169,90', tag: '' },
+  { category: 'PRÉ-TREINO', name: 'Evogen EVP 300g', price: 'R$ 189,90', tag: '' },
+  { category: 'COMBO', name: 'Kit Avançado', price: 'R$ 399,90', tag: '' },
+];
+---
+
+<Layout title="Catálogo — VW Suplementos BH">
+  <Header />
+
+  <div class="breadcrumb">
+    <a href="/">Início</a>
+    <span>›</span>
+    <span class="active">Catálogo</span>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="title-block">
+    <div class="title-left">
+      <span class="title-kicker">// CATÁLOGO COMPLETO</span>
+      <h1 class="title-heading">TODOS OS PRODUTOS</h1>
+      <p class="title-sub">Whey, creatina, pré-treino e mais. Os melhores suplementos com entrega para toda a Grande BH.</p>
+    </div>
+    <div class="results-count">
+      <span class="results-label">RESULTADOS</span>
+      <span class="results-number">48</span>
+      <span class="results-text">produtos encontrados</span>
+    </div>
+  </div>
+
+  <div class="main-area">
+    <aside class="sidebar">
+      <div class="sb-header">
+        <span class="sb-title">FILTROS</span>
+        <span class="sb-count">// 03</span>
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-head">
+          <span>CATEGORIA</span>
+          <ChevronDown size={14} />
+        </div>
+        <div class="filter-pills">
+          {categories.map((c, i) => (
+            <div class:list={['pill', { active: i === 0 }]}>
+              <span>{c}</span>
+              <span class="pill-count">{Math.floor(Math.random() * 15) + 3}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="filter-divider"></div>
+
+      <div class="filter-section">
+        <div class="filter-head">
+          <span>MARCA</span>
+          <ChevronDown size={14} />
+        </div>
+        <div class="brand-list">
+          {brands.map((b, i) => (
+            <label class="brand-item">
+              <input type="checkbox" checked={i < 2} />
+              <span>{b}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div class="filter-divider"></div>
+
+      <div class="filter-section">
+        <div class="filter-head">
+          <span>FAIXA DE PREÇO</span>
+          <ChevronDown size={14} />
+        </div>
+        <div class="brand-list">
+          {priceRanges.map((p, i) => (
+            <label class="brand-item">
+              <input type="radio" name="price" checked={i === 0} />
+              <span>{p}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div class="filter-divider"></div>
+
+      <div class="filter-section">
+        <div class="filter-head">
+          <span>ORDENAR POR</span>
+          <ChevronDown size={14} />
+        </div>
+        <div class="sort-drop">
+          <span>Mais vendidos</span>
+          <ChevronDown size={14} />
+        </div>
+      </div>
+
+      <div class="clear-link">
+        <X size={12} />
+        <span>Limpar filtros</span>
+      </div>
+    </aside>
+
+    <div class="grid-area">
+      <div class="active-filters">
+        <span class="af-label">FILTROS ATIVOS:</span>
+        <div class="af-tag"><span>Proteínas</span> <X size={10} /></div>
+        <div class="af-tag"><span>Max Titanium</span> <X size={10} /></div>
+      </div>
+
+      <div class="product-grid">
+        {products.map((p) => (
+          <a href="/produto" class="product-card">
+            <div class="product-img">
+              {p.tag && <div class="product-tag"><span>{p.tag}</span></div>}
+            </div>
+            <div class="product-body">
+              <span class="product-cat">{p.category}</span>
+              <span class="product-name">{p.name}</span>
+              <span class="product-price">{p.price}</span>
+              <button class="product-btn">
+                <Plus size={14} />
+                <span>ADICIONAR</span>
+              </button>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <div class="pagination">
+        <span class="page active">1</span>
+        <span class="page">2</span>
+        <span class="page">3</span>
+        <span class="page">4</span>
+      </div>
+    </div>
+  </div>
+
+  <Footer />
+</Layout>
+
+<style>
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 40px;
+    background: var(--c-paper);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--c-muted);
+  }
+  .breadcrumb a { color: var(--c-muted); }
+  .breadcrumb .active { color: var(--c-ink); font-weight: 600; }
+  .divider { height: 1px; background: var(--c-line); width: 100%; }
+
+  .title-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 48px 48px 40px;
+    gap: 32px;
+    background: var(--c-paper);
+  }
+  .title-left { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .title-kicker { font-family: var(--font-mono); font-size: 13px; letter-spacing: 1px; color: var(--c-red); }
+  .title-heading {
+    font-family: var(--font-display); font-size: 80px; font-weight: 800;
+    font-style: italic; line-height: 0.95; letter-spacing: -1px; color: var(--c-ink);
+  }
+  .title-sub { font-family: var(--font-ui); font-size: 16px; line-height: 1.4; color: var(--c-muted); }
+
+  .results-count { display: flex; flex-direction: column; align-items: flex-end; }
+  .results-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; color: var(--c-muted); }
+  .results-number { font-family: var(--font-display); font-size: 64px; font-weight: 800; font-style: italic; line-height: 0.95; color: var(--c-ink); }
+  .results-text { font-family: var(--font-ui); font-size: 13px; color: var(--c-muted); }
+
+  .main-area {
+    display: flex; gap: 32px; padding: 48px 40px;
+    background: var(--c-paper);
+  }
+
+  .sidebar {
+    width: 280px; flex-shrink: 0;
+    display: flex; flex-direction: column; gap: 32px;
+    padding: 24px;
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-md);
+    background: var(--c-paper);
+    align-self: flex-start;
+  }
+
+  .sb-header { display: flex; justify-content: space-between; align-items: center; }
+  .sb-title { font-family: var(--font-display); font-size: 20px; font-weight: 800; letter-spacing: 1px; }
+  .sb-count { font-family: var(--font-mono); font-size: 11px; color: var(--c-muted); }
+
+  .filter-section { display: flex; flex-direction: column; gap: 12px; }
+  .filter-head {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--font-display); font-size: 14px; font-weight: 800; letter-spacing: 1px;
+  }
+
+  .filter-pills { display: flex; flex-direction: column; gap: 8px; }
+  .pill {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 16px; border-radius: var(--radius-pill);
+    border: 1px solid var(--c-line-hard);
+    font-family: var(--font-ui); font-size: 13px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .pill.active { background: var(--c-yellow); border-color: var(--c-yellow); font-weight: 600; }
+  .pill-count { font-family: var(--font-mono); font-size: 11px; color: var(--c-muted); }
+
+  .brand-list { display: flex; flex-direction: column; gap: 10px; }
+  .brand-item {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-ui); font-size: 13px; cursor: pointer;
+  }
+
+  .sort-drop {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 12px; border: 1px solid var(--c-line-hard);
+    border-radius: var(--radius-sm); background: var(--c-paper);
+    font-family: var(--font-ui); font-size: 13px; font-weight: 600;
+  }
+
+  .clear-link {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 8px 0; color: var(--c-muted);
+    font-family: var(--font-ui); font-size: 12px; cursor: pointer;
+  }
+
+  .filter-divider { height: 1px; background: var(--c-line); }
+
+  .grid-area { flex: 1; display: flex; flex-direction: column; gap: 24px; }
+
+  .active-filters {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .af-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; color: var(--c-muted); }
+  .af-tag {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 10px; background: var(--c-ink); color: var(--c-paper);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  }
+
+  .product-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  }
+
+  .product-card {
+    display: flex; flex-direction: column;
+    border: 1px solid var(--c-line-hard);
+    border-radius: var(--radius-md); background: var(--c-paper);
+    overflow: hidden; transition: transform 0.2s;
+  }
+  .product-card:hover { transform: translateY(-4px); }
+
+  .product-img {
+    position: relative; width: 100%; height: 220px;
+    background: var(--c-mid);
+  }
+  .product-tag {
+    position: absolute; top: 12px; left: 12px;
+    background: var(--c-yellow); border-radius: var(--radius-sm);
+    padding: 4px 10px; transform: rotate(-8deg);
+  }
+  .product-tag span { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 1px; }
+
+  .product-body { display: flex; flex-direction: column; gap: 10px; padding: 16px; }
+  .product-cat { font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 2px; color: var(--c-muted); }
+  .product-name { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: -1px; line-height: 1.05; color: var(--c-ink); }
+  .product-price { font-family: var(--font-mono); font-size: 20px; font-weight: 700; letter-spacing: -0.5px; color: var(--c-ink); }
+  .product-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: 10px 14px;
+    background: var(--c-yellow); border-radius: var(--radius-pill);
+    font-family: var(--font-display); font-size: 13px; font-weight: 800; letter-spacing: 1px; color: var(--c-ink);
+  }
+  .product-btn:hover { opacity: 0.85; }
+
+  .pagination {
+    display: flex; justify-content: center; gap: 8px; padding-top: 24px;
+  }
+  .page {
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-sm); border: 1px solid var(--c-line-hard);
+    font-family: var(--font-mono); font-size: 13px; font-weight: 700;
+    cursor: pointer;
+  }
+  .page.active { background: var(--c-ink); color: var(--c-paper); border-color: var(--c-ink); }
+
+  @media (max-width: 900px) {
+    .main-area { flex-direction: column; padding: 24px 16px; }
+    .sidebar { width: 100%; }
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+    .title-block { flex-direction: column; padding: 24px 20px; }
+    .title-heading { font-size: 48px; }
+  }
+</style>

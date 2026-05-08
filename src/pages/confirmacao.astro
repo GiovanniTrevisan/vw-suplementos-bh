@@ -1,0 +1,162 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import { CircleCheck, ArrowRight, MessageCircle, MapPin } from '@lucide/astro';
+
+const orderNumber = '#VW-20260508-042';
+---
+
+<Layout title="Pedido Enviado — VW Suplementos BH">
+  <Header />
+
+  <section class="main-confirm">
+    <div class="center-col">
+      <div class="check-circle">
+        <CircleCheck size={64} color="var(--c-yellow)" />
+      </div>
+
+      <span class="confirm-kicker">PEDIDO ENVIADO COM SUCESSO</span>
+
+      <h1 class="confirm-title">PRONTO!</h1>
+
+      <p class="confirm-sub">Seu pedido {orderNumber} foi enviado para a equipe VW Suplementos via WhatsApp. Em instantes você receberá uma confirmação de disponibilidade e os dados para pagamento.</p>
+
+      <div class="next-steps">
+        <span class="ns-title">// PRÓXIMOS PASSOS</span>
+        <div class="ns-list">
+          <div class="ns-item">
+            <span class="ns-num">01</span>
+            <div class="ns-text">
+              <span class="ns-heading">Aguarde a confirmação</span>
+              <span class="ns-desc">A equipe vai verificar a disponibilidade e responder pelo WhatsApp.</span>
+            </div>
+          </div>
+          <div class="ns-item">
+            <span class="ns-num">02</span>
+            <div class="ns-text">
+              <span class="ns-heading">Realize o pagamento</span>
+              <span class="ns-desc">PIX, cartão ou boleto. 5% de desconto no PIX.</span>
+            </div>
+          </div>
+          <div class="ns-item">
+            <span class="ns-num">03</span>
+            <div class="ns-text">
+              <span class="ns-heading">Receba ou retire</span>
+              <span class="ns-desc">Entrega em BH ou retirada na loja do Castelo.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="confirm-btns">
+        <a href="/" class="cb-primary">
+          <ArrowRight size={18} />
+          <span>VOLTAR AO INÍCIO</span>
+        </a>
+        <a href="#" class="cb-secondary">
+          <MessageCircle size={18} />
+          <span>ABRIR WHATSAPP</span>
+        </a>
+      </div>
+
+      <div class="store-info">
+        <MapPin size={16} color="var(--c-yellow)" />
+        <span>VW Suplementos — Castelo, BH · Seg–Sex 9h–19h</span>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer-strip">
+    <span>VW SUPLEMENTOS BH · CASTELO</span>
+    <span>© 2026 · CNPJ 00.000.000/0001-00</span>
+  </footer>
+</Layout>
+
+<style>
+  .main-confirm {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: calc(100vh - 150px); padding: 40px 48px; background: var(--c-paper);
+  }
+
+  .center-col {
+    width: 560px; display: flex; flex-direction: column;
+    gap: 24px; align-items: center; text-align: center;
+  }
+
+  .check-circle { margin-bottom: 8px; }
+
+  .confirm-kicker {
+    font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+    letter-spacing: 2px; color: var(--c-muted);
+  }
+
+  .confirm-title {
+    font-family: var(--font-display); font-size: 96px; font-weight: 800;
+    font-style: italic; line-height: 0.9; letter-spacing: -3px; color: var(--c-ink);
+  }
+
+  .confirm-sub {
+    font-family: var(--font-ui); font-size: 16px; line-height: 1.6;
+    color: var(--c-muted); max-width: 480px;
+  }
+
+  .next-steps {
+    width: 100%; display: flex; flex-direction: column; gap: 16px;
+    padding: 24px; background: var(--c-ink); border-radius: var(--radius-md);
+    text-align: left;
+  }
+
+  .ns-title {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; color: var(--c-yellow);
+  }
+
+  .ns-list { display: flex; flex-direction: column; gap: 16px; }
+
+  .ns-item { display: flex; gap: 16px; align-items: flex-start; }
+
+  .ns-num {
+    font-family: var(--font-display); font-size: 24px; font-weight: 800;
+    font-style: italic; color: var(--c-yellow); flex-shrink: 0;
+  }
+
+  .ns-text { display: flex; flex-direction: column; gap: 4px; }
+  .ns-heading { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--c-paper); }
+  .ns-desc { font-family: var(--font-ui); font-size: 13px; line-height: 1.5; color: #F5F0E8B3; }
+
+  .confirm-btns { display: flex; gap: 12px; width: 100%; }
+
+  .cb-primary {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 18px 24px; background: var(--c-yellow); border-radius: var(--radius-sm);
+    font-family: var(--font-display); font-size: 15px; font-weight: 800; letter-spacing: 1px;
+    color: var(--c-ink); transition: opacity 0.2s;
+  }
+  .cb-primary:hover { opacity: 0.85; }
+
+  .cb-secondary {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 18px 24px; border: 2px solid var(--c-ink); border-radius: var(--radius-sm);
+    font-family: var(--font-display); font-size: 15px; font-weight: 800; letter-spacing: 1px;
+    color: var(--c-ink); transition: background 0.2s;
+  }
+  .cb-secondary:hover { background: #0A0A0910; }
+
+  .store-info {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-ui); font-size: 13px; color: var(--c-muted);
+  }
+
+  .footer-strip {
+    display: flex; justify-content: space-between; align-items: center;
+    height: 60px; padding: 0 40px; background: var(--c-ink);
+  }
+  .footer-strip span {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; color: var(--c-paper-muted);
+  }
+
+  @media (max-width: 700px) {
+    .center-col { width: 100%; }
+    .confirm-title { font-size: 56px; }
+    .confirm-btns { flex-direction: column; }
+  }
+</style>

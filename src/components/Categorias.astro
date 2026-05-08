@@ -1,0 +1,182 @@
+---
+import { Dumbbell, Flame, HeartPulse, ArrowRight, CupSoda } from '@lucide/astro';
+
+const categories = [
+  {
+    icon: 'dumbbell',
+    title: 'PROTEÍNAS',
+    subtitle: 'Whey, caseína, vegetal',
+    bg: 'dark',
+  },
+  {
+    icon: 'flame',
+    title: 'CREATINA & PRÉ',
+    subtitle: 'Energia e força',
+    bg: 'yellow',
+  },
+  {
+    icon: 'heart-pulse',
+    title: 'VITAMINAS & SAÚDE',
+    subtitle: 'Multivitamínicos, ômega',
+    bg: 'dark',
+  },
+  {
+    icon: 'shaker',
+    title: 'ACESSÓRIOS',
+    subtitle: 'Coqueteleiras, luvas, cintos',
+    bg: 'dark',
+  },
+];
+---
+
+<section class="categorias">
+  <div class="cats-header">
+    <div class="cats-title-wrap">
+      <span class="cats-kicker">CATEGORIAS</span>
+      <h2 class="cats-title">EM DESTAQUE.</h2>
+    </div>
+    <a href="/catalogo" class="cats-link">
+      <span>VER TUDO</span>
+      <ArrowRight size={16} />
+    </a>
+  </div>
+
+  <div class="cats-grid">
+    {categories.map((cat) => (
+      <a href="/catalogo" class:list={['cat-card', cat.bg]}>
+        <div class="cat-top">
+          {cat.icon === 'dumbbell' && <Dumbbell size={48} />}
+          {cat.icon === 'flame' && <Flame size={48} />}
+          {cat.icon === 'heart-pulse' && <HeartPulse size={48} />}
+          {cat.icon === 'shaker' && <CupSoda size={48} />}
+          <span class="cat-title">{cat.title}</span>
+          <span class="cat-sub">{cat.subtitle}</span>
+        </div>
+        <div class="cat-bot">
+          <ArrowRight size={24} />
+        </div>
+      </a>
+    ))}
+  </div>
+</section>
+
+<style>
+  .categorias {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 100px 80px;
+    background: var(--c-paper);
+    width: 100%;
+  }
+
+  .cats-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%;
+  }
+
+  .cats-title-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .cats-kicker {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: var(--c-muted);
+  }
+
+  .cats-title {
+    font-family: var(--font-display);
+    font-size: 72px;
+    font-weight: 800;
+    font-style: italic;
+    line-height: 0.9;
+    letter-spacing: -2px;
+    color: var(--c-ink);
+  }
+
+  .cats-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--c-ink);
+    transition: opacity 0.2s;
+  }
+
+  .cats-link:hover { opacity: 0.7; }
+
+  .cats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    width: 100%;
+  }
+
+  .cat-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 280px;
+    padding: 24px;
+    border-radius: var(--radius-md);
+    transition: transform 0.2s;
+  }
+
+  .cat-card:hover { transform: translateY(-4px); }
+
+  .cat-card.dark {
+    background: var(--c-mid);
+    color: var(--c-paper);
+  }
+
+  .cat-card.dark .cat-top :global(svg) { color: var(--c-yellow); }
+  .cat-card.dark .cat-sub { color: #F5F0E8B3; }
+
+  .cat-card.yellow {
+    background: var(--c-yellow);
+    color: var(--c-ink);
+  }
+
+  .cat-card.yellow .cat-top :global(svg) { color: var(--c-ink); }
+  .cat-card.yellow .cat-sub { color: var(--c-ink); }
+
+  .cat-top {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .cat-title {
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -1px;
+  }
+
+  .cat-sub {
+    font-family: var(--font-ui);
+    font-size: 13px;
+  }
+
+  .cat-bot {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  @media (max-width: 900px) {
+    .categorias { padding: 60px 20px; }
+    .cats-grid { grid-template-columns: repeat(2, 1fr); }
+    .cats-title { font-size: 48px; }
+    .cat-card { height: 220px; }
+  }
+</style>

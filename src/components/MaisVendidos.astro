@@ -1,0 +1,233 @@
+---
+import { Plus } from '@lucide/astro';
+
+const products = [
+  {
+    tag: '🔥 MAIS VENDIDO',
+    category: 'PROTEÍNA',
+    name: 'Whey Protein 900g',
+    price: 'R$ 149,90',
+    hasTag: true,
+  },
+  {
+    category: 'FORÇA',
+    name: 'Creatina Monohidratada 300g',
+    price: 'R$ 89,90',
+    hasTag: false,
+  },
+  {
+    category: 'PRÉ-TREINO',
+    name: 'Pré-treino HardCore 300g',
+    price: 'R$ 119,90',
+    hasTag: false,
+  },
+  {
+    category: 'COMBO',
+    name: 'Kit Iniciante Completo',
+    price: 'R$ 249,90',
+    hasTag: false,
+  },
+];
+---
+
+<section class="mais-vendidos">
+  <div class="sellers-header">
+    <div class="sellers-title-wrap">
+      <span class="sellers-kicker">BEST SELLERS · 2026</span>
+      <div class="sellers-title-row">
+        <h2 class="sellers-title">MAIS VENDIDOS.</h2>
+        <div class="yellow-bar"></div>
+      </div>
+    </div>
+    <p class="sellers-sub">O que está saindo da loja toda semana.</p>
+  </div>
+
+  <div class="prod-grid">
+    {products.map((p) => (
+      <div class="product-card">
+        <div class="product-img">
+          {p.hasTag && (
+            <div class="product-tag">
+              <span>{p.tag}</span>
+            </div>
+          )}
+        </div>
+        <div class="product-body">
+          <span class="product-cat">{p.category}</span>
+          <span class="product-name">{p.name}</span>
+          <span class="product-price">{p.price}</span>
+          <button class="product-btn">
+            <Plus size={14} />
+            <span>ADICIONAR</span>
+          </button>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .mais-vendidos {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    padding: 100px 80px;
+    background: var(--c-paper);
+    border-top: 1px solid var(--c-line);
+    width: 100%;
+  }
+
+  .sellers-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%;
+  }
+
+  .sellers-title-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .sellers-kicker {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: var(--c-muted);
+  }
+
+  .sellers-title-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .sellers-title {
+    font-family: var(--font-display);
+    font-size: 72px;
+    font-weight: 800;
+    font-style: italic;
+    line-height: 0.9;
+    letter-spacing: -2px;
+    color: var(--c-ink);
+  }
+
+  .yellow-bar {
+    width: 120px;
+    height: 4px;
+    background: var(--c-yellow);
+  }
+
+  .sellers-sub {
+    max-width: 280px;
+    font-family: var(--font-ui);
+    font-size: 15px;
+    line-height: 1.4;
+    color: var(--c-mid);
+  }
+
+  .prod-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    width: 100%;
+  }
+
+  .product-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--c-line-hard);
+    border-radius: var(--radius-md);
+    background: var(--c-paper);
+    overflow: hidden;
+    transition: transform 0.2s;
+  }
+
+  .product-card:hover { transform: translateY(-4px); }
+
+  .product-img {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    background: var(--c-mid);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+  }
+
+  .product-tag {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: var(--c-yellow);
+    border-radius: var(--radius-sm);
+    padding: 6px 12px;
+    transform: rotate(-8deg);
+  }
+
+  .product-tag span {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--c-ink);
+  }
+
+  .product-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px;
+  }
+
+  .product-cat {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: var(--c-muted);
+  }
+
+  .product-name {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    line-height: 1.05;
+    color: var(--c-ink);
+  }
+
+  .product-price {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--c-ink);
+  }
+
+  .product-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--c-yellow);
+    border-radius: var(--radius-pill);
+    color: var(--c-ink);
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    transition: opacity 0.2s;
+  }
+
+  .product-btn:hover { opacity: 0.85; }
+
+  @media (max-width: 900px) {
+    .mais-vendidos { padding: 60px 20px; }
+    .prod-grid { grid-template-columns: repeat(2, 1fr); }
+    .sellers-title { font-size: 48px; }
+    .sellers-header { flex-direction: column; gap: 16px; align-items: flex-start; }
+  }
+</style>

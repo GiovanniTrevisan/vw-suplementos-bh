@@ -1,0 +1,141 @@
+---
+import { Check } from '@lucide/astro';
+
+const diferenciais = [
+  {
+    title: 'Atendimento especializado',
+    desc: 'Equipe que treina e conhece cada produto da loja.',
+  },
+  {
+    title: 'Produtos originais com nota fiscal',
+    desc: 'Trabalhamos só com marcas autorizadas. Sem falsificação.',
+  },
+  {
+    title: 'Entrega em BH ou retirada na loja',
+    desc: 'Recebe no mesmo dia ou retira no Castelo no horário que quiser.',
+  },
+  {
+    title: 'PIX, cartão ou boleto',
+    desc: 'Em até 12x ou 5% de desconto no PIX. Você escolhe.',
+  },
+];
+---
+
+<section class="sobre" id="sobre">
+  <div class="about-left">
+    <span class="about-kicker">QUEM SOMOS</span>
+    <h2 class="about-title">ESPECIALISTAS EM SUPLEMENTAÇÃO DESDE 2019.</h2>
+    <p class="about-desc">Nascemos em Belo Horizonte com uma missão simples: dar acesso a quem treina sério aos melhores suplementos do mercado, pelo preço justo, com atendimento de gente que entende. Hoje somos referência no Castelo e estamos em 7 lojas em MG e PR.</p>
+  </div>
+
+  <div class="about-right">
+    {diferenciais.map((d, i) => (
+      <div class:list={['diff', { 'no-border': i === diferenciais.length - 1 }]}>
+        <div class="diff-icon">
+          <Check size={18} color="var(--c-ink)" />
+        </div>
+        <div class="diff-text">
+          <span class="diff-title">{d.title}</span>
+          <span class="diff-desc">{d.desc}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .sobre {
+    display: flex;
+    gap: 80px;
+    padding: 100px 80px;
+    background: var(--c-ink);
+    width: 100%;
+  }
+
+  .about-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .about-kicker {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: var(--c-yellow);
+  }
+
+  .about-title {
+    font-family: var(--font-display);
+    font-size: 64px;
+    font-weight: 800;
+    font-style: italic;
+    line-height: 0.92;
+    letter-spacing: -2px;
+    color: var(--c-paper);
+  }
+
+  .about-desc {
+    font-family: var(--font-ui);
+    font-size: 16px;
+    line-height: 1.6;
+    color: #F5F0E8B3;
+  }
+
+  .about-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid #F5F0E833;
+  }
+
+  .diff {
+    display: flex;
+    gap: 20px;
+    padding: 24px 0;
+    border-bottom: 1px solid #F5F0E833;
+  }
+
+  .diff.no-border {
+    border-bottom: none;
+  }
+
+  .diff-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--c-yellow);
+    border-radius: var(--radius-pill);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .diff-text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .diff-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--c-paper);
+  }
+
+  .diff-desc {
+    font-family: var(--font-ui);
+    font-size: 14px;
+    line-height: 1.5;
+    color: #F5F0E8B3;
+  }
+
+  @media (max-width: 900px) {
+    .sobre { flex-direction: column; gap: 40px; padding: 60px 20px; }
+    .about-title { font-size: 40px; }
+  }
+</style>

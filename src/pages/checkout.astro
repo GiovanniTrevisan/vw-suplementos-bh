@@ -1,0 +1,249 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import { Minus, Plus, Trash2, Info, ArrowRight } from '@lucide/astro';
+
+const items = [
+  { name: 'Whey Protein 900g', flavor: 'Chocolate', qty: 1, price: 149.90 },
+  { name: 'Creatina Mono 300g', flavor: null, qty: 2, price: 89.90 },
+  { name: 'Pré-treino HardCore 300g', flavor: 'Limão', qty: 1, price: 119.90 },
+];
+
+const subtotal = items.reduce((sum, i) => sum + i.price * i.qty, 0);
+const frete = 'A combinar';
+const total = subtotal;
+---
+
+<Layout title="Checkout — VW Suplementos BH">
+  <Header />
+
+  <section class="hero-checkout">
+    <span class="ck-kicker">CONFIRME SEU PEDIDO</span>
+    <h1 class="ck-headline">QUASE LÁ.</h1>
+    <p class="ck-sub">Revise os itens, escolha como quer receber e envie pelo WhatsApp. A confirmação de disponibilidade e pagamento é feita no atendimento.</p>
+  </section>
+
+  <div class="center-container">
+    <div class="section-block">
+      <span class="section-title">// RESUMO DO PEDIDO</span>
+      <div class="order-table">
+        <div class="order-header">
+          <span>PRODUTO</span>
+          <span>QTD</span>
+          <span>SUBTOTAL</span>
+        </div>
+        {items.map((item) => (
+          <div class="order-row">
+            <div class="order-product">
+              <div class="order-thumb"></div>
+              <div class="order-info">
+                <span class="order-name">{item.name}</span>
+                {item.flavor && <span class="order-flavor">Sabor: {item.flavor}</span>}
+                <span class="order-unit">R$ {item.price.toFixed(2).replace('.', ',')}</span>
+              </div>
+            </div>
+            <div class="order-qty">
+              <button class="qty-sm"><Minus size={12} /></button>
+              <span>{item.qty}</span>
+              <button class="qty-sm"><Plus size={12} /></button>
+            </div>
+            <div class="order-subtotal">
+              <span>R$ {(item.price * item.qty).toFixed(2).replace('.', ',')}</span>
+              <button class="trash-btn"><Trash2 size={14} /></button>
+            </div>
+          </div>
+        ))}
+        <div class="order-totals">
+          <div class="total-row">
+            <span>Subtotal</span>
+            <span>R$ {subtotal.toFixed(2).replace('.', ',')}</span>
+          </div>
+          <div class="total-row">
+            <span>Frete</span>
+            <span>{frete}</span>
+          </div>
+          <div class="total-divider"></div>
+          <div class="total-row final">
+            <span>TOTAL ESTIMADO</span>
+            <span>R$ {total.toFixed(2).replace('.', ',')}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <span class="section-title">// SEUS DADOS</span>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>NOME COMPLETO</label>
+          <input type="text" placeholder="Seu nome" />
+        </div>
+        <div class="form-group">
+          <label>WHATSAPP</label>
+          <input type="tel" placeholder="(31) 9 0000-0000" />
+        </div>
+        <div class="form-group">
+          <label>E-MAIL</label>
+          <input type="email" placeholder="email@exemplo.com" />
+        </div>
+        <div class="form-group full">
+          <label>ENTREGA</label>
+          <div class="radio-group">
+            <label class="radio-item active">
+              <input type="radio" name="entrega" checked />
+              <span>Retirar na loja (Castelo)</span>
+            </label>
+            <label class="radio-item">
+              <input type="radio" name="entrega" />
+              <span>Entrega em BH (frete a combinar)</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label>OBSERVAÇÕES</label>
+          <textarea placeholder="Alguma observação sobre o pedido..." rows="3"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <Info size={18} color="var(--c-muted)" />
+      <p>Ao enviar, você será redirecionado ao WhatsApp com o resumo do pedido. O pagamento e confirmação de disponibilidade são feitos diretamente com a equipe.</p>
+    </div>
+
+    <button class="cta-send">
+      <ArrowRight size={18} />
+      <span>ENVIAR PEDIDO PELO WHATSAPP</span>
+    </button>
+
+    <div class="cancel-wrap">
+      <a href="/catalogo">Voltar ao catálogo</a>
+    </div>
+  </div>
+
+  <footer class="mini-footer">
+    <span>VW SUPLEMENTOS · CASTELO BH</span>
+    <span>© 2026 · TODOS OS DIREITOS RESERVADOS</span>
+  </footer>
+</Layout>
+
+<style>
+  .hero-checkout {
+    display: flex; flex-direction: column; align-items: center; gap: 16px;
+    padding: 80px 48px; background: var(--c-paper); text-align: center;
+  }
+  .ck-kicker { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; color: var(--c-muted); }
+  .ck-headline {
+    font-family: var(--font-display); font-size: 96px; font-weight: 800;
+    font-style: italic; line-height: 0.9; letter-spacing: -0.03em; color: var(--c-ink);
+  }
+  .ck-sub {
+    max-width: 560px; font-family: var(--font-ui); font-size: 16px; line-height: 1.6;
+    color: var(--c-muted); text-align: center;
+  }
+
+  .center-container {
+    max-width: 720px; margin: 0 auto;
+    display: flex; flex-direction: column; gap: 32px;
+    padding: 0 48px 80px;
+  }
+
+  .section-block { display: flex; flex-direction: column; gap: 16px; }
+  .section-title { font-family: var(--font-mono); font-size: 12px; font-weight: 700; letter-spacing: 2px; color: var(--c-muted); }
+
+  .order-table {
+    border: 1px solid var(--c-line); border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .order-header {
+    display: grid; grid-template-columns: 1fr 100px 120px;
+    padding: 14px 20px; background: var(--c-ink);
+    font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+    letter-spacing: 2px; color: var(--c-paper);
+  }
+  .order-row {
+    display: grid; grid-template-columns: 1fr 100px 120px;
+    padding: 16px 20px; border-bottom: 1px solid var(--c-line);
+    align-items: center;
+  }
+  .order-product { display: flex; gap: 12px; align-items: center; }
+  .order-thumb { width: 48px; height: 48px; background: var(--c-mid); border-radius: var(--radius-sm); flex-shrink: 0; }
+  .order-info { display: flex; flex-direction: column; gap: 2px; }
+  .order-name { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--c-ink); }
+  .order-flavor { font-family: var(--font-ui); font-size: 12px; color: var(--c-muted); }
+  .order-unit { font-family: var(--font-mono); font-size: 12px; color: var(--c-muted); }
+
+  .order-qty { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 14px; font-weight: 700; }
+  .qty-sm {
+    width: 28px; height: 28px; border: 1px solid var(--c-line-hard); border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center; background: var(--c-paper); cursor: pointer;
+  }
+
+  .order-subtotal { display: flex; align-items: center; justify-content: space-between; }
+  .order-subtotal span { font-family: var(--font-mono); font-size: 14px; font-weight: 700; }
+  .trash-btn { color: var(--c-muted); cursor: pointer; }
+
+  .order-totals { padding: 16px 20px; display: flex; flex-direction: column; gap: 8px; }
+  .total-row { display: flex; justify-content: space-between; font-family: var(--font-ui); font-size: 14px; color: var(--c-muted); }
+  .total-row.final { font-family: var(--font-display); font-size: 20px; font-weight: 800; color: var(--c-ink); }
+  .total-divider { height: 1px; background: var(--c-line); margin: 4px 0; }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-group label {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+    letter-spacing: 2px; color: var(--c-muted);
+  }
+  .form-group input, .form-group textarea {
+    padding: 14px 16px; border: 1px solid var(--c-line-hard); border-radius: var(--radius-sm);
+    font-family: var(--font-ui); font-size: 14px; background: var(--c-paper); color: var(--c-ink);
+    outline: none;
+  }
+  .form-group input:focus, .form-group textarea:focus { border-color: var(--c-yellow); }
+  .form-group textarea { resize: vertical; }
+
+  .radio-group { display: flex; flex-direction: column; gap: 8px; }
+  .radio-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 16px; border: 1px solid var(--c-line-hard); border-radius: var(--radius-sm);
+    font-family: var(--font-ui); font-size: 14px; cursor: pointer;
+  }
+  .radio-item.active { border-color: var(--c-ink); background: #0A0A0908; }
+
+  .info-box {
+    display: flex; gap: 12px; padding: 20px;
+    background: var(--c-paper); border: 1px solid var(--c-line);
+    border-radius: var(--radius-md);
+  }
+  .info-box p { font-family: var(--font-ui); font-size: 14px; line-height: 1.5; color: var(--c-muted); }
+
+  .cta-send {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    width: 100%; height: 64px; background: var(--c-yellow); border-radius: var(--radius-sm);
+    font-family: var(--font-display); font-size: 16px; font-weight: 800; letter-spacing: 1px;
+    color: var(--c-ink); cursor: pointer; transition: opacity 0.2s;
+  }
+  .cta-send:hover { opacity: 0.85; }
+
+  .cancel-wrap { text-align: center; }
+  .cancel-wrap a {
+    font-family: var(--font-ui); font-size: 14px; color: var(--c-muted);
+    text-decoration: underline;
+  }
+
+  .mini-footer {
+    display: flex; justify-content: space-between; padding: 24px 48px;
+    background: var(--c-ink);
+  }
+  .mini-footer span {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; color: var(--c-paper-muted);
+  }
+
+  @media (max-width: 700px) {
+    .ck-headline { font-size: 56px; }
+    .center-container { padding: 0 20px 40px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .order-header, .order-row { grid-template-columns: 1fr; gap: 8px; }
+  }
+</style>

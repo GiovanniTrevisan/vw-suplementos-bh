@@ -1,0 +1,184 @@
+---
+import { ArrowRight, MessageCircle } from '@lucide/astro';
+---
+
+<section class="hero" id="inicio">
+  <div class="hero-left">
+    <div class="kicker">
+      <div class="kicker-line"></div>
+      <span>VW SUPLEMENTOS · BH CASTELO</span>
+    </div>
+    <h1 class="hero-title">SEU TREINO MERECE O MELHOR.</h1>
+    <p class="hero-sub">Whey, creatina, pré-treino e acessórios das principais marcas. Originais, com nota fiscal e entrega rápida em Belo Horizonte.</p>
+    <div class="ctas">
+      <a href="/catalogo" class="cta-primary">
+        <span>VER CATÁLOGO</span>
+        <ArrowRight size={18} />
+      </a>
+      <a href="#" class="cta-secondary">
+        <MessageCircle size={18} />
+        <span>FALAR NO WHATSAPP</span>
+      </a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="yellow-accent"></div>
+    <div class="product-mock">
+      <div class="product-inner"></div>
+    </div>
+    <div class="rating-badge">
+      <span>4.7★ NO GOOGLE</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    padding: 0 80px;
+    height: 720px;
+    background: var(--c-paper);
+    width: 100%;
+  }
+
+  .hero-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .kicker {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .kicker-line {
+    width: 36px;
+    height: 2px;
+    background: var(--c-ink);
+  }
+
+  .kicker span {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: var(--c-ink);
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: 110px;
+    font-weight: 800;
+    font-style: italic;
+    line-height: 0.9;
+    letter-spacing: -2px;
+    color: var(--c-ink);
+  }
+
+  .hero-sub {
+    max-width: 520px;
+    font-family: var(--font-ui);
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--c-mid);
+  }
+
+  .ctas {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .cta-primary {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 28px;
+    background: var(--c-yellow);
+    border-radius: var(--radius-pill);
+    color: var(--c-ink);
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    transition: opacity 0.2s;
+  }
+
+  .cta-primary:hover { opacity: 0.85; }
+
+  .cta-secondary {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 28px;
+    border: 2px solid var(--c-ink);
+    border-radius: var(--radius-pill);
+    color: var(--c-ink);
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    background: transparent;
+    transition: background 0.2s;
+  }
+
+  .cta-secondary:hover { background: #0A0A0910; }
+
+  .hero-right {
+    position: relative;
+    width: 480px;
+    height: 600px;
+    background: var(--c-mid);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .yellow-accent {
+    position: absolute;
+    left: 0;
+    top: 80px;
+    width: 8px;
+    height: 440px;
+    background: var(--c-yellow);
+  }
+
+  .product-mock {
+    position: absolute;
+    left: 80px;
+    top: 60px;
+    width: 320px;
+    height: 480px;
+    background: var(--c-ink);
+    border-radius: var(--radius-md);
+  }
+
+  .rating-badge {
+    position: absolute;
+    left: 24px;
+    bottom: 40px;
+    background: var(--c-yellow);
+    border-radius: var(--radius-sm);
+    padding: 10px 16px;
+    transform: rotate(12deg);
+  }
+
+  .rating-badge span {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--c-ink);
+  }
+
+  @media (max-width: 1100px) {
+    .hero { flex-direction: column; height: auto; padding: 60px 20px; }
+    .hero-title { font-size: 64px; }
+    .hero-right { width: 100%; height: 400px; }
+  }
+</style>

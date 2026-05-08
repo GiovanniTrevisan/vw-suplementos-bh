@@ -1,0 +1,166 @@
+---
+import { Star } from '@lucide/astro';
+
+const reviews = [
+  {
+    text: 'Atendimento muito bom, o pessoal entende o que vende. Comprei meu whey e já chegou no mesmo dia em casa. Voltarei sempre.',
+    author: 'LUCAS R.',
+  },
+  {
+    text: 'Loja referência aqui no Castelo. Preço justo, produto original com nota e o time é parceiro de verdade. Recomendo demais.',
+    author: 'ANA C.',
+  },
+  {
+    text: 'Sempre que preciso de creatina ou pré-treino, é aqui que eu venho. Nunca tive problema, atendimento top e desconto no PIX.',
+    author: 'PEDRO M.',
+  },
+];
+---
+
+<section class="reviews">
+  <div class="rev-header">
+    <div class="rev-title-wrap">
+      <span class="rev-kicker">PROVA SOCIAL · 4.7★</span>
+      <h2 class="rev-title">QUEM TREINA, RECOMENDA.</h2>
+    </div>
+    <div class="rev-stars">
+      {[1,2,3,4,5].map(() => <Star size={18} fill="var(--c-yellow)" color="var(--c-yellow)" />)}
+      <span class="rev-rating">4,7 / 5 · 312 avaliações</span>
+    </div>
+  </div>
+
+  <div class="rev-inset">
+    {reviews.map((r) => (
+      <div class="review-card">
+        <span class="review-quote">"</span>
+        <p class="review-text">{r.text}</p>
+        <div class="review-foot">
+          <span class="review-author">{r.author}</span>
+          <span class="review-stars">★★★★★</span>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .reviews {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    padding: 100px 80px;
+    background: var(--c-paper);
+    width: 100%;
+  }
+
+  .rev-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%;
+  }
+
+  .rev-title-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .rev-kicker {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: var(--c-muted);
+  }
+
+  .rev-title {
+    font-family: var(--font-display);
+    font-size: 64px;
+    font-weight: 800;
+    font-style: italic;
+    line-height: 0.92;
+    letter-spacing: -2px;
+    color: var(--c-ink);
+  }
+
+  .rev-stars {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .rev-rating {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: var(--c-mid);
+  }
+
+  .rev-inset {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 32px;
+    background: var(--c-ink);
+    border-radius: var(--radius-md);
+    width: 100%;
+  }
+
+  .review-card {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 24px 24px 24px 28px;
+    background: var(--c-mid);
+    border-radius: var(--radius-sm);
+    border-left: 4px solid var(--c-yellow);
+  }
+
+  .review-quote {
+    font-family: var(--font-display);
+    font-size: 80px;
+    font-weight: 800;
+    font-style: italic;
+    line-height: 0.6;
+    color: var(--c-yellow);
+  }
+
+  .review-text {
+    font-family: var(--font-ui);
+    font-size: 16px;
+    font-style: italic;
+    line-height: 1.55;
+    color: var(--c-paper);
+  }
+
+  .review-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .review-author {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--c-paper);
+  }
+
+  .review-stars {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--c-yellow);
+  }
+
+  @media (max-width: 900px) {
+    .reviews { padding: 60px 20px; }
+    .rev-title { font-size: 40px; }
+    .rev-inset { grid-template-columns: 1fr; padding: 16px; }
+    .rev-header { flex-direction: column; gap: 16px; align-items: flex-start; }
+  }
+</style>

@@ -1,0 +1,99 @@
+---
+import { ArrowRight } from '@lucide/astro';
+---
+
+<section class="cta-final">
+  <div class="cta-left">
+    <span class="cta-kick">// PRÓXIMO PASSO</span>
+    <h2 class="cta-heading">PRONTO PARA<br/>EVOLUIR?</h2>
+    <p class="cta-sub">Monte seu pedido no catálogo e nos mande pelo WhatsApp.<br/>Entregamos em BH ou você retira na loja do Castelo.</p>
+  </div>
+  <div class="cta-right">
+    <a href="/catalogo" class="cta-btn-pri">
+      <ArrowRight size={18} color="var(--c-yellow)" />
+      <span>ACESSAR O CATÁLOGO</span>
+    </a>
+    <span class="cta-sub2">FRETE A COMBINAR · WHATSAPP DIRETO</span>
+  </div>
+</section>
+
+<style>
+  .cta-final {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 60px;
+    padding: 100px 80px;
+    background: var(--c-yellow);
+    width: 100%;
+  }
+
+  .cta-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .cta-kick {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--c-ink);
+  }
+
+  .cta-heading {
+    font-family: var(--font-display);
+    font-size: 96px;
+    font-weight: 800;
+    font-style: italic;
+    line-height: 0.9;
+    letter-spacing: -3px;
+    color: var(--c-ink);
+  }
+
+  .cta-sub {
+    font-family: var(--font-ui);
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--c-ink);
+  }
+
+  .cta-right {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-end;
+  }
+
+  .cta-btn-pri {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 24px 40px;
+    background: var(--c-ink);
+    border-radius: var(--radius-sm);
+    color: var(--c-paper);
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    transition: opacity 0.2s;
+  }
+
+  .cta-btn-pri:hover { opacity: 0.85; }
+
+  .cta-sub2 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--c-ink);
+  }
+
+  @media (max-width: 900px) {
+    .cta-final { flex-direction: column; padding: 60px 20px; gap: 40px; }
+    .cta-heading { font-size: 56px; }
+    .cta-right { align-items: stretch; }
+  }
+</style>

@@ -1,0 +1,266 @@
+---
+import { MapPin, Clock, Phone, Map, MessageCircle } from '@lucide/astro';
+---
+
+<section class="localizacao" id="localizacao">
+  <div class="loc-left">
+    <span class="loc-kicker">VENHA NA LOJA</span>
+    <h2 class="loc-title">ONDE ESTAMOS.</h2>
+
+    <div class="addr-block">
+      <div class="addr-line">
+        <MapPin size={22} color="var(--c-yellow)" />
+        <div class="addr-text">
+          <span class="addr-label">ENDEREÇO</span>
+          <span class="addr-value">Av. Pres. Tancredo Neves, 2337 — Loja 8, Castelo, BH/MG</span>
+        </div>
+      </div>
+      <div class="addr-line">
+        <Clock size={22} color="var(--c-yellow)" />
+        <div class="addr-text">
+          <span class="addr-label">HORÁRIO</span>
+          <span class="addr-value">Seg–Sex 9h–19h · Sáb 9h–14h · Dom fechado</span>
+        </div>
+      </div>
+      <div class="addr-line">
+        <Phone size={22} color="var(--c-yellow)" />
+        <div class="addr-text">
+          <span class="addr-label">WHATSAPP</span>
+          <span class="addr-phone">(31) 9 9999-9999</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="loc-btns">
+      <a href="#" class="loc-btn outline">
+        <Map size={16} />
+        <span>VER NO GOOGLE MAPS</span>
+      </a>
+      <a href="#" class="loc-btn filled">
+        <MessageCircle size={16} />
+        <span>CHAMAR NO WHATSAPP</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="map-placeholder">
+    <div class="map-grid">
+      {[80,160,240,320,400].map(y => <div class="grid-h" style={`top: ${y}px`}></div>)}
+      {[80,160,240,320,400,480,560].map(x => <div class="grid-v" style={`left: ${x}px`}></div>)}
+    </div>
+    <div class="road-h"></div>
+    <div class="road-v"></div>
+    <div class="pin">
+      <div class="pin-head">
+        <MapPin size={24} color="var(--c-ink)" />
+      </div>
+    </div>
+    <div class="pin-shadow"></div>
+    <div class="map-badge">
+      <span>VW · CASTELO BH</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .localizacao {
+    display: flex;
+    gap: 60px;
+    padding: 100px 80px;
+    background: var(--c-paper);
+    border-top: 1px solid var(--c-line);
+    width: 100%;
+  }
+
+  .loc-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .loc-kicker {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: var(--c-muted);
+  }
+
+  .loc-title {
+    font-family: var(--font-display);
+    font-size: 64px;
+    font-weight: 800;
+    font-style: italic;
+    line-height: 0.92;
+    letter-spacing: -2px;
+    color: var(--c-ink);
+  }
+
+  .addr-block {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding-top: 24px;
+  }
+
+  .addr-line {
+    display: flex;
+    gap: 14px;
+  }
+
+  .addr-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .addr-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--c-muted);
+  }
+
+  .addr-value {
+    font-family: var(--font-ui);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--c-ink);
+  }
+
+  .addr-phone {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--c-ink);
+  }
+
+  .loc-btns {
+    display: flex;
+    gap: 12px;
+    padding-top: 16px;
+  }
+
+  .loc-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 24px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--c-ink);
+    transition: opacity 0.2s;
+  }
+
+  .loc-btn:hover { opacity: 0.8; }
+
+  .loc-btn.outline {
+    border: 2px solid var(--c-ink);
+    background: transparent;
+  }
+
+  .loc-btn.filled {
+    background: var(--c-yellow);
+  }
+
+  .map-placeholder {
+    flex: 1;
+    position: relative;
+    height: 480px;
+    background: var(--c-mid);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .grid-h {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: #F5F0E81A;
+  }
+
+  .grid-v {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 1px;
+    background: #F5F0E81A;
+  }
+
+  .road-h {
+    position: absolute;
+    left: 0;
+    top: 230px;
+    width: 100%;
+    height: 6px;
+    background: #0A0A0959;
+  }
+
+  .road-v {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 6px;
+    height: 100%;
+    background: #0A0A0959;
+  }
+
+  .pin {
+    position: absolute;
+    left: calc(50% - 24px);
+    top: 200px;
+  }
+
+  .pin-head {
+    width: 48px;
+    height: 48px;
+    background: var(--c-yellow);
+    border-radius: var(--radius-pill);
+    border: 3px solid var(--c-ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pin-shadow {
+    position: absolute;
+    left: calc(50% - 8px);
+    top: 255px;
+    width: 16px;
+    height: 6px;
+    background: #0A0A0959;
+    border-radius: var(--radius-pill);
+  }
+
+  .map-badge {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    background: var(--c-paper);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+  }
+
+  .map-badge span {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--c-ink);
+  }
+
+  @media (max-width: 900px) {
+    .localizacao { flex-direction: column; padding: 60px 20px; }
+    .loc-title { font-size: 40px; }
+    .loc-btns { flex-direction: column; }
+    .map-placeholder { height: 300px; }
+  }
+</style>

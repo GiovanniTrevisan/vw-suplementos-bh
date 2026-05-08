@@ -1,0 +1,227 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import { ArrowLeft, Home, MessageCircle } from '@lucide/astro';
+---
+
+<Layout title="404 — Página não encontrada · VW Suplementos BH">
+  <Header />
+
+  <section class="main-404">
+    <div class="glyph-404">404</div>
+
+    <div class="content-404">
+      <span class="kicker-404">// PÁGINA NÃO ENCONTRADA</span>
+
+      <h1 class="title-404">EITA, ESSA<br/>ROTA NÃO<br/>EXISTE.</h1>
+
+      <p class="sub-404">O link que você acessou pode estar quebrado ou a página foi removida. Mas não esquenta — o treino continua.</p>
+
+      <div class="btns-404">
+        <a href="/" class="btn-404 primary">
+          <Home size={18} />
+          <span>VOLTAR AO INÍCIO</span>
+        </a>
+        <a href="/catalogo" class="btn-404 secondary">
+          <ArrowLeft size={18} />
+          <span>VER CATÁLOGO</span>
+        </a>
+      </div>
+
+      <div class="links-404">
+        <a href="/#sobre">Sobre nós</a>
+        <span class="dot">·</span>
+        <a href="/#localizacao">Localização</a>
+        <span class="dot">·</span>
+        <a href="#">
+          <MessageCircle size={14} />
+          <span>WhatsApp</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer-404">
+    <div class="f-left">
+      <span class="f-brand">VW SUPLEMENTOS</span>
+      <span class="f-sep"></span>
+      <span>CASTELO BH</span>
+    </div>
+    <div class="f-right">
+      <span>© 2026 · TODOS OS DIREITOS RESERVADOS</span>
+    </div>
+  </footer>
+</Layout>
+
+<style>
+  .main-404 {
+    position: relative;
+    width: 100%;
+    min-height: 840px;
+    background: var(--c-ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .glyph-404 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-display);
+    font-size: clamp(200px, 38vw, 560px);
+    font-weight: 800;
+    font-style: italic;
+    line-height: 0.85;
+    letter-spacing: -30px;
+    color: var(--c-yellow);
+    opacity: 0.12;
+    text-align: center;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .content-404 {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    text-align: center;
+    padding: 24px 48px;
+  }
+
+  .kicker-404 {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--c-yellow);
+  }
+
+  .title-404 {
+    font-family: var(--font-display);
+    font-size: 80px;
+    font-weight: 800;
+    font-style: italic;
+    line-height: 0.9;
+    letter-spacing: -3px;
+    color: var(--c-paper);
+  }
+
+  .sub-404 {
+    max-width: 480px;
+    font-family: var(--font-ui);
+    font-size: 16px;
+    line-height: 1.6;
+    color: #F5F0E8B3;
+  }
+
+  .btns-404 {
+    display: flex;
+    gap: 12px;
+  }
+
+  .btn-404 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 28px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    transition: opacity 0.2s;
+  }
+
+  .btn-404.primary {
+    background: var(--c-yellow);
+    color: var(--c-ink);
+  }
+
+  .btn-404.secondary {
+    border: 2px solid #F5F0E833;
+    color: var(--c-paper);
+  }
+
+  .btn-404:hover { opacity: 0.8; }
+
+  .links-404 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .links-404 a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: #F5F0E8B3;
+    transition: color 0.2s;
+  }
+
+  .links-404 a:hover { color: var(--c-paper); }
+
+  .dot {
+    color: #F5F0E833;
+    font-size: 12px;
+  }
+
+  .footer-404 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    padding: 0 40px;
+    background: var(--c-ink);
+    border-top: 1px solid #FFFFFF1F;
+  }
+
+  .f-left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .f-brand {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--c-paper-muted);
+  }
+
+  .f-sep {
+    width: 1px;
+    height: 14px;
+    background: #FFFFFF1F;
+  }
+
+  .f-left span,
+  .f-right span {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: var(--c-paper-muted);
+  }
+
+  .f-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  @media (max-width: 700px) {
+    .title-404 { font-size: 48px; }
+    .btns-404 { flex-direction: column; }
+    .content-404 { padding: 24px 20px; }
+  }
+</style>

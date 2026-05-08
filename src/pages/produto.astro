@@ -1,0 +1,372 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { ChevronRight, Star, Plus, Minus, ShoppingBag, MessageCircle, ChevronDown, Heart, Share2, Shield } from '@lucide/astro';
+
+const product = {
+  name: 'WHEY PROTEIN CONCENTRADO 900G',
+  brand: 'Max Titanium',
+  price: 'R$ 149,90',
+  oldPrice: 'R$ 179,90',
+  pix: 'R$ 142,40',
+  installments: '3x de R$ 49,97 sem juros',
+  rating: 4.7,
+  reviews: 312,
+  category: 'PROTEÍNA',
+  sku: 'MT-WPC-900-CHO',
+};
+
+const flavors = ['Chocolate', 'Baunilha', 'Morango', 'Cookies'];
+const thumbs = [1, 2, 3, 4, 5];
+
+const accordions = [
+  { title: 'INFORMAÇÃO NUTRICIONAL', open: true, content: 'Porção de 40g (1 scoop): Valor energético 155 kcal, Proteínas 24g, Carboidratos 5g, Gorduras totais 3,5g, Sódio 55mg. Contém 5,5g de BCAAs por porção e 4g de Glutamina.' },
+  { title: 'COMO USAR', open: false, content: 'Misture 1 scoop (40g) em 200ml de água ou leite gelado. Agite bem no shaker e consuma imediatamente após o treino ou entre refeições.' },
+  { title: 'INGREDIENTES', open: false, content: 'Whey protein concentrado, cacau em pó, aromatizante, espessante goma xantana, edulcorante sucralose. ALÉRGICOS: CONTÉM DERIVADOS DE LEITE.' },
+  { title: 'GARANTIA & TROCA', open: false, content: 'Produto 100% original com nota fiscal. Prazo de 7 dias para devolução sem uso. Trocas aceitas para sabores diferentes mediante disponibilidade em loja.' },
+];
+
+const related = [
+  { category: 'FORÇA', name: 'Creatina Mono 300g', price: 'R$ 89,90' },
+  { category: 'PRÉ-TREINO', name: 'Pré-treino HardCore 300g', price: 'R$ 119,90' },
+  { category: 'COMBO', name: 'Kit Iniciante Completo', price: 'R$ 249,90' },
+  { category: 'ACESSÓRIO', name: 'Coqueteleira 600ml', price: 'R$ 29,90' },
+];
+---
+
+<Layout title={`${product.name} — VW Suplementos BH`}>
+  <Header />
+
+  <div class="breadcrumb">
+    <span>INÍCIO</span>
+    <ChevronRight size={12} />
+    <span>CATÁLOGO</span>
+    <ChevronRight size={12} />
+    <span>PROTEÍNAS</span>
+    <ChevronRight size={12} />
+    <span class="active">WHEY MAX TITANIUM</span>
+  </div>
+
+  <section class="product-block">
+    <div class="gallery">
+      <div class="gallery-main">
+        <div class="gallery-placeholder"></div>
+      </div>
+      <div class="gallery-thumbs">
+        {thumbs.map((_, i) => (
+          <div class:list={['thumb', { active: i === 0 }]}></div>
+        ))}
+      </div>
+    </div>
+
+    <div class="info">
+      <div class="info-meta">
+        <span class="info-brand">{product.brand}</span>
+        <span class="info-sku">SKU: {product.sku}</span>
+      </div>
+
+      <h1 class="info-name">{product.name}</h1>
+
+      <div class="info-rating">
+        {[1,2,3,4,5].map(() => <Star size={16} fill="var(--c-yellow)" color="var(--c-yellow)" />)}
+        <span class="rating-text">{product.rating} ({product.reviews} avaliações)</span>
+      </div>
+
+      <div class="info-prices">
+        <div class="price-row">
+          <span class="price-old">{product.oldPrice}</span>
+          <span class="price-current">{product.price}</span>
+        </div>
+        <div class="pix-row">
+          <span class="pix-badge">PIX</span>
+          <span class="pix-value">{product.pix}</span>
+          <span class="pix-label">(5% off)</span>
+        </div>
+        <span class="installments">{product.installments}</span>
+      </div>
+
+      <div class="info-divider"></div>
+
+      <div class="flavor-section">
+        <span class="flavor-label">SABOR</span>
+        <div class="flavor-options">
+          {flavors.map((f, i) => (
+            <button class:list={['flavor-btn', { active: i === 0 }]}>{f}</button>
+          ))}
+        </div>
+      </div>
+
+      <div class="info-divider"></div>
+
+      <div class="qty-section">
+        <span class="qty-label">QUANTIDADE</span>
+        <div class="qty-controls">
+          <button class="qty-btn"><Minus size={16} /></button>
+          <span class="qty-value">1</span>
+          <button class="qty-btn"><Plus size={16} /></button>
+        </div>
+      </div>
+
+      <div class="action-btns">
+        <button class="btn-add">
+          <ShoppingBag size={18} />
+          <span>ADICIONAR AO CARRINHO</span>
+        </button>
+        <button class="btn-whatsapp">
+          <MessageCircle size={18} />
+          <span>COMPRAR VIA WHATSAPP</span>
+        </button>
+      </div>
+
+      <div class="quick-info">
+        <div class="qi-item">
+          <Shield size={16} color="var(--c-yellow)" />
+          <span>Produto original com nota fiscal</span>
+        </div>
+        <div class="qi-item">
+          <Shield size={16} color="var(--c-yellow)" />
+          <span>Entrega em BH no mesmo dia</span>
+        </div>
+      </div>
+
+      <div class="share-row">
+        <button class="icon-btn"><Heart size={18} /></button>
+        <button class="icon-btn"><Share2 size={18} /></button>
+      </div>
+    </div>
+  </section>
+
+  <div class="big-divider"></div>
+
+  <section class="accordion-section">
+    <div class="acc-left">
+      <span class="acc-kicker">// DETALHES</span>
+      <h2 class="acc-title">TUDO SOBRE O PRODUTO.</h2>
+      <div class="acc-bar"></div>
+    </div>
+    <div class="acc-right">
+      {accordions.map((a) => (
+        <details class="acc-item" open={a.open}>
+          <summary class="acc-head">
+            <span>{a.title}</span>
+            <ChevronDown size={18} />
+          </summary>
+          <p class="acc-body">{a.content}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <section class="related-section">
+    <div class="rel-header">
+      <div class="rel-title-wrap">
+        <span class="rel-kicker">TALVEZ VOCÊ GOSTE</span>
+        <h2 class="rel-title">PRODUTOS RELACIONADOS.</h2>
+      </div>
+    </div>
+    <div class="rel-grid">
+      {related.map((r) => (
+        <a href="/produto" class="rel-card">
+          <div class="rel-img"></div>
+          <div class="rel-body">
+            <span class="rel-cat">{r.category}</span>
+            <span class="rel-name">{r.name}</span>
+            <span class="rel-price">{r.price}</span>
+            <button class="rel-btn">
+              <Plus size={14} />
+              <span>ADICIONAR</span>
+            </button>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <footer class="mini-footer">
+    <div class="mf-left">
+      <span class="mf-logo">VW</span>
+      <span>VW SUPLEMENTOS BH</span>
+    </div>
+    <div class="mf-right">
+      <span>TERMOS</span>
+      <span>PRIVACIDADE</span>
+      <span>© 2026</span>
+    </div>
+  </footer>
+</Layout>
+
+<style>
+  .breadcrumb {
+    display: flex; align-items: center; gap: 10px;
+    padding: 20px 48px; background: var(--c-paper);
+    border-bottom: 1px solid var(--c-line);
+    font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+    letter-spacing: 1.5px; color: var(--c-muted);
+  }
+  .breadcrumb .active { color: var(--c-ink); font-weight: 700; }
+
+  .product-block {
+    display: flex; gap: 64px; padding: 48px;
+    background: var(--c-paper);
+  }
+
+  .gallery { width: 640px; flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; }
+  .gallery-main { width: 100%; aspect-ratio: 1; background: var(--c-mid); border-radius: var(--radius-md); }
+  .gallery-placeholder { width: 100%; height: 100%; }
+  .gallery-thumbs { display: flex; gap: 12px; }
+  .thumb {
+    width: 80px; height: 80px; background: var(--c-mid);
+    border-radius: var(--radius-sm); border: 2px solid transparent;
+    cursor: pointer;
+  }
+  .thumb.active { border-color: var(--c-yellow); }
+
+  .info { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+  .info-meta { display: flex; justify-content: space-between; align-items: center; }
+  .info-brand { font-family: var(--font-mono); font-size: 12px; font-weight: 700; letter-spacing: 2px; color: var(--c-muted); }
+  .info-sku { font-family: var(--font-mono); font-size: 11px; color: var(--c-muted); }
+
+  .info-name {
+    font-family: var(--font-display); font-size: 48px; font-weight: 800;
+    font-style: italic; line-height: 0.95; letter-spacing: -2px; color: var(--c-ink);
+  }
+
+  .info-rating { display: flex; align-items: center; gap: 6px; }
+  .rating-text { font-family: var(--font-mono); font-size: 12px; color: var(--c-muted); margin-left: 4px; }
+
+  .info-prices { display: flex; flex-direction: column; gap: 8px; }
+  .price-row { display: flex; align-items: baseline; gap: 12px; }
+  .price-old { font-family: var(--font-mono); font-size: 16px; color: var(--c-muted); text-decoration: line-through; }
+  .price-current { font-family: var(--font-mono); font-size: 32px; font-weight: 700; color: var(--c-ink); }
+  .pix-row { display: flex; align-items: center; gap: 8px; }
+  .pix-badge {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+    padding: 4px 8px; background: var(--c-yellow); border-radius: var(--radius-sm); color: var(--c-ink);
+  }
+  .pix-value { font-family: var(--font-mono); font-size: 18px; font-weight: 700; color: var(--c-ink); }
+  .pix-label { font-family: var(--font-mono); font-size: 12px; color: var(--c-muted); }
+  .installments { font-family: var(--font-ui); font-size: 14px; color: var(--c-muted); }
+
+  .info-divider { height: 1px; background: var(--c-line); }
+
+  .flavor-section { display: flex; flex-direction: column; gap: 12px; }
+  .flavor-label { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--c-muted); }
+  .flavor-options { display: flex; gap: 8px; flex-wrap: wrap; }
+  .flavor-btn {
+    padding: 10px 20px; border-radius: var(--radius-pill); border: 1px solid var(--c-line-hard);
+    font-family: var(--font-ui); font-size: 13px; font-weight: 500; background: var(--c-paper); color: var(--c-ink);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .flavor-btn.active { background: var(--c-ink); color: var(--c-paper); border-color: var(--c-ink); }
+
+  .qty-section { display: flex; flex-direction: column; gap: 12px; }
+  .qty-label { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--c-muted); }
+  .qty-controls { display: flex; align-items: center; gap: 16px; }
+  .qty-btn {
+    width: 40px; height: 40px; border: 1px solid var(--c-line-hard); border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center; background: var(--c-paper);
+    cursor: pointer;
+  }
+  .qty-value { font-family: var(--font-mono); font-size: 18px; font-weight: 700; }
+
+  .action-btns { display: flex; flex-direction: column; gap: 12px; }
+  .btn-add {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 20px; background: var(--c-yellow); border-radius: var(--radius-sm);
+    font-family: var(--font-display); font-size: 16px; font-weight: 800; letter-spacing: 1px;
+    color: var(--c-ink); cursor: pointer; transition: opacity 0.2s;
+  }
+  .btn-add:hover { opacity: 0.85; }
+  .btn-whatsapp {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 20px; border: 2px solid var(--c-ink); border-radius: var(--radius-sm);
+    font-family: var(--font-display); font-size: 16px; font-weight: 800; letter-spacing: 1px;
+    color: var(--c-ink); background: transparent; cursor: pointer; transition: background 0.2s;
+  }
+  .btn-whatsapp:hover { background: #0A0A0910; }
+
+  .quick-info { display: flex; flex-direction: column; gap: 8px; }
+  .qi-item { display: flex; align-items: center; gap: 8px; font-family: var(--font-ui); font-size: 13px; color: var(--c-muted); }
+
+  .share-row { display: flex; gap: 12px; }
+  .icon-btn {
+    width: 40px; height: 40px; border: 1px solid var(--c-line-hard); border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center; background: var(--c-paper);
+    cursor: pointer; color: var(--c-muted);
+  }
+
+  .big-divider { height: 1px; background: var(--c-line); width: 100%; }
+
+  .accordion-section { display: flex; gap: 64px; padding: 80px 48px; background: var(--c-paper); }
+  .acc-left { width: 380px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; }
+  .acc-kicker { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--c-muted); }
+  .acc-title {
+    font-family: var(--font-display); font-size: 48px; font-weight: 800;
+    font-style: italic; line-height: 0.95; letter-spacing: -2px; color: var(--c-ink);
+  }
+  .acc-bar { width: 80px; height: 4px; background: var(--c-yellow); margin-top: 8px; }
+
+  .acc-right { flex: 1; border-top: 1px solid var(--c-line); }
+  .acc-item { border-bottom: 1px solid var(--c-line); }
+  .acc-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 24px 0; cursor: pointer;
+    font-family: var(--font-display); font-size: 18px; font-weight: 800; letter-spacing: 1px;
+    color: var(--c-ink); list-style: none;
+  }
+  .acc-head::-webkit-details-marker { display: none; }
+  .acc-body {
+    padding: 0 0 24px; font-family: var(--font-ui); font-size: 15px; line-height: 1.6; color: var(--c-muted);
+  }
+
+  .related-section {
+    display: flex; flex-direction: column; gap: 40px;
+    padding: 80px 48px; background: var(--c-ink);
+  }
+  .rel-header { display: flex; justify-content: space-between; align-items: flex-end; }
+  .rel-title-wrap { display: flex; flex-direction: column; gap: 8px; }
+  .rel-kicker { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 2px; color: var(--c-yellow); }
+  .rel-title { font-family: var(--font-display); font-size: 48px; font-weight: 800; font-style: italic; line-height: 0.92; letter-spacing: -2px; color: var(--c-paper); }
+
+  .rel-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .rel-card {
+    display: flex; flex-direction: column;
+    border: 1px solid #F5F0E833; border-radius: var(--radius-md); overflow: hidden;
+    transition: transform 0.2s;
+  }
+  .rel-card:hover { transform: translateY(-4px); }
+  .rel-img { width: 100%; height: 200px; background: var(--c-mid); }
+  .rel-body { display: flex; flex-direction: column; gap: 10px; padding: 16px; }
+  .rel-cat { font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; color: #F5F0E8B3; }
+  .rel-name { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--c-paper); letter-spacing: -0.5px; }
+  .rel-price { font-family: var(--font-mono); font-size: 18px; font-weight: 700; color: var(--c-paper); }
+  .rel-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+    padding: 10px 14px; background: var(--c-yellow); border-radius: var(--radius-pill);
+    font-family: var(--font-display); font-size: 12px; font-weight: 800; letter-spacing: 1px; color: var(--c-ink);
+  }
+
+  .mini-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 28px 48px; background: var(--c-ink); border-top: 1px solid #F5F0E81A;
+  }
+  .mf-left { display: flex; align-items: center; gap: 14px; }
+  .mf-logo {
+    font-family: var(--font-display); font-size: 14px; font-weight: 800; font-style: italic;
+    background: var(--c-yellow); padding: 4px 8px; color: var(--c-ink);
+  }
+  .mf-left span:last-child, .mf-right span {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.5px; color: var(--c-paper-muted);
+  }
+  .mf-right { display: flex; align-items: center; gap: 24px; }
+
+  @media (max-width: 1100px) {
+    .product-block { flex-direction: column; padding: 24px; }
+    .gallery { width: 100%; }
+    .info-name { font-size: 36px; }
+    .accordion-section { flex-direction: column; padding: 40px 24px; }
+    .acc-left { width: 100%; }
+    .rel-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>

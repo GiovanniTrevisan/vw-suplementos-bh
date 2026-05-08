@@ -1,0 +1,78 @@
+---
+const stats = [
+  { value: '5+', label: 'anos de experiência', highlight: false },
+  { value: '4,7★', label: 'avaliação no Google', highlight: true },
+  { value: '7', label: 'lojas em MG e PR', highlight: false },
+  { value: '100%', label: 'Whey, creatina e pré das principais marcas', highlight: false },
+];
+---
+
+<section class="trust-bar">
+  {stats.map((stat, i) => (
+    <>
+      {i > 0 && <div class="divider" />}
+      <div class="stat">
+        <span class:list={['stat-value', { yellow: stat.highlight }]}>{stat.value}</span>
+        <span class="stat-label">{stat.label}</span>
+      </div>
+    </>
+  ))}
+</section>
+
+<style>
+  .trust-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 40px 80px;
+    background: var(--c-ink);
+    width: 100%;
+  }
+
+  .stat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: 64px;
+    font-weight: 800;
+    font-style: italic;
+    line-height: 0.9;
+    letter-spacing: -2px;
+    color: var(--c-paper);
+  }
+
+  .stat-value.yellow {
+    color: var(--c-yellow);
+  }
+
+  .stat-label {
+    font-family: var(--font-ui);
+    font-size: 13px;
+    color: #F5F0E8B3;
+    line-height: 1.4;
+  }
+
+  .divider {
+    width: 1px;
+    height: 80px;
+    background: #F5F0E833;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 900px) {
+    .trust-bar {
+      flex-wrap: wrap;
+      padding: 32px 20px;
+      gap: 24px;
+    }
+    .stat { min-width: 45%; }
+    .divider { display: none; }
+    .stat-value { font-size: 40px; }
+  }
+</style>

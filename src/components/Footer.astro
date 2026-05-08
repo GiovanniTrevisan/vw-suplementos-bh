@@ -1,0 +1,232 @@
+---
+import { Camera, MessageCircle } from '@lucide/astro';
+---
+
+<footer class="footer">
+  <div class="footer-top">
+    <div class="fc fc1">
+      <div class="f-logo">
+        <div class="f-logo-box">
+          <span class="f-logo-vw">VW</span>
+        </div>
+        <span class="f-logo-txt">SUPLEMENTOS BH</span>
+      </div>
+      <p class="f-tag">Loja física no Castelo, BH. Suplementos originais, atendimento técnico e entrega rápida na Grande BH.</p>
+      <div class="f-social">
+        <a href="#" class="social-btn" aria-label="Instagram">
+          <Camera size={18} color="var(--c-paper)" />
+        </a>
+        <a href="#" class="social-btn" aria-label="WhatsApp">
+          <MessageCircle size={18} color="var(--c-paper)" />
+        </a>
+      </div>
+    </div>
+
+    <div class="fc fc2">
+      <span class="fc-title">// NAVEGAR</span>
+      <a href="/catalogo">Catálogo</a>
+      <a href="/#sobre">Sobre nós</a>
+      <a href="/#localizacao">Localização</a>
+      <a href="#">Política de privacidade</a>
+    </div>
+
+    <div class="fc fc3">
+      <span class="fc-title">// CONTATO</span>
+      <p class="fc-addr">Av. Pres. Tancredo Neves, 2337 — Loja 8<br/>Castelo, Belo Horizonte/MG</p>
+      <span class="fc-wa">WhatsApp: (31) 9XXXX-XXXX</span>
+      <span class="fc-email">contato@vwsuplementos.com.br</span>
+    </div>
+
+    <div class="fc fc4">
+      <span class="fc-title">// HORÁRIO</span>
+      <div class="hrs-row">
+        <span class="hrs-label">SEG–SEX</span>
+        <span class="hrs-value">08–19h</span>
+      </div>
+      <div class="hrs-row">
+        <span class="hrs-label">SÁBADO</span>
+        <span class="hrs-value">08–14h</span>
+      </div>
+      <div class="hrs-row">
+        <span class="hrs-label">DOMINGO</span>
+        <span class="hrs-value closed">FECHADO</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2026 VW SUPLEMENTOS · CNPJ XX.XXX.XXX/0001-XX · TODOS OS DIREITOS RESERVADOS</span>
+    <span>FEITO EM BELO HORIZONTE</span>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    padding: 80px 80px 32px 80px;
+    background: var(--c-ink);
+    width: 100%;
+  }
+
+  .footer-top {
+    display: flex;
+    gap: 80px;
+    width: 100%;
+  }
+
+  .fc {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .fc1 {
+    gap: 20px;
+  }
+
+  .f-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .f-logo-box {
+    width: 36px;
+    height: 36px;
+    background: var(--c-yellow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .f-logo-vw {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 800;
+    font-style: italic;
+    color: var(--c-ink);
+    letter-spacing: -0.5px;
+  }
+
+  .f-logo-txt {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--c-paper);
+    letter-spacing: 1px;
+  }
+
+  .f-tag {
+    color: var(--c-paper-muted);
+    font-family: var(--font-ui);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .f-social {
+    display: flex;
+    gap: 12px;
+    padding-top: 8px;
+  }
+
+  .social-btn {
+    width: 40px;
+    height: 40px;
+    background: var(--c-mid);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s;
+  }
+
+  .social-btn:hover {
+    opacity: 0.7;
+  }
+
+  .fc-title {
+    color: var(--c-yellow);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+
+  .fc2 a {
+    color: var(--c-paper-muted);
+    font-family: var(--font-ui);
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+
+  .fc2 a:hover {
+    color: var(--c-paper);
+  }
+
+  .fc-addr {
+    color: var(--c-paper-muted);
+    font-family: var(--font-ui);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .fc-wa {
+    color: var(--c-paper);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .fc-email {
+    color: var(--c-paper-muted);
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+
+  .hrs-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .hrs-label {
+    color: var(--c-paper-muted);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+
+  .hrs-value {
+    color: var(--c-paper);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .hrs-value.closed {
+    color: var(--c-red);
+  }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 24px;
+    border-top: 1px solid #F5F0E833;
+  }
+
+  .footer-bottom span {
+    color: var(--c-paper-muted);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 900px) {
+    .footer { padding: 40px 20px 24px; }
+    .footer-top { flex-direction: column; gap: 40px; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
