@@ -54,9 +54,17 @@ import { ArrowLeft, Home, MessageCircle } from '@lucide/astro';
 </Layout>
 
 <style>
+  :global(body:has(.main-404)) {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+    background: var(--c-ink);
+  }
+
   .main-404 {
     position: relative;
     width: 100%;
+    flex: 1;
     min-height: clamp(640px, 80vh, 880px);
     background: var(--c-ink);
     display: flex;
