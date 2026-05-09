@@ -79,11 +79,11 @@ import { ChevronRight, ChevronLeft, ChevronDown, Plus, Minus, ShoppingBag, Messa
 
       <div class="quick-info">
         <div class="qi-item">
-          <Shield size={16} color="var(--c-yellow)" />
+          <Shield size={16} color="var(--c-master)" />
           <span>Produto original com nota fiscal</span>
         </div>
         <div class="qi-item">
-          <Shield size={16} color="var(--c-yellow)" />
+          <Shield size={16} color="var(--c-master)" />
           <span>Entrega em BH no mesmo dia</span>
         </div>
       </div>
@@ -428,7 +428,7 @@ import { ChevronRight, ChevronLeft, ChevronDown, Plus, Minus, ShoppingBag, Messa
   .state-msg { max-width: 480px; font-size: 13px; }
   .loader {
     width: 36px; height: 36px;
-    border: 3px solid var(--c-line); border-top-color: var(--c-yellow);
+    border: 3px solid var(--c-line); border-top-color: var(--c-master);
     border-radius: 50%; animation: spin 800ms linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -438,7 +438,7 @@ import { ChevronRight, ChevronLeft, ChevronDown, Plus, Minus, ShoppingBag, Messa
     border-radius: var(--radius-pill);
     font-family: var(--font-display); font-size: 13px; font-weight: 800; letter-spacing: 1px;
   }
-  .btn-retry:hover { background: var(--c-yellow); color: var(--c-ink); }
+  .btn-retry:hover { background: var(--c-master); color: var(--c-ink); }
 
   .product-block {
     display: grid;
@@ -485,7 +485,7 @@ import { ChevronRight, ChevronLeft, ChevronDown, Plus, Minus, ShoppingBag, Messa
   .action-btns { display: flex; flex-direction: column; gap: 12px; }
   .btn-add {
     display: flex; align-items: center; justify-content: center; gap: 10px;
-    padding: 18px; background: var(--c-yellow); border-radius: var(--radius-sm);
+    padding: 18px; background: var(--c-master); border-radius: var(--radius-sm);
     font-family: var(--font-display); font-size: 16px; font-weight: 800; letter-spacing: 1px;
     color: var(--c-ink);
     transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out);
@@ -517,7 +517,7 @@ import { ChevronRight, ChevronLeft, ChevronDown, Plus, Minus, ShoppingBag, Messa
   }
   .rel-header { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
   .rel-title-wrap { display: flex; flex-direction: column; gap: 8px; }
-  .rel-kicker { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 2px; color: var(--c-yellow); }
+  .rel-kicker { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 2px; color: var(--c-master); }
   .rel-title { font-family: var(--font-display); font-size: clamp(32px, 4vw, 56px); font-weight: 800; font-style: italic; line-height: 0.92; letter-spacing: -2px; color: var(--c-paper); }
 
   .rel-nav { display: flex; gap: 10px; }
@@ -534,7 +534,7 @@ import { ChevronRight, ChevronLeft, ChevronDown, Plus, Minus, ShoppingBag, Messa
                 opacity var(--t-fast) var(--ease-out);
   }
   .rel-nav-btn:hover:not(:disabled) {
-    background: var(--c-yellow); color: var(--c-ink); border-color: var(--c-yellow);
+    background: var(--c-master); color: var(--c-ink); border-color: var(--c-master);
   }
   .rel-nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
@@ -570,8 +570,8 @@ import { ChevronRight, ChevronLeft, ChevronDown, Plus, Minus, ShoppingBag, Messa
   }
   :global(.rel-card:hover) {
     box-shadow: 0 24px 48px -20px rgba(0, 0, 0, 0.6);
-    background: var(--c-yellow);
-    border-color: var(--c-yellow);
+    background: var(--c-master);
+    border-color: var(--c-master);
   }
 
   :global(.rel-img) {
@@ -624,7 +624,7 @@ import { ChevronRight, ChevronLeft, ChevronDown, Plus, Minus, ShoppingBag, Messa
   }
   :global(.rel-price) {
     font-family: var(--font-mono); font-size: 18px; font-weight: 700;
-    color: var(--c-yellow);
+    color: var(--c-master);
     white-space: nowrap;
     transition: color var(--t-fast) var(--ease-out);
   }
@@ -632,7 +632,7 @@ import { ChevronRight, ChevronLeft, ChevronDown, Plus, Minus, ShoppingBag, Messa
   :global(.rel-add) {
     display: inline-flex; align-items: center; gap: 6px;
     padding: 8px 12px;
-    background: var(--c-yellow); color: var(--c-ink);
+    background: var(--c-master); color: var(--c-ink);
     border: none; border-radius: var(--radius-sm);
     font-family: var(--font-mono); font-size: 10px; font-weight: 700;
     letter-spacing: 1px; cursor: pointer; white-space: nowrap; flex-shrink: 0;
@@ -641,7 +641,7 @@ import { ChevronRight, ChevronLeft, ChevronDown, Plus, Minus, ShoppingBag, Messa
                 color var(--t-fast) var(--ease-out);
   }
   :global(.rel-card:hover .rel-add) {
-    background: var(--c-ink); color: var(--c-yellow);
+    background: var(--c-ink); color: var(--c-master);
   }
   :global(.rel-add:hover) { transform: translateY(-2px); }
   :global(.rel-add svg) { stroke: currentColor; }
@@ -667,7 +667,7 @@ import { ChevronRight, ChevronLeft, ChevronDown, Plus, Minus, ShoppingBag, Messa
     font-style: italic; line-height: 0.9; letter-spacing: -1.5px;
     color: var(--c-ink);
   }
-  .ficha-under { width: 60px; height: 4px; background: var(--c-yellow); }
+  .ficha-under { width: 60px; height: 4px; background: var(--c-master); }
   .ficha-desc {
     margin-top: 12px;
     font-family: var(--font-ui); font-size: 14px; line-height: 1.5;
@@ -704,7 +704,7 @@ import { ChevronRight, ChevronLeft, ChevronDown, Plus, Minus, ShoppingBag, Messa
                 border-color var(--t-fast) var(--ease-out);
   }
   .acc-item.open .acc-num {
-    background: var(--c-ink); color: var(--c-yellow); border-color: var(--c-ink);
+    background: var(--c-ink); color: var(--c-master); border-color: var(--c-ink);
   }
   .acc-title {
     font-family: var(--font-display); font-size: 18px; font-weight: 700;
