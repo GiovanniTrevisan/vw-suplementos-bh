@@ -361,19 +361,6 @@ import { ChevronRight, ChevronLeft, ChevronDown, Plus, Minus, ShoppingBag, Messa
     location.href = buildWhatsAppLink(WHATSAPP_NUMBER, lines.join('\n'));
   });
 
-  document.querySelector<HTMLButtonElement>('[data-share]')!.addEventListener('click', async () => {
-    if (!current) return;
-    const url = location.href;
-    if (navigator.share) {
-      try { await navigator.share({ title: current.nome, url }); } catch { /* user canceled */ }
-    } else {
-      try {
-        await navigator.clipboard.writeText(url);
-        alert('Link copiado!');
-      } catch { /* ignore */ }
-    }
-  });
-
   async function load() {
     if (!productId) {
       showError('ID do produto não informado na URL (ex.: /produto?id=1).');
