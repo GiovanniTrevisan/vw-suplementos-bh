@@ -7,7 +7,7 @@ const whatsappLink = buildWhatsAppLink(WHATSAPP_NUMBER, 'Olá! Gostaria de mais 
 const base = import.meta.env.BASE_URL;
 ---
 
-<section class="hero" id="inicio" style={`--hero-bg: url('${base}wallpaper_2.jpg')`}>
+<section class="hero" id="inicio">
   <div class="hero-inner container">
     <div class="hero-left" data-reveal="left">
       <div class="kicker">
@@ -32,7 +32,7 @@ const base = import.meta.env.BASE_URL;
 
 <style>
   .hero {
-    background: linear-gradient(to right, #000000df 30%, rgba(169, 24, 24, 0.486)), var(--hero-bg);
+    background: linear-gradient(to right, #000000df 30%, rgba(169, 24, 24, 0.486)), url('/wallpaper_2.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
