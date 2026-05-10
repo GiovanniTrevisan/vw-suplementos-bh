@@ -3,6 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { ChevronDown, X, Search, SlidersHorizontal } from '@lucide/astro';
+
+const base = import.meta.env.BASE_URL;
 ---
 
 <Layout title="Catálogo — VW Suplementos BH">
@@ -10,7 +12,7 @@ import { ChevronDown, X, Search, SlidersHorizontal } from '@lucide/astro';
 
   <div class="breadcrumb-wrap">
     <div class="breadcrumb container">
-      <a href="/">INÍCIO</a>
+      <a href={base}>INÍCIO</a>
       <span>›</span>
       <span class="active">CATÁLOGO</span>
     </div>
@@ -379,7 +381,7 @@ import { ChevronDown, X, Search, SlidersHorizontal } from '@lucide/astro';
   function productCard(p: Product): HTMLElement {
     const a = document.createElement('a');
     a.className = 'product-card';
-    a.href = `/produto?id=${encodeURIComponent(p.id)}`;
+    a.href = `${import.meta.env.BASE_URL}produto?id=${encodeURIComponent(p.id)}`;
     const img = p.imagem
       ? `<img src="${p.imagem}" alt="" loading="lazy" />`
       : '';

@@ -2,6 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import { Info, ArrowRight, ShoppingBag, Truck, Package, MessageCircle } from '@lucide/astro';
+
+const base = import.meta.env.BASE_URL;
 ---
 
 <Layout title="Checkout — VW Suplementos BH">
@@ -20,7 +22,7 @@ import { Info, ArrowRight, ShoppingBag, Truck, Package, MessageCircle } from '@l
       <ShoppingBag size={56} color="var(--c-muted)" />
       <span class="empty-title">SEU CARRINHO ESTÁ VAZIO.</span>
       <span class="empty-desc">Volte ao catálogo e adicione produtos para enviar pelo WhatsApp.</span>
-      <a href="/catalogo" class="btn-back">
+      <a href={`${base}catalogo`} class="btn-back">
         <span>IR AO CATÁLOGO</span>
         <ArrowRight size={16} />
       </a>
@@ -84,7 +86,7 @@ import { Info, ArrowRight, ShoppingBag, Truck, Package, MessageCircle } from '@l
       </button>
 
       <div class="cancel-wrap">
-        <a href="/catalogo">CANCELAR E VOLTAR AO CARRINHO</a>
+        <a href={`${base}catalogo`}>CANCELAR E VOLTAR AO CARRINHO</a>
       </div>
     </div>
   </div>
@@ -200,7 +202,7 @@ import { Info, ArrowRight, ShoppingBag, Truck, Package, MessageCircle } from '@l
     const url = buildWhatsAppLink(WHATSAPP_NUMBER, msg);
     sessionStorage.setItem('vw_last_order', JSON.stringify({ items, ts: Date.now() }));
     window.open(url, '_blank');
-    setTimeout(() => { location.href = '/confirmacao'; }, 250);
+    setTimeout(() => { location.href = `${import.meta.env.BASE_URL}confirmacao`; }, 250);
   });
 
   cart.subscribe(render);

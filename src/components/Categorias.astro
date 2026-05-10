@@ -9,7 +9,7 @@ import { ArrowRight } from '@lucide/astro';
         <span class="cats-kicker">CATEGORIAS</span>
         <h2 class="cats-title">EM DESTAQUE.</h2>
       </div>
-      <a href="/catalogo" class="cats-link">
+      <a href={`${import.meta.env.BASE_URL}catalogo`} class="cats-link">
         <span>VER TUDO</span>
         <ArrowRight size={16} />
       </a>
@@ -71,7 +71,7 @@ import { ArrowRight } from '@lucide/astro';
       const a = document.createElement('a');
       // Segundo card (índice 1) é destacado em amarelo conforme o design.
       a.className = 'cat-card';
-      a.href = `/catalogo?categoria=${encodeURIComponent(c.name)}`;
+      a.href = `${import.meta.env.BASE_URL}catalogo?categoria=${encodeURIComponent(c.name)}`;
       a.innerHTML = `
         <div class="cat-icon">${ICONS[i % ICONS.length]}</div>
         <div class="cat-bot">

@@ -32,6 +32,7 @@ jobs:
       - name: Build Astro
         run: npm run build
         env:
+          DEPLOY_TARGET: github-pages
           PUBLIC_GAS_URL: ${{ vars.PUBLIC_GAS_URL }}
           PUBLIC_WHATSAPP_NUMBER: ${{ vars.PUBLIC_WHATSAPP_NUMBER }}
 

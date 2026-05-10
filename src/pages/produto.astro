@@ -2,6 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import { ChevronRight, ChevronLeft, ChevronDown, Plus, Minus, ShoppingBag, MessageCircle, Heart, Share2, Shield } from '@lucide/astro';
+
+const base = import.meta.env.BASE_URL;
 ---
 
 <Layout title="Produto — VW Suplementos BH">
@@ -9,9 +11,9 @@ import { ChevronRight, ChevronLeft, ChevronDown, Plus, Minus, ShoppingBag, Messa
 
   <div class="breadcrumb-wrap">
     <div class="breadcrumb container">
-      <a href="/">INÍCIO</a>
+      <a href={base}>INÍCIO</a>
       <ChevronRight size={12} />
-      <a href="/catalogo">CATÁLOGO</a>
+      <a href={`${base}catalogo`}>CATÁLOGO</a>
       <ChevronRight size={12} />
       <span class="active" data-bc-cat>—</span>
       <ChevronRight size={12} />
@@ -27,7 +29,7 @@ import { ChevronRight, ChevronLeft, ChevronDown, Plus, Minus, ShoppingBag, Messa
   <div data-state-error class="state-block error" hidden>
     <span class="state-title">Produto não encontrado.</span>
     <span class="state-msg" data-error-msg></span>
-    <a href="/catalogo" class="btn-retry">Voltar ao catálogo</a>
+    <a href={`${base}catalogo`} class="btn-retry">Voltar ao catálogo</a>
   </div>
 
   <section class="product-block container" data-state-product hidden>
@@ -258,7 +260,7 @@ import { ChevronRight, ChevronLeft, ChevronDown, Plus, Minus, ShoppingBag, Messa
     items.forEach((p) => {
       const a = document.createElement('a');
       a.className = 'rel-card';
-      a.href = `/produto?id=${encodeURIComponent(p.id)}`;
+      a.href = `${import.meta.env.BASE_URL}produto?id=${encodeURIComponent(p.id)}`;
 
       const imgHtml = p.imagem ? `<img src="${p.imagem}" alt="" loading="lazy" />` : '';
       a.innerHTML = `
