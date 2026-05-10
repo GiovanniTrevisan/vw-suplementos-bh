@@ -1,5 +1,9 @@
 ---
 import { MapPin, Clock, Phone, Map, MessageCircle } from '@lucide/astro';
+import { WHATSAPP_NUMBER } from '../lib/config';
+import { buildWhatsAppLink } from '../lib/format';
+
+const whatsappLink = buildWhatsAppLink(WHATSAPP_NUMBER, 'Olá! Gostaria de mais informações sobre os produtos da VW Suplementos.');
 ---
 
 <section class="localizacao" id="localizacao">
@@ -37,7 +41,7 @@ import { MapPin, Clock, Phone, Map, MessageCircle } from '@lucide/astro';
           <Map size={16} />
           <span>VER NO GOOGLE MAPS</span>
         </a>
-        <a href="https://wa.me/313992670586" class="loc-btn filled" target="_blank" rel="noopener noreferrer">
+        <a href={whatsappLink} class="loc-btn filled" target="_blank" rel="noopener noreferrer">
           <MessageCircle size={16} />
           <span>CHAMAR NO WHATSAPP</span>
         </a>
