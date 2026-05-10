@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import { ShoppingBag, ArrowRight, Menu, X } from '@lucide/astro';
+import logoDark from '../assets/logo_dark.webp';
 
 interface Props {
   variant?: 'dark' | 'light';
@@ -12,7 +14,7 @@ const base = import.meta.env.BASE_URL;
 <header class:list={['header', variant]} data-header>
   <div class="header-inner container">
     <a href={base} class="logo">
-      <img src={`${base}logo_dark.webp`} alt="VW Suplementos" class="logo-img" />
+      <Image src={logoDark} alt="VW Suplementos" class="logo-img" loading="eager" decoding="async" />
       <span class="logo-badge">BH</span>
     </a>
 

@@ -1,6 +1,6 @@
 # VW Suplementos BH — E-commerce D2C com Catálogo Dinâmico e Checkout via WhatsApp
 
-> **Projeto de validação real** desenvolvido para a [VW Suplementações BH](https://www.instagram.com/vwsuplementacoesbh/), loja física de suplementos localizada no bairro Castelo, Belo Horizonte/MG. O objetivo foi levar a loja para o digital com uma solução de baixo custo operacional, alta performance e fluxo de vendas integrado ao WhatsApp.
+> **Projeto de validação real** desenvolvido para a [VW Suplementações BH](https://www.instagram.com/vwsuplementos_bh/), loja física de suplementos localizada no bairro Castelo, Belo Horizonte/MG. O objetivo foi levar a loja para o digital com uma solução de baixo custo operacional, alta performance e fluxo de vendas integrado ao WhatsApp.
 
 ---
 
