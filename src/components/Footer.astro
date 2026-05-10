@@ -1,5 +1,9 @@
 ---
 import { Camera, MessageCircle } from '@lucide/astro';
+import { WHATSAPP_NUMBER } from '../lib/config';
+import { buildWhatsAppLink } from '../lib/format';
+
+const whatsappLink = buildWhatsAppLink(WHATSAPP_NUMBER, 'Olá! Gostaria de mais informações sobre os produtos da VW Suplementos.');
 ---
 
 <footer class="footer">
@@ -31,7 +35,7 @@ import { Camera, MessageCircle } from '@lucide/astro';
       <div class="fc fc3">
         <span class="fc-title">// CONTATO</span>
         <p class="fc-addr">Av. Pres. Tancredo Neves, 2337 — Loja 8<br/>Castelo, Belo Horizonte/MG</p>
-        <span class="fc-wa">WhatsApp: (31) 99267-0586</span>
+        <a href={whatsappLink} class="fc-wa" target="_blank" rel="noopener noreferrer">WhatsApp: (31) 99267-0586</a>
         <span class="fc-email">contato@vwsuplementos.com.br</span>
       </div>
 
@@ -180,6 +184,12 @@ import { Camera, MessageCircle } from '@lucide/astro';
     font-family: var(--font-mono);
     font-size: 13px;
     font-weight: 700;
+    text-decoration: none;
+    transition: color var(--t-fast) var(--ease-out);
+  }
+
+  .fc-wa:hover {
+    color: var(--c-master);
   }
 
   .fc-email {

@@ -1,5 +1,9 @@
 ---
 import { ArrowRight, MessageCircle } from '@lucide/astro';
+import { WHATSAPP_NUMBER } from '../lib/config';
+import { buildWhatsAppLink } from '../lib/format';
+
+const whatsappLink = buildWhatsAppLink(WHATSAPP_NUMBER, 'Olá! Gostaria de mais informações sobre os produtos da VW Suplementos.');
 ---
 
 <section class="hero" id="inicio">
@@ -16,7 +20,7 @@ import { ArrowRight, MessageCircle } from '@lucide/astro';
           <span>VER CATÁLOGO</span>
           <ArrowRight size={18} />
         </a>
-        <a href="#" class="cta-secondary">
+        <a href={whatsappLink} class="cta-secondary" target="_blank" rel="noopener noreferrer">
           <MessageCircle size={18} />
           <span>FALAR NO WHATSAPP</span>
         </a>
