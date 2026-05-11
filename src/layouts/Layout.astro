@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import WhatsAppFloat from '../components/WhatsAppFloat.astro';
 
 interface Props {
   title: string;
@@ -21,6 +22,8 @@ const { title, description = 'Whey, creatina, pré-treino e acessórios das prin
   </head>
   <body>
     <slot />
+
+    <WhatsAppFloat />
 
     <script is:inline>
       (() => {
