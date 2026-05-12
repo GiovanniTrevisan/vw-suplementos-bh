@@ -89,6 +89,12 @@ const base = import.meta.env.BASE_URL;
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
 
+    const setHeaderHeight = () => {
+      document.documentElement.style.setProperty('--header-height', header.offsetHeight + 'px');
+    };
+    setHeaderHeight();
+    window.addEventListener('resize', setHeaderHeight, { passive: true });
+
     if (toggle && menu) {
       toggle.addEventListener('click', () => {
         const open = header.classList.toggle('menu-open');
