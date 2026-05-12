@@ -10,7 +10,7 @@ A VW Suplementos já tinha uma base de clientes consolidada e operação física
 
 **Stack principal:** Astro 6 · TypeScript · Google Apps Script · GitHub Actions · Cloudflare Workers
 
-**Site em produção:** [giovannitrevisan.github.io/vw-suplementos-bh](https://giovannitrevisan.github.io/vw-suplementos-bh/)
+**Site em produção:** [vwsuplementosbh.com.br](https://vwsuplementosbh.com.br/)
 
 ---
 
