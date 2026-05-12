@@ -1,5 +1,10 @@
 ---
 import { ArrowRight, MessageCircle } from '@lucide/astro';
+import { WHATSAPP_NUMBER } from '../lib/config';
+import { buildWhatsAppLink } from '../lib/format';
+
+const whatsappLink = buildWhatsAppLink(WHATSAPP_NUMBER, 'Olá! Gostaria de mais informações sobre os produtos da VW Suplementos.');
+const base = import.meta.env.BASE_URL;
 ---
 
 <section class="hero" id="inicio">
@@ -12,25 +17,22 @@ import { ArrowRight, MessageCircle } from '@lucide/astro';
       <h1 class="hero-title">SEU TREINO MERECE O MELHOR.</h1>
       <p class="hero-sub">Whey, creatina, pré-treino e acessórios das principais marcas. Originais, com nota fiscal e entrega rápida em Belo Horizonte.</p>
       <div class="ctas">
-        <a href="/catalogo" class="cta-primary">
+        <a href={`${base}catalogo`} class="cta-primary">
           <span>VER CATÁLOGO</span>
           <ArrowRight size={18} />
         </a>
-        <a href="#" class="cta-secondary">
+        <a href={whatsappLink} class="cta-secondary" target="_blank" rel="noopener noreferrer">
           <MessageCircle size={18} />
           <span>FALAR NO WHATSAPP</span>
         </a>
       </div>
-    </div>
-    <div class="hero-right" data-reveal="right">
-      
     </div>
   </div>
 </section>
 
 <style>
   .hero {
-    background: linear-gradient(to right, #f5c400, #f5c400a2), url('/wallpaper_2.jpg');
+    background: linear-gradient(to right, #000000df 30%, rgba(169, 24, 24, 0.486)), url('/wallpaper_2.webp');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -48,19 +50,21 @@ import { ArrowRight, MessageCircle } from '@lucide/astro';
   }
 
   .hero-inner {
-    display: grid;
-    grid-template-columns: 1fr minmax(0, 480px);
+    display: flex;
     align-items: center;
-    gap: clamp(32px, 5vw, 80px);
+    justify-content: center;
     padding: clamp(60px, 8vw, 100px) var(--gutter);
-    min-height: clamp(560px, 80vh, 760px);
+    min-height: calc(100vh - var(--header-height, 76px));
     position: relative;
   }
 
   .hero-left {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    text-align: center;
     gap: clamp(20px, 2.5vw, 32px);
+    width: 100%;
     min-width: 0;
   }
 
@@ -73,7 +77,7 @@ import { ArrowRight, MessageCircle } from '@lucide/astro';
   .kicker-line {
     width: 36px;
     height: 2px;
-    background: var(--c-ink);
+    background: var(--c-paper);
     animation: slideInLeft var(--t-slow) var(--ease-out) both;
   }
 
@@ -82,7 +86,7 @@ import { ArrowRight, MessageCircle } from '@lucide/astro';
     font-size: 12px;
     font-weight: 500;
     letter-spacing: 2px;
-    color: var(--c-ink);
+    color: var(--c-paper);
   }
 
   .hero-title {
@@ -92,7 +96,8 @@ import { ArrowRight, MessageCircle } from '@lucide/astro';
     font-style: italic;
     line-height: 0.9;
     letter-spacing: -2px;
-    color: var(--c-ink);
+    color: var(--c-paper);
+    text-shadow: 0 10px 44px rgba(0,0,0,0.9);
   }
 
   .hero-sub {
@@ -100,12 +105,13 @@ import { ArrowRight, MessageCircle } from '@lucide/astro';
     font-family: var(--font-ui);
     font-size: clamp(15px, 1.2vw, 18px);
     line-height: 1.55;
-    color: var(--c-mid);
+    color: var(--c-paper-muted);
   }
 
   .ctas {
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 14px;
   }
@@ -117,100 +123,32 @@ import { ArrowRight, MessageCircle } from '@lucide/astro';
     gap: 10px;
     padding: 17px 28px;
     border-radius: var(--radius-pill);
-    color: var(--c-ink);
     font-family: var(--font-display);
     font-size: 15px;
     font-weight: 800;
     letter-spacing: 1px;
-    transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out), background var(--t-fast) var(--ease-out);
+    transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out), background var(--t-fast) var(--ease-out), color var(--t-fast) var(--ease-out);
   }
 
   .cta-primary {
     background: var(--c-paper);
+    color: var(--c-ink);
   }
   .cta-primary:hover {
     transform: translateY(-3px);
-    box-shadow: 0 16px 36px -12px rgba(245, 195, 0, 0.55);
   }
   .cta-primary :global(svg) { transition: transform var(--t-med) var(--ease-out); }
   .cta-primary:hover :global(svg) { transform: translateX(4px); }
 
   .cta-secondary {
-    border: 2px solid var(--c-ink);
-    background: transparent;
-  }
-  .cta-secondary:hover {
-    background: var(--c-ink);
+    border: 2px solid var(--c-paper);
     color: var(--c-paper);
-    transform: translateY(-3px);
-  }
-
-  .hero-right {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 4 / 5;
-    max-height: 620px;
-    background: var(--c-mid);
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    box-shadow: 0 30px 80px -30px rgba(10, 10, 9, 0.4);
-  }
-
-  .yellow-accent {
-    position: absolute;
-    left: 0;
-    top: 12%;
-    width: 8px;
-    height: 70%;
-    background: var(--c-yellow);
-    transform-origin: top;
-    animation: scaleY-grow 900ms var(--ease-out) 200ms both;
-  }
-
-  @keyframes scaleY-grow {
-    from { transform: scaleY(0); }
-    to   { transform: scaleY(1); }
-  }
-
-  .product-mock {
-    position: absolute;
-    left: 16%;
-    top: 10%;
-    width: 65%;
-    height: 80%;
-    background: var(--c-ink);
-    border-radius: var(--radius-md);
-    animation: floatY 6s var(--ease-in-out) infinite;
-  }
-
-  .rating-badge {
-    position: absolute;
-    left: 5%;
-    bottom: 7%;
-    background: var(--c-yellow);
-    border-radius: var(--radius-sm);
-    padding: 10px 16px;
-    transform: rotate(12deg);
-    box-shadow: 0 10px 24px -8px rgba(0,0,0,0.3);
-    animation: scaleIn var(--t-slow) var(--ease-out) 400ms both;
-  }
-
-  .rating-badge span {
-    font-family: var(--font-mono);
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 1px;
+      background: var(--c-paper);
     color: var(--c-ink);
   }
-
-  @media (max-width: 960px) {
-    .hero-inner {
-      grid-template-columns: 1fr;
-      gap: 40px;
-    }
-    .hero-right {
-      aspect-ratio: 16 / 11;
-      max-height: 420px;
-    }
+  .cta-secondary:hover {
+    background: var(--c-paper);
+    color: var(--c-ink);
+    transform: translateY(-3px);
   }
 </style>

@@ -2,7 +2,9 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { ChevronDown, X, Search } from '@lucide/astro';
+import { ChevronDown, X, Search, SlidersHorizontal } from '@lucide/astro';
+
+const base = import.meta.env.BASE_URL;
 ---
 
 <Layout title="Catálogo — VW Suplementos BH">
@@ -10,7 +12,7 @@ import { ChevronDown, X, Search } from '@lucide/astro';
 
   <div class="breadcrumb-wrap">
     <div class="breadcrumb container">
-      <a href="/">INÍCIO</a>
+      <a href={base}>INÍCIO</a>
       <span>›</span>
       <span class="active">CATÁLOGO</span>
     </div>
@@ -31,66 +33,98 @@ import { ChevronDown, X, Search } from '@lucide/astro';
     </div>
   </div>
 
+  <div class="mobile-toolbar" data-mobile-toolbar>
+    <button class="mobile-filter-btn" type="button" data-open-filters aria-label="Abrir filtros">
+      <SlidersHorizontal size={16} />
+      <span>FILTROS</span>
+      <span class="mobile-filter-badge" data-mobile-filter-count hidden>0</span>
+    </button>
+    <div class="mobile-sort-wrap">
+      <select class="mobile-sort-select" data-mobile-sort aria-label="Ordenar produtos">
+        <option value="default">Mais vendidos</option>
+        <option value="price-asc">Menor preço</option>
+        <option value="price-desc">Maior preço</option>
+        <option value="name-asc">Nome (A → Z)</option>
+        <option value="name-desc">Nome (Z → A)</option>
+      </select>
+    </div>
+  </div>
+
   <div class="main-area container">
-    <aside class="sidebar">
+    <aside class="sidebar" data-sidebar>
       <div class="sb-header">
         <span class="sb-title">FILTROS</span>
         <span class="sb-count" data-active-filter-count>// 00</span>
+        <button class="drawer-close-btn" type="button" data-close-filters aria-label="Fechar filtros">
+          <X size={20} />
+        </button>
       </div>
 
-      <div class="filter-section">
-        <div class="filter-head">
-          <span>BUSCA</span>
-          <Search size={14} />
+      <div class="sb-body">
+        <div class="filter-section">
+          <div class="filter-head">
+            <span>BUSCA</span>
+            <Search size={14} />
+          </div>
+          <div class="search-wrap">
+            <input type="search" data-search placeholder="Buscar por nome..." class="search-input" />
+          </div>
         </div>
-        <div class="search-wrap">
-          <input type="search" data-search placeholder="Buscar por nome..." class="search-input" />
+
+        <div class="filter-divider"></div>
+
+        <div class="filter-section">
+          <div class="filter-head">
+            <span>CATEGORIA</span>
+            <ChevronDown size={14} />
+          </div>
+          <div class="filter-pills" data-category-pills></div>
+        </div>
+
+        <div class="filter-divider"></div>
+
+        <div class="filter-section">
+          <div class="filter-head">
+            <span>FAIXA DE PREÇO</span>
+            <ChevronDown size={14} />
+          </div>
+          <div class="filter-pills" data-price-pills></div>
+        </div>
+
+        <div class="filter-divider"></div>
+
+        <div class="filter-section">
+          <div class="filter-head">
+            <span>ORDENAR POR</span>
+            <ChevronDown size={14} />
+          </div>
+          <div class="select-wrap">
+            <select class="sort-select" data-sort>
+              <option value="default">Mais vendidos</option>
+              <option value="price-asc">Menor preço</option>
+              <option value="price-desc">Maior preço</option>
+              <option value="name-asc">Nome (A → Z)</option>
+              <option value="name-desc">Nome (Z → A)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="filter-divider clear-link-divider"></div>
+
+        <div class="clear-link" data-clear-filters>
+          <X size={12} />
+          <span>Limpar filtros</span>
         </div>
       </div>
 
-      <div class="filter-divider"></div>
-
-      <div class="filter-section">
-        <div class="filter-head">
-          <span>CATEGORIA</span>
-          <ChevronDown size={14} />
-        </div>
-        <div class="filter-pills" data-category-pills></div>
-      </div>
-
-      <div class="filter-divider"></div>
-
-      <div class="filter-section">
-        <div class="filter-head">
-          <span>FAIXA DE PREÇO</span>
-          <ChevronDown size={14} />
-        </div>
-        <div class="filter-pills" data-price-pills></div>
-      </div>
-
-      <div class="filter-divider"></div>
-
-      <div class="filter-section">
-        <div class="filter-head">
-          <span>ORDENAR POR</span>
-          <ChevronDown size={14} />
-        </div>
-        <div class="select-wrap">
-          <select class="sort-select" data-sort>
-            <option value="default">Mais vendidos</option>
-            <option value="price-asc">Menor preço</option>
-            <option value="price-desc">Maior preço</option>
-            <option value="name-asc">Nome (A → Z)</option>
-            <option value="name-desc">Nome (Z → A)</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="filter-divider"></div>
-
-      <div class="clear-link" data-clear-filters>
-        <X size={12} />
-        <span>Limpar filtros</span>
+      <div class="drawer-footer">
+        <button class="drawer-clear-btn" type="button" data-drawer-clear>
+          <X size={14} />
+          <span>LIMPAR</span>
+        </button>
+        <button class="drawer-apply-btn" type="button" data-close-filters>
+          <span>VER <span data-drawer-result-count>0</span> PRODUTOS</span>
+        </button>
       </div>
     </aside>
 
@@ -124,6 +158,8 @@ import { ChevronDown, X, Search } from '@lucide/astro';
     </div>
   </div>
 
+  <div class="drawer-backdrop" data-drawer-backdrop aria-hidden="true"></div>
+
   <Footer />
 </Layout>
 
@@ -150,6 +186,16 @@ import { ChevronDown, X, Search } from '@lucide/astro';
   const pagination = document.querySelector<HTMLElement>('[data-pagination]')!;
   const loadMore   = document.querySelector<HTMLButtonElement>('[data-load-more]')!;
   const pagInfo    = document.querySelector<HTMLElement>('[data-pagination-info]')!;
+
+  // Mobile drawer / toolbar
+  const sidebarEl   = document.querySelector<HTMLElement>('[data-sidebar]')!;
+  const backdropEl  = document.querySelector<HTMLElement>('[data-drawer-backdrop]')!;
+  const openFilters = document.querySelector<HTMLButtonElement>('[data-open-filters]')!;
+  const closeFiltersBtns = document.querySelectorAll<HTMLButtonElement>('[data-close-filters]');
+  const drawerClearBtn   = document.querySelector<HTMLButtonElement>('[data-drawer-clear]')!;
+  const mobileSortSel    = document.querySelector<HTMLSelectElement>('[data-mobile-sort]')!;
+  const mobileFilterCnt  = document.querySelector<HTMLElement>('[data-mobile-filter-count]')!;
+  const drawerCountEl    = document.querySelector<HTMLElement>('[data-drawer-result-count]')!;
 
   type SortKey = 'default' | 'price-asc' | 'price-desc' | 'name-asc' | 'name-desc';
 
@@ -185,6 +231,13 @@ import { ChevronDown, X, Search } from '@lucide/astro';
   function renderActiveFilters() {
     const n = activeFilterCount();
     filterCnt.textContent = `// ${String(n).padStart(2, '0')}`;
+
+    if (n > 0) {
+      mobileFilterCnt.textContent = String(n);
+      mobileFilterCnt.hidden = false;
+    } else {
+      mobileFilterCnt.hidden = true;
+    }
 
     activeBox.innerHTML = '';
     if (n === 0) return;
@@ -301,6 +354,7 @@ import { ChevronDown, X, Search } from '@lucide/astro';
     const list = applyFilters();
 
     countEl.textContent = String(list.length);
+    drawerCountEl.textContent = String(list.length);
     renderActiveFilters();
 
     grid.innerHTML = '';
@@ -327,7 +381,7 @@ import { ChevronDown, X, Search } from '@lucide/astro';
   function productCard(p: Product): HTMLElement {
     const a = document.createElement('a');
     a.className = 'product-card';
-    a.href = `/produto?id=${encodeURIComponent(p.id)}`;
+    a.href = `${import.meta.env.BASE_URL}produto?id=${encodeURIComponent(p.id)}`;
     const img = p.imagem
       ? `<img src="${p.imagem}" alt="" loading="lazy" />`
       : '';
@@ -410,8 +464,39 @@ import { ChevronDown, X, Search } from '@lucide/astro';
 
   sortSel.addEventListener('change', () => {
     sortBy = sortSel.value as SortKey;
+    mobileSortSel.value = sortSel.value;
     resetPaging();
     render();
+  });
+
+  mobileSortSel.addEventListener('change', () => {
+    sortBy = mobileSortSel.value as SortKey;
+    sortSel.value = mobileSortSel.value;
+    resetPaging();
+    render();
+  });
+
+  // Drawer open / close
+  function openDrawer() {
+    sidebarEl.classList.add('drawer-open');
+    backdropEl.classList.add('drawer-open');
+    document.body.classList.add('drawer-locked');
+    sidebarEl.setAttribute('aria-modal', 'true');
+    sidebarEl.setAttribute('role', 'dialog');
+  }
+  function closeDrawer() {
+    sidebarEl.classList.remove('drawer-open');
+    backdropEl.classList.remove('drawer-open');
+    document.body.classList.remove('drawer-locked');
+    sidebarEl.removeAttribute('aria-modal');
+    sidebarEl.removeAttribute('role');
+  }
+  openFilters.addEventListener('click', openDrawer);
+  backdropEl.addEventListener('click', closeDrawer);
+  closeFiltersBtns.forEach((b) => b.addEventListener('click', closeDrawer));
+  drawerClearBtn.addEventListener('click', () => clearBtn.click());
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && sidebarEl.classList.contains('drawer-open')) closeDrawer();
   });
 
   retryBtn.addEventListener('click', () => load(true));
@@ -421,6 +506,7 @@ import { ChevronDown, X, Search } from '@lucide/astro';
     activePrice = '';
     sortBy = 'default';
     sortSel.value = 'default';
+    mobileSortSel.value = 'default';
     searchTerm = '';
     searchEl.value = '';
     const url = new URL(location.href);
@@ -488,6 +574,13 @@ import { ChevronDown, X, Search } from '@lucide/astro';
   .sb-header { display: flex; justify-content: space-between; align-items: center; }
   .sb-title { font-family: var(--font-display); font-size: 20px; font-weight: 800; letter-spacing: 1px; }
   .sb-count { font-family: var(--font-mono); font-size: 11px; color: var(--c-muted); }
+  .sb-body { display: flex; flex-direction: column; gap: 24px; min-height: 0; }
+
+  /* Drawer-only elements: hidden on desktop */
+  .drawer-close-btn,
+  .drawer-footer,
+  .drawer-backdrop,
+  .mobile-toolbar { display: none; }
 
   .filter-section { display: flex; flex-direction: column; gap: 12px; }
   .filter-head {
@@ -502,7 +595,7 @@ import { ChevronDown, X, Search } from '@lucide/astro';
     background: var(--c-paper); font-family: var(--font-ui); font-size: 13px; color: var(--c-ink);
     outline: none; transition: border-color var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out);
   }
-  .search-input:focus { border-color: var(--c-yellow); box-shadow: 0 0 0 3px rgba(245, 195, 0, 0.18); }
+  .search-input:focus { border-color: var(--c-master); box-shadow: 0 0 0 3px rgba(245, 195, 0, 0.18); }
 
   .filter-pills { display: flex; flex-direction: column; gap: 8px; }
 
@@ -517,7 +610,7 @@ import { ChevronDown, X, Search } from '@lucide/astro';
     cursor: pointer;
     transition: border-color var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out);
   }
-  .sort-select:focus { outline: none; border-color: var(--c-yellow); box-shadow: 0 0 0 3px rgba(245, 195, 0, 0.18); }
+  .sort-select:focus { outline: none; border-color: var(--c-master); box-shadow: 0 0 0 3px rgba(245, 195, 0, 0.18); }
 
   .clear-link {
     display: flex; align-items: center; justify-content: center; gap: 6px;
@@ -548,7 +641,7 @@ import { ChevronDown, X, Search } from '@lucide/astro';
 
   .loader {
     width: 36px; height: 36px;
-    border: 3px solid var(--c-line); border-top-color: var(--c-yellow);
+    border: 3px solid var(--c-line); border-top-color: var(--c-master);
     border-radius: 50%; animation: spin 800ms linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -559,7 +652,7 @@ import { ChevronDown, X, Search } from '@lucide/astro';
     border-radius: var(--radius-pill);
     font-family: var(--font-display); font-size: 13px; font-weight: 800; letter-spacing: 1px;
   }
-  .btn-retry:hover { background: var(--c-yellow); color: var(--c-ink); }
+  .btn-retry:hover { background: var(--c-master); color: var(--c-ink); }
 
   .product-grid {
     display: grid;
@@ -586,7 +679,7 @@ import { ChevronDown, X, Search } from '@lucide/astro';
   }
   .load-more:hover {
     transform: translateY(-2px);
-    background: var(--c-yellow); color: var(--c-ink);
+    background: var(--c-master); color: var(--c-ink);
     box-shadow: 0 14px 28px -12px rgba(245, 195, 0, 0.55);
   }
   .pagination-info {
@@ -596,12 +689,255 @@ import { ChevronDown, X, Search } from '@lucide/astro';
   @media (max-width: 1100px) {
     .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
+
+  /* ============================================================
+     Mobile / tablet: sidebar vira drawer + sticky toolbar
+     ============================================================ */
   @media (max-width: 900px) {
-    .main-area { grid-template-columns: 1fr; }
-    .sidebar { position: static; }
+    /* Layout principal: produtos ocupam toda a largura */
+    .main-area {
+      grid-template-columns: 1fr;
+      padding: clamp(16px, 3vw, 28px) var(--gutter) clamp(28px, 4vw, 48px);
+    }
+
+    /* Title block: alinhamento mais vertical no mobile */
+    .title-block {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      padding: clamp(20px, 3vw, 32px) var(--gutter) clamp(12px, 2vw, 20px);
+    }
+    .title-left { flex: none; }
+    .results-count {
+      flex-direction: row;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .results-label { display: none; }
+    .results-number { font-size: clamp(20px, 5vw, 28px); line-height: 1; }
+    .results-text { font-size: 12px; }
+
+    /* Mobile toolbar: sticky no topo (sob o header sticky, que tem z-index: 50) */
+    .mobile-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px var(--gutter);
+      background: var(--c-paper);
+      border-top: 1px solid var(--c-line);
+      border-bottom: 1px solid var(--c-line);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+    .mobile-filter-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 18px;
+      background: var(--c-ink);
+      color: var(--c-paper);
+      border: none;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background var(--t-fast) var(--ease-out), color var(--t-fast) var(--ease-out);
+    }
+    .mobile-filter-btn:active {
+      background: var(--c-master);
+      color: var(--c-ink);
+    }
+    .mobile-filter-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 6px;
+      margin-left: 2px;
+      background: var(--c-master);
+      color: var(--c-ink);
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .mobile-sort-wrap { flex: 1; min-width: 0; }
+    .mobile-sort-select {
+      width: 100%;
+      min-height: 44px;
+      padding: 0 36px 0 16px;
+      border: 1px solid var(--c-line-hard);
+      border-radius: var(--radius-pill);
+      background-color: var(--c-paper);
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%230A0A09' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      font-family: var(--font-ui);
+      font-size: 13px;
+      color: var(--c-ink);
+      appearance: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+    }
+
+    /* Sidebar vira drawer lateral */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: min(420px, 88vw);
+      height: 100vh;
+      height: 100dvh;
+      max-height: 100vh;
+      max-height: 100dvh;
+      margin: 0;
+      padding: 0;
+      gap: 0;
+      border: none;
+      border-radius: 0;
+      background: var(--c-paper);
+      z-index: 200;
+      transform: translateX(100%);
+      transition: transform var(--t-med) var(--ease-out);
+      box-shadow: -8px 0 32px -16px rgba(0, 0, 0, 0.25);
+      overflow: hidden;
+    }
+    .sidebar.drawer-open { transform: translateX(0); }
+
+    /* Header do drawer */
+    .sb-header {
+      flex-shrink: 0;
+      gap: 10px;
+      padding: 18px 20px 14px;
+      border-bottom: 1px solid var(--c-line);
+    }
+    .sb-title { font-size: 18px; }
+    .drawer-close-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      margin-left: auto;
+      background: transparent;
+      border: 1px solid var(--c-line);
+      border-radius: 999px;
+      color: var(--c-ink);
+      cursor: pointer;
+      transition: background var(--t-fast) var(--ease-out), color var(--t-fast) var(--ease-out);
+    }
+    .drawer-close-btn:active {
+      background: var(--c-ink);
+      color: var(--c-paper);
+    }
+
+    /* Corpo scrollável */
+    .sb-body {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 20px;
+      overscroll-behavior: contain;
+    }
+
+    /* Esconder o link "Limpar filtros" interno (substituído pelo footer) */
+    .clear-link,
+    .clear-link-divider { display: none; }
+
+    /* Footer do drawer */
+    .drawer-footer {
+      display: flex;
+      flex-shrink: 0;
+      gap: 10px;
+      padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
+      border-top: 1px solid var(--c-line);
+      background: var(--c-paper);
+    }
+    .drawer-clear-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 48px;
+      padding: 0 18px;
+      background: transparent;
+      border: 1px solid var(--c-line-hard);
+      border-radius: var(--radius-pill);
+      color: var(--c-ink);
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .drawer-apply-btn {
+      flex: 1;
+      min-height: 48px;
+      padding: 0 18px;
+      background: var(--c-master);
+      border: none;
+      border-radius: var(--radius-pill);
+      color: var(--c-ink);
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: transform var(--t-fast) var(--ease-out), box-shadow var(--t-med) var(--ease-out);
+    }
+    .drawer-apply-btn:active { transform: scale(0.98); }
+
+    /* Backdrop */
+    .drawer-backdrop {
+      display: block;
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 10, 9, 0.5);
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--t-med) var(--ease-out);
+    }
+    .drawer-backdrop.drawer-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Lock do scroll do body quando drawer aberto */
+    :global(body.drawer-locked) { overflow: hidden; }
+
+    /* Active filters chips: barra horizontal scrollável */
+    .active-filters {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .active-filters::-webkit-scrollbar { display: none; }
+
+    /* Grid: tablet ganha 3 colunas (mais espaço sem sidebar) */
+    .product-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
   }
-  @media (max-width: 480px) {
-    .product-grid { grid-template-columns: 1fr; }
+
+  /* Mobile pequeno */
+  @media (max-width: 600px) {
+    .product-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
   }
 </style>
 
@@ -625,7 +961,7 @@ import { ChevronDown, X, Search } from '@lucide/astro';
   }
   .pill:hover { border-color: var(--c-ink); }
   .pill.active {
-    background: var(--c-yellow); border-color: var(--c-yellow);
+    background: var(--c-master); border-color: var(--c-master);
     font-weight: 600;
   }
   .pill-count {
@@ -696,7 +1032,7 @@ import { ChevronDown, X, Search } from '@lucide/astro';
   .product-btn {
     display: flex; align-items: center; justify-content: center; gap: 8px;
     width: 100%; padding: 12px 16px;
-    background: var(--c-yellow);
+    background: var(--c-master);
     border: none; border-radius: var(--radius-pill);
     color: var(--c-ink);
     font-family: var(--font-display);
@@ -712,5 +1048,57 @@ import { ChevronDown, X, Search } from '@lucide/astro';
     transform: translateY(-2px);
     box-shadow: 0 10px 22px -8px rgba(245, 195, 0, 0.55);
   }
-  .product-btn.added { background: var(--c-ink); color: var(--c-yellow); }
+  .product-btn.added { background: var(--c-ink); color: var(--c-master); }
+
+  /* ============================================================
+     Cards mobile/tablet — densidade maior, line-clamp, alturas
+     consistentes, CTA visível sem aumentar a altura do card.
+     ============================================================ */
+  @media (max-width: 900px) {
+    .product-body {
+      gap: 8px;
+      padding: 12px;
+    }
+    .product-cat {
+      font-size: 10px;
+      letter-spacing: 1.5px;
+    }
+    .product-name {
+      font-size: 14px;
+      line-height: 1.2;
+      letter-spacing: -0.5px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: calc(1.2em * 2);
+    }
+    .product-price {
+      font-size: 16px;
+    }
+    .product-btn {
+      min-height: 40px;
+      padding: 8px 12px;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .product-body {
+      gap: 6px;
+      padding: 10px;
+    }
+    .product-name {
+      font-size: 13px;
+    }
+    .product-price {
+      font-size: 15px;
+    }
+    .product-btn {
+      min-height: 38px;
+      padding: 6px 10px;
+      gap: 6px;
+    }
+  }
 </style>

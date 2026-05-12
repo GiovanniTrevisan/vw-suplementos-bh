@@ -1,33 +1,36 @@
 ---
+import { Image } from 'astro:assets';
 import { ShoppingBag, ArrowRight, Menu, X } from '@lucide/astro';
+import logoDark from '../assets/logo_dark.webp';
 
 interface Props {
   variant?: 'dark' | 'light';
 }
 
 const { variant = 'dark' } = Astro.props;
+const base = import.meta.env.BASE_URL;
 ---
 
 <header class:list={['header', variant]} data-header>
   <div class="header-inner container">
-    <a href="/" class="logo">
-      <img src="/logo_dark.png" alt="VW Suplementos" class="logo-img" />
+    <a href={base} class="logo">
+      <Image src={logoDark} alt="VW Suplementos" class="logo-img" loading="eager" decoding="async" />
       <span class="logo-badge">BH</span>
     </a>
 
     <nav class="nav">
-      <a href="/#inicio">Início</a>
-      <a href="/catalogo">Produtos</a>
-      <a href="/#sobre">Sobre</a>
-      <a href="/#localizacao">Localização</a>
+      <a href={`${base}#inicio`}>Início</a>
+      <a href={`${base}catalogo`}>Produtos</a>
+      <a href={`${base}#sobre`}>Sobre</a>
+      <a href={`${base}#localizacao`}>Localização</a>
     </nav>
 
     <div class="actions">
-      <a href="/catalogo" class="cta-catalogo">
+      <a href={`${base}catalogo`} class="cta-catalogo">
         <span>VER CATÁLOGO</span>
         <ArrowRight size={16} />
       </a>
-      <a href="/checkout" class="cart" aria-label="Carrinho">
+      <a href={`${base}checkout`} class="cart" aria-label="Carrinho">
         <ShoppingBag size={22} color="var(--c-paper)" />
         <span class="cart-badge" data-cart-badge hidden>0</span>
       </a>
@@ -40,12 +43,12 @@ const { variant = 'dark' } = Astro.props;
 
   <div class="mobile-menu" data-mobile-menu>
     <nav class="mobile-nav">
-      <a href="/#inicio">Início</a>
-      <a href="/catalogo">Produtos</a>
-      <a href="/#sobre">Sobre</a>
-      <a href="/#localizacao">Localização</a>
+      <a href={`${base}#inicio`}>Início</a>
+      <a href={`${base}catalogo`}>Produtos</a>
+      <a href={`${base}#sobre`}>Sobre</a>
+      <a href={`${base}#localizacao`}>Localização</a>
     </nav>
-    <a href="/catalogo" class="mobile-cta">
+    <a href={`${base}catalogo`} class="mobile-cta">
       <span>VER CATÁLOGO</span>
       <ArrowRight size={18} />
     </a>
@@ -85,6 +88,12 @@ const { variant = 'dark' } = Astro.props;
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
+
+    const setHeaderHeight = () => {
+      document.documentElement.style.setProperty('--header-height', header.offsetHeight + 'px');
+    };
+    setHeaderHeight();
+    window.addEventListener('resize', setHeaderHeight, { passive: true });
 
     if (toggle && menu) {
       toggle.addEventListener('click', () => {
@@ -143,7 +152,7 @@ const { variant = 'dark' } = Astro.props;
   }
 
   .logo-badge {
-    color: var(--c-yellow);
+    color: var(--c-master);
     font-family: var(--font-ui);
     font-size: 12px;
     font-weight: 500;
@@ -173,13 +182,13 @@ const { variant = 'dark' } = Astro.props;
     bottom: 0;
     width: 100%;
     height: 1.5px;
-    background: var(--c-yellow);
+    background: var(--c-master);
     transform: scaleX(0);
     transform-origin: left center;
     transition: transform var(--t-med) var(--ease-out);
   }
 
-  .nav a:hover { color: var(--c-yellow); }
+  .nav a:hover { color: var(--c-master); }
   .nav a:hover::after { transform: scaleX(1); }
 
   .actions {
@@ -193,7 +202,7 @@ const { variant = 'dark' } = Astro.props;
     align-items: center;
     gap: 8px;
     padding: 13px 22px;
-    background: var(--c-yellow);
+    background: var(--c-master);
     border-radius: var(--radius-pill);
     color: var(--c-ink);
     font-family: var(--font-display);
@@ -229,7 +238,7 @@ const { variant = 'dark' } = Astro.props;
     justify-content: center;
     width: 18px;
     height: 18px;
-    background: var(--c-yellow);
+    background: var(--c-master);
     border-radius: var(--radius-pill);
     color: var(--c-ink);
     font-family: var(--font-mono);
@@ -278,14 +287,14 @@ const { variant = 'dark' } = Astro.props;
     border-bottom: 1px solid #F5F0E81A;
     transition: color var(--t-fast) var(--ease-out), padding-left var(--t-med) var(--ease-out);
   }
-  .mobile-nav a:hover { color: var(--c-yellow); padding-left: 8px; }
+  .mobile-nav a:hover { color: var(--c-master); padding-left: 8px; }
   .mobile-cta {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
     padding: 16px 24px;
-    background: var(--c-yellow);
+    background: var(--c-master);
     border-radius: var(--radius-pill);
     color: var(--c-ink);
     font-family: var(--font-display);

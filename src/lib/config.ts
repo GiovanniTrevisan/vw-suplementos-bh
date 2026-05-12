@@ -13,7 +13,7 @@ export const CATALOG_CACHE_TTL_MS = 5 * 60 * 1000; // 5 min no navegador
 
 export const STORAGE_KEYS = {
   cart: 'vw_cart_v1',
-  catalogCache: 'vw_catalog_cache_v1',
+  catalogCache: 'vw_catalog_cache_v2',
 } as const;
 
 export function isConfigured(): boolean {

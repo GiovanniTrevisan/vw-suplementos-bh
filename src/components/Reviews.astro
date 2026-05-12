@@ -2,9 +2,9 @@
 import { Star } from '@lucide/astro';
 
 const reviews = [
-  { text: 'Atendimento muito bom, o pessoal entende o que vende. Comprei meu whey e já chegou no mesmo dia em casa. Voltarei sempre.', author: 'LUCAS R.' },
-  { text: 'Loja referência aqui no Castelo. Preço justo, produto original com nota e o time é parceiro de verdade. Recomendo demais.', author: 'ANA C.' },
-  { text: 'Sempre que preciso de creatina ou pré-treino, é aqui que eu venho. Nunca tive problema, atendimento top e desconto no PIX.', author: 'PEDRO M.' },
+  { text: 'Excelente loja de suplementos, trabalha com as melhores marcas e ótimo custo benefício. Sobre o atendimento? Parabéns Josiani por seu profissionalismo, educação e simpatia. Super recomendo', author: 'ALICE SOARES' },
+  { text: 'Excelente atendimento!!! Bons produtos e preço justo', author: 'ELIANE TAVARES' },
+  { text: 'Ótima localização, muita variedade de produtos e um ótimo preço nos produtos ❤️', author: 'THAIS GONÇALVES' },
 ];
 ---
 
@@ -16,8 +16,8 @@ const reviews = [
         <h2 class="rev-title">QUEM TREINA, RECOMENDA.</h2>
       </div>
       <div class="rev-stars">
-        {[1,2,3,4,5].map(() => <Star size={18} fill="var(--c-yellow)" color="var(--c-yellow)" />)}
-        <span class="rev-rating">4,7 / 5 · 312 avaliações</span>
+        {[1,2,3,4,5].map(() => <Star size={18} fill="var(--c-master)" color="var(--c-master)" />)}
+        <span class="rev-rating">4,7 / 5 · 43 avaliações</span>
       </div>
     </div>
 
@@ -38,7 +38,7 @@ const reviews = [
 
 <style>
   .reviews {
-    background: linear-gradient(to bottom, rgba(10, 10, 9, 0.85), rgba(10, 10, 9, 0.7)), url('/wallpaper_1.jpg');
+    background: linear-gradient(to bottom, rgba(10, 10, 9, 0.85), rgba(10, 10, 9, 0.7)), url('/wallpaper_1.webp');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -71,7 +71,7 @@ const reviews = [
     font-size: 12px;
     font-weight: 500;
     letter-spacing: 2px;
-    color: var(--c-yellow);
+    color: var(--c-master);
   }
 
   .rev-title {
@@ -113,7 +113,7 @@ const reviews = [
     padding: 24px 24px 24px 28px;
     background: var(--c-mid);
     border-radius: var(--radius-sm);
-    border-left: 4px solid var(--c-yellow);
+    border-left: 4px solid var(--c-master);
     transition: transform var(--t-med) var(--ease-out), border-left-width var(--t-med) var(--ease-out);
     box-shadow: 0 4px 12px rgba(10, 10, 9, 0.3);
   }
@@ -130,7 +130,7 @@ const reviews = [
     font-weight: 800;
     font-style: italic;
     line-height: 0.6;
-    color: var(--c-yellow);
+    color: var(--c-master);
   }
 
   .review-text {
@@ -159,7 +159,7 @@ const reviews = [
     font-family: var(--font-mono);
     font-size: 12px;
     font-weight: 500;
-    color: var(--c-yellow);
+    color: var(--c-master);
   }
 
   @media (max-width: 900px) {

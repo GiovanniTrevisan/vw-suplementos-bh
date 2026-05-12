@@ -9,7 +9,7 @@
   --c-paper: #F5F0E8;
   --c-paper-muted: #F5F0E8B3;
   --c-red: #C0392B;
-  --c-yellow: #F5C300;
+  --c-master: #EE4444;
 
   --font-display: 'Barlow Condensed', sans-serif;
   --font-ui: 'DM Sans', sans-serif;
@@ -91,7 +91,7 @@ input, select, textarea {
 
 /* ---------- Selection ---------- */
 ::selection {
-  background: var(--c-yellow);
+  background: var(--c-master);
   color: var(--c-ink);
 }
 
@@ -111,7 +111,7 @@ input, select, textarea {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--c-yellow);
+  background: var(--c-master);
   border-radius: 6px;
 }
 
@@ -145,7 +145,7 @@ input, select, textarea {
   50%      { transform: translate3d(0, -8px, 0); }
 }
 @keyframes pulseDot {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 195, 0, 0.6); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(169, 65, 44, 0.6); }
   50%      { box-shadow: 0 0 0 10px rgba(245, 195, 0, 0); }
 }
 

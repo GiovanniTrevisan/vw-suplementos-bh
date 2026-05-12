@@ -1,7 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
-import { ChevronRight, Plus, Minus, ShoppingBag, MessageCircle, Heart, Share2, Shield } from '@lucide/astro';
+import { ChevronRight, ChevronLeft, ChevronDown, Plus, Minus, ShoppingBag, MessageCircle, Heart, Share2, Shield } from '@lucide/astro';
+
+const base = import.meta.env.BASE_URL;
 ---
 
 <Layout title="Produto — VW Suplementos BH">
@@ -9,9 +11,9 @@ import { ChevronRight, Plus, Minus, ShoppingBag, MessageCircle, Heart, Share2, S
 
   <div class="breadcrumb-wrap">
     <div class="breadcrumb container">
-      <a href="/">INÍCIO</a>
+      <a href={base}>INÍCIO</a>
       <ChevronRight size={12} />
-      <a href="/catalogo">CATÁLOGO</a>
+      <a href={`${base}catalogo`}>CATÁLOGO</a>
       <ChevronRight size={12} />
       <span class="active" data-bc-cat>—</span>
       <ChevronRight size={12} />
@@ -27,7 +29,7 @@ import { ChevronRight, Plus, Minus, ShoppingBag, MessageCircle, Heart, Share2, S
   <div data-state-error class="state-block error" hidden>
     <span class="state-title">Produto não encontrado.</span>
     <span class="state-msg" data-error-msg></span>
-    <a href="/catalogo" class="btn-retry">Voltar ao catálogo</a>
+    <a href={`${base}catalogo`} class="btn-retry">Voltar ao catálogo</a>
   </div>
 
   <section class="product-block container" data-state-product hidden>
@@ -79,18 +81,76 @@ import { ChevronRight, Plus, Minus, ShoppingBag, MessageCircle, Heart, Share2, S
 
       <div class="quick-info">
         <div class="qi-item">
-          <Shield size={16} color="var(--c-yellow)" />
+          <Shield size={16} color="var(--c-master)" />
           <span>Produto original com nota fiscal</span>
         </div>
         <div class="qi-item">
-          <Shield size={16} color="var(--c-yellow)" />
+          <Shield size={16} color="var(--c-master)" />
           <span>Entrega em BH no mesmo dia</span>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="share-row">
-        <button class="icon-btn" type="button" aria-label="Favoritar"><Heart size={18} /></button>
-        <button class="icon-btn" type="button" aria-label="Compartilhar" data-share><Share2 size={18} /></button>
+  <section class="ficha-section container" data-state-product hidden>
+    <div class="ficha-left">
+      <span class="ficha-kicker">// SOBRE O PRODUTO</span>
+      <h2 class="ficha-title">FICHA TÉCNICA.</h2>
+      <div class="ficha-under"></div>
+      <p class="ficha-desc">Tudo que você precisa saber sobre composição, modo de uso e a marca por trás do produto.</p>
+    </div>
+
+    <div class="ficha-right">
+      <div class="acc-item open" data-acc>
+        <button class="acc-head" type="button" data-acc-toggle aria-expanded="true">
+          <span class="acc-left">
+            <span class="acc-num">01</span>
+            <span class="acc-title">DESCRIÇÃO DO PRODUTO</span>
+          </span>
+          <span class="acc-chev"><ChevronDown size={14} /></span>
+        </button>
+        <div class="acc-body">
+          <p data-detail-descricao-produto>—</p>
+        </div>
+      </div>
+
+      <div class="acc-item" data-acc>
+        <button class="acc-head" type="button" data-acc-toggle aria-expanded="false">
+          <span class="acc-left">
+            <span class="acc-num">02</span>
+            <span class="acc-title">INFORMAÇÃO NUTRICIONAL</span>
+          </span>
+          <span class="acc-chev"><ChevronDown size={14} /></span>
+        </button>
+        <div class="acc-body">
+          <p data-detail-info-nutricional>—</p>
+        </div>
+      </div>
+
+      <div class="acc-item" data-acc>
+        <button class="acc-head" type="button" data-acc-toggle aria-expanded="false">
+          <span class="acc-left">
+            <span class="acc-num">03</span>
+            <span class="acc-title">MODO DE USO</span>
+          </span>
+          <span class="acc-chev"><ChevronDown size={14} /></span>
+        </button>
+        <div class="acc-body">
+          <p data-detail-modo-uso>—</p>
+        </div>
+      </div>
+
+      <div class="acc-item" data-acc>
+        <button class="acc-head" type="button" data-acc-toggle aria-expanded="false">
+          <span class="acc-left">
+            <span class="acc-num">04</span>
+            <span class="acc-title">SOBRE A MARCA</span>
+          </span>
+          <span class="acc-chev"><ChevronDown size={14} /></span>
+        </button>
+        <div class="acc-body">
+          <p data-detail-sobre-marca>—</p>
+        </div>
       </div>
     </div>
   </section>
@@ -102,8 +162,18 @@ import { ChevronRight, Plus, Minus, ShoppingBag, MessageCircle, Heart, Share2, S
           <span class="rel-kicker">TALVEZ VOCÊ GOSTE</span>
           <h2 class="rel-title">PRODUTOS RELACIONADOS.</h2>
         </div>
+        <div class="rel-nav">
+          <button class="rel-nav-btn" type="button" data-rel-prev aria-label="Anterior">
+            <ChevronLeft size={18} />
+          </button>
+          <button class="rel-nav-btn" type="button" data-rel-next aria-label="Próximo">
+            <ChevronRight size={18} />
+          </button>
+        </div>
       </div>
-      <div class="rel-grid" data-related-grid></div>
+      <div class="rel-carousel">
+        <div class="rel-grid" data-related-grid></div>
+      </div>
     </div>
   </section>
 </Layout>
@@ -120,7 +190,7 @@ import { ChevronRight, Plus, Minus, ShoppingBag, MessageCircle, Heart, Share2, S
 
   const stateLoad  = document.querySelector<HTMLElement>('[data-state-loading]')!;
   const stateErr   = document.querySelector<HTMLElement>('[data-state-error]')!;
-  const stateProd  = document.querySelector<HTMLElement>('[data-state-product]')!;
+  const stateProds = document.querySelectorAll<HTMLElement>('[data-state-product]');
   const errMsg     = document.querySelector<HTMLElement>('[data-error-msg]')!;
   const relSection = document.querySelector<HTMLElement>('[data-related-section]')!;
   const relGrid    = document.querySelector<HTMLElement>('[data-related-grid]')!;
@@ -157,7 +227,28 @@ import { ChevronRight, Plus, Minus, ShoppingBag, MessageCircle, Heart, Share2, S
       img.removeAttribute('src');
       img.style.display = 'none';
     }
+
+    // Optional detail fields
+    document.querySelector<HTMLElement>('[data-detail-descricao-produto]')!.textContent =
+      p.descricao_produto || 'Sem descrição detalhada disponível.';
+    document.querySelector<HTMLElement>('[data-detail-info-nutricional]')!.textContent =
+      p.info_nutricional || 'Informação nutricional não disponível.';
+    document.querySelector<HTMLElement>('[data-detail-modo-uso]')!.textContent =
+      p.modo_uso || 'Modo de uso não informado.';
+    document.querySelector<HTMLElement>('[data-detail-sobre-marca]')!.textContent =
+      p.sobre_marca || 'Informações sobre a marca não disponíveis.';
   }
+
+  // Ficha técnica accordion toggle
+  document.querySelectorAll<HTMLButtonElement>('[data-acc-toggle]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest<HTMLElement>('[data-acc]');
+      if (!item) return;
+      const willOpen = !item.classList.contains('open');
+      item.classList.toggle('open', willOpen);
+      btn.setAttribute('aria-expanded', String(willOpen));
+    });
+  });
 
   function renderRelated(items: Product[]) {
     if (!items.length) {
@@ -169,23 +260,79 @@ import { ChevronRight, Plus, Minus, ShoppingBag, MessageCircle, Heart, Share2, S
     items.forEach((p) => {
       const a = document.createElement('a');
       a.className = 'rel-card';
-      a.href = `/produto?id=${encodeURIComponent(p.id)}`;
-      
+      a.href = `${import.meta.env.BASE_URL}produto?id=${encodeURIComponent(p.id)}`;
+
       const imgHtml = p.imagem ? `<img src="${p.imagem}" alt="" loading="lazy" />` : '';
       a.innerHTML = `
-        <div class="rel-img">${imgHtml}</div>
+        <div class="rel-img">
+          <span class="rel-badge"></span>
+          ${imgHtml}
+        </div>
         <div class="rel-body">
-          <span class="rel-cat"></span>
           <span class="rel-name"></span>
-          <span class="rel-price"></span>
+          <span class="rel-sub"></span>
+          <div class="rel-foot">
+            <span class="rel-price"></span>
+            <button class="rel-add" type="button" aria-label="Adicionar ao carrinho">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              <span>ADICIONAR</span>
+            </button>
+          </div>
         </div>
       `;
-      (a.querySelector('.rel-cat')!).textContent = (p.categoria || '').toUpperCase();
+      (a.querySelector('.rel-badge')!).textContent = (p.categoria || '').toUpperCase();
       (a.querySelector('.rel-name')!).textContent = p.nome;
+      const subEl = a.querySelector<HTMLElement>('.rel-sub')!;
+      const subText = (p.descricao || '').trim();
+      if (subText) {
+        subEl.textContent = subText.length > 64 ? subText.slice(0, 64).trimEnd() + '…' : subText;
+      } else {
+        subEl.hidden = true;
+      }
       (a.querySelector('.rel-price')!).textContent = formatBRL(p.preco);
+
+      a.querySelector<HTMLButtonElement>('.rel-add')!.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        cart.add(p, 1);
+        const btn = e.currentTarget as HTMLButtonElement;
+        const label = btn.querySelector('span')!;
+        const original = label.textContent;
+        label.textContent = 'ADICIONADO';
+        setTimeout(() => { label.textContent = original; }, 1100);
+      });
+
       relGrid.appendChild(a);
     });
+    requestAnimationFrame(updateRelNav);
   }
+
+  const relPrev = document.querySelector<HTMLButtonElement>('[data-rel-prev]');
+  const relNext = document.querySelector<HTMLButtonElement>('[data-rel-next]');
+
+  function getScrollStep(): number {
+    const first = relGrid.querySelector<HTMLElement>('.rel-card');
+    if (!first) return relGrid.clientWidth;
+    const styles = window.getComputedStyle(relGrid);
+    const gap = parseFloat(styles.columnGap || styles.gap || '0') || 0;
+    return first.getBoundingClientRect().width + gap;
+  }
+
+  function updateRelNav() {
+    if (!relPrev || !relNext) return;
+    const max = relGrid.scrollWidth - relGrid.clientWidth - 1;
+    relPrev.disabled = relGrid.scrollLeft <= 0;
+    relNext.disabled = relGrid.scrollLeft >= max;
+  }
+
+  relPrev?.addEventListener('click', () => {
+    relGrid.scrollBy({ left: -getScrollStep(), behavior: 'smooth' });
+  });
+  relNext?.addEventListener('click', () => {
+    relGrid.scrollBy({ left: getScrollStep(), behavior: 'smooth' });
+  });
+  relGrid.addEventListener('scroll', updateRelNav, { passive: true });
+  window.addEventListener('resize', updateRelNav);
 
   document.querySelector<HTMLButtonElement>('[data-qty-inc]')!.addEventListener('click', () => setQty(qty + 1));
   document.querySelector<HTMLButtonElement>('[data-qty-dec]')!.addEventListener('click', () => setQty(qty - 1));
@@ -216,19 +363,6 @@ import { ChevronRight, Plus, Minus, ShoppingBag, MessageCircle, Heart, Share2, S
     location.href = buildWhatsAppLink(WHATSAPP_NUMBER, lines.join('\n'));
   });
 
-  document.querySelector<HTMLButtonElement>('[data-share]')!.addEventListener('click', async () => {
-    if (!current) return;
-    const url = location.href;
-    if (navigator.share) {
-      try { await navigator.share({ title: current.nome, url }); } catch { /* user canceled */ }
-    } else {
-      try {
-        await navigator.clipboard.writeText(url);
-        alert('Link copiado!');
-      } catch { /* ignore */ }
-    }
-  });
-
   async function load() {
     if (!productId) {
       showError('ID do produto não informado na URL (ex.: /produto?id=1).');
@@ -246,7 +380,7 @@ import { ChevronRight, Plus, Minus, ShoppingBag, MessageCircle, Heart, Share2, S
     }
     current = p;
     stateLoad.hidden = true;
-    stateProd.hidden = false;
+    stateProds.forEach(el => el.hidden = false);
     hydrate(p);
     renderRelated(relatedProducts(data.products, p, 4));
   }
@@ -278,7 +412,7 @@ import { ChevronRight, Plus, Minus, ShoppingBag, MessageCircle, Heart, Share2, S
   .state-msg { max-width: 480px; font-size: 13px; }
   .loader {
     width: 36px; height: 36px;
-    border: 3px solid var(--c-line); border-top-color: var(--c-yellow);
+    border: 3px solid var(--c-line); border-top-color: var(--c-master);
     border-radius: 50%; animation: spin 800ms linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -288,7 +422,7 @@ import { ChevronRight, Plus, Minus, ShoppingBag, MessageCircle, Heart, Share2, S
     border-radius: var(--radius-pill);
     font-family: var(--font-display); font-size: 13px; font-weight: 800; letter-spacing: 1px;
   }
-  .btn-retry:hover { background: var(--c-yellow); color: var(--c-ink); }
+  .btn-retry:hover { background: var(--c-master); color: var(--c-ink); }
 
   .product-block {
     display: grid;
@@ -335,12 +469,12 @@ import { ChevronRight, Plus, Minus, ShoppingBag, MessageCircle, Heart, Share2, S
   .action-btns { display: flex; flex-direction: column; gap: 12px; }
   .btn-add {
     display: flex; align-items: center; justify-content: center; gap: 10px;
-    padding: 18px; background: var(--c-yellow); border-radius: var(--radius-sm);
+    padding: 18px; background: var(--c-master); border-radius: var(--radius-sm);
     font-family: var(--font-display); font-size: 16px; font-weight: 800; letter-spacing: 1px;
     color: var(--c-ink);
     transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out);
   }
-  .btn-add:hover { transform: translateY(-3px); box-shadow: 0 16px 36px -12px rgba(245, 195, 0, 0.55); }
+  .btn-add:hover { transform: translateY(-3px); box-shadow: 0 16px 36px -12px rgba(245, 8, 0, 0.55); }
   .btn-whatsapp {
     display: flex; align-items: center; justify-content: center; gap: 10px;
     padding: 18px; border: 2px solid var(--c-ink); border-radius: var(--radius-sm);
@@ -367,32 +501,220 @@ import { ChevronRight, Plus, Minus, ShoppingBag, MessageCircle, Heart, Share2, S
   }
   .rel-header { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
   .rel-title-wrap { display: flex; flex-direction: column; gap: 8px; }
-  .rel-kicker { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 2px; color: var(--c-yellow); }
+  .rel-kicker { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 2px; color: var(--c-master); }
   .rel-title { font-family: var(--font-display); font-size: clamp(32px, 4vw, 56px); font-weight: 800; font-style: italic; line-height: 0.92; letter-spacing: -2px; color: var(--c-paper); }
 
+  .rel-nav { display: flex; gap: 10px; }
+  .rel-nav-btn {
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    background: transparent; color: var(--c-paper);
+    border: 1px solid var(--c-paper);
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: background var(--t-fast) var(--ease-out),
+                color var(--t-fast) var(--ease-out),
+                border-color var(--t-fast) var(--ease-out),
+                opacity var(--t-fast) var(--ease-out);
+  }
+  .rel-nav-btn:hover:not(:disabled) {
+    background: var(--c-master); color: var(--c-ink); border-color: var(--c-master);
+  }
+  .rel-nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  .rel-carousel { position: relative; min-width: 0; }
   .rel-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: clamp(14px, 1.4vw, 20px);
+    display: flex;
+    gap: clamp(10px, 1.4vw, 20px);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 4px;
   }
-  .rel-card {
+  .rel-grid::-webkit-scrollbar { display: none; }
+  :global(.rel-grid > .rel-card) {
+    flex: 0 0 clamp(260px, 28%, 340px);
+    scroll-snap-align: start;
+  }
+  /* Cards relacionados são criados via JS (não recebem o data-astro-cid),
+     então estes seletores precisam ser globais para aplicarem o estilo. */
+  :global(.rel-card) {
     display: flex; flex-direction: column;
-    border: 1px solid #F5F0E833; border-radius: var(--radius-md); overflow: hidden;
-    transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out), border-color var(--t-med) var(--ease-out);
+    aspect-ratio: 1 / 1;
+    background: var(--c-mid);
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: transform var(--t-med) var(--ease-out),
+                box-shadow var(--t-med) var(--ease-out),
+                background var(--t-fast) var(--ease-out),
+                border-color var(--t-med) var(--ease-out);
   }
-  .rel-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 24px 48px -20px rgba(0, 0, 0, 0.5);
-    border-color: var(--c-yellow);
+  :global(.rel-card:hover) {
+    box-shadow: 0 24px 48px -20px rgba(0, 0, 0, 0.6);
+    background: var(--c-master);
+    border-color: var(--c-master);
   }
-  .rel-img { width: 100%; aspect-ratio: 1 / 1; background: var(--c-mid); }
-  .rel-img :global(img) { width: 100%; height: 100%; object-fit: cover; }
-  .rel-body { display: flex; flex-direction: column; gap: 10px; padding: 16px; }
-  .rel-cat { font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; color: var(--c-yellow); }
-  .rel-name { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--c-paper); letter-spacing: -0.5px; line-height: 1.1; }
-  .rel-price { font-family: var(--font-mono); font-size: 18px; font-weight: 700; color: var(--c-paper); margin-top: 4px; }
+
+  :global(.rel-img) {
+    position: relative;
+    width: 100%;
+    flex: 1 1 auto; min-height: 0;
+    background: #202021;
+    overflow: hidden;
+    transition: background var(--t-fast) var(--ease-out);
+  }
+  :global(.rel-card:hover .rel-img) { background: #F5C300CC; }
+  :global(.rel-img img) { width: 100%; height: 100%; object-fit: cover; }
+  :global(.rel-badge) {
+    position: absolute; top: 14px; left: 14px; z-index: 1;
+    padding: 4px 8px;
+    background: var(--c-paper); color: var(--c-ink);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+    letter-spacing: 1.2px;
+    transition: background var(--t-fast) var(--ease-out),
+                color var(--t-fast) var(--ease-out);
+  }
+  :global(.rel-card:hover .rel-badge) {
+    background: var(--c-ink); color: var(--c-paper);
+  }
+
+  :global(.rel-body) {
+    display: flex; flex-direction: column; gap: 8px;
+    padding: 20px; min-width: 0;
+  }
+  :global(.rel-name) {
+    font-family: var(--font-display); font-size: 18px; font-weight: 700;
+    letter-spacing: 0.5px; line-height: 1.05;
+    color: var(--c-paper);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    transition: color var(--t-fast) var(--ease-out);
+  }
+  :global(.rel-sub) {
+    font-family: var(--font-ui); font-size: 12px; font-weight: 400;
+    color: var(--c-paper-muted);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    transition: color var(--t-fast) var(--ease-out), opacity var(--t-fast) var(--ease-out);
+  }
+  :global(.rel-card:hover .rel-name) { color: var(--c-ink); }
+  :global(.rel-card:hover .rel-sub) { color: var(--c-ink); opacity: 0.7; }
+
+  :global(.rel-foot) {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; padding-top: 8px; min-width: 0;
+  }
+  :global(.rel-price) {
+    font-family: var(--font-mono); font-size: 18px; font-weight: 700;
+    color: var(--c-master);
+    white-space: nowrap;
+    transition: color var(--t-fast) var(--ease-out);
+  }
+  :global(.rel-card:hover .rel-price) { color: var(--c-ink); }
+  :global(.rel-add) {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 12px;
+    background: var(--c-master); color: var(--c-ink);
+    border: none; border-radius: var(--radius-sm);
+    font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+    letter-spacing: 1px; cursor: pointer; white-space: nowrap; flex-shrink: 0;
+    transition: transform var(--t-fast) var(--ease-out),
+                background var(--t-fast) var(--ease-out),
+                color var(--t-fast) var(--ease-out);
+  }
+  :global(.rel-card:hover .rel-add) {
+    background: var(--c-ink); color: var(--c-master);
+  }
+  :global(.rel-add:hover) { transform: translateY(-2px); }
+  :global(.rel-add svg) { stroke: currentColor; }
+
+  /* Ficha Técnica — accordion */
+  .ficha-section {
+    display: grid;
+    grid-template-columns: 380px minmax(0, 1fr);
+    gap: clamp(32px, 5vw, 64px);
+    padding: clamp(56px, 6vw, 80px) var(--gutter);
+    background: var(--c-paper);
+    align-items: start;
+  }
+
+  .ficha-left { display: flex; flex-direction: column; gap: 8px; }
+  .ficha-kicker {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+    letter-spacing: 1.5px; color: var(--c-red);
+  }
+  .ficha-title {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 5vw, 56px); font-weight: 800;
+    font-style: italic; line-height: 0.9; letter-spacing: -1.5px;
+    color: var(--c-ink);
+  }
+  .ficha-under { width: 60px; height: 4px; background: var(--c-master); }
+  .ficha-desc {
+    margin-top: 12px;
+    font-family: var(--font-ui); font-size: 14px; line-height: 1.5;
+    color: var(--c-muted);
+  }
+
+  .ficha-right {
+    display: flex; flex-direction: column;
+    border-top: 1px solid var(--c-line);
+  }
+
+  .acc-item { border-bottom: 1px solid var(--c-line); }
+  .acc-item:last-child { border-bottom: none; }
+
+  .acc-head {
+    width: 100%;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px;
+    padding: 24px 0;
+    background: none; border: none; cursor: pointer;
+    text-align: left;
+  }
+  .acc-item.open .acc-head { padding: 20px 0 18px; }
+
+  .acc-left { display: flex; align-items: center; gap: 14px; }
+  .acc-num {
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--c-line-hard); border-radius: var(--radius-sm);
+    background: var(--c-paper); color: var(--c-ink);
+    font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+    transition: background var(--t-fast) var(--ease-out),
+                color var(--t-fast) var(--ease-out),
+                border-color var(--t-fast) var(--ease-out);
+  }
+  .acc-item.open .acc-num {
+    background: var(--c-ink); color: var(--c-master); border-color: var(--c-ink);
+  }
+  .acc-title {
+    font-family: var(--font-display); font-size: 18px; font-weight: 700;
+    letter-spacing: 1px; color: var(--c-ink);
+  }
+  .acc-chev {
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--c-ink);
+    transition: transform var(--t-med) var(--ease-out);
+  }
+  .acc-item.open .acc-chev { transform: rotate(180deg); }
+
+  .acc-body {
+    display: none;
+    padding: 8px 46px 24px;
+  }
+  .acc-item.open .acc-body { display: block; }
+  .acc-body p {
+    font-family: var(--font-ui); font-size: 16px; line-height: 1.6;
+    color: var(--c-ink); white-space: pre-line;
+  }
 
   @media (max-width: 960px) {
     .product-block { grid-template-columns: 1fr; }
+    .ficha-section { grid-template-columns: 1fr; }
+    .acc-body { padding: 8px 0 24px; }
   }
 </style>

@@ -2,6 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import { ArrowLeft, Home, MessageCircle } from '@lucide/astro';
+
+const base = import.meta.env.BASE_URL;
 ---
 
 <Layout title="404 — Página não encontrada · VW Suplementos BH">
@@ -18,20 +20,20 @@ import { ArrowLeft, Home, MessageCircle } from '@lucide/astro';
       <p class="sub-404">O link que você acessou pode estar quebrado ou a página foi removida. Mas não esquenta — o treino continua.</p>
 
       <div class="btns-404">
-        <a href="/" class="btn-404 primary">
+        <a href={base} class="btn-404 primary">
           <Home size={18} />
           <span>VOLTAR AO INÍCIO</span>
         </a>
-        <a href="/catalogo" class="btn-404 secondary">
+        <a href={`${base}catalogo`} class="btn-404 secondary">
           <ArrowLeft size={18} />
           <span>VER CATÁLOGO</span>
         </a>
       </div>
 
       <div class="links-404">
-        <a href="/#sobre">Sobre nós</a>
+        <a href={`${base}#sobre`}>Sobre nós</a>
         <span class="dot">·</span>
-        <a href="/#localizacao">Localização</a>
+        <a href={`${base}#localizacao`}>Localização</a>
         <span class="dot">·</span>
         <a href="#">
           <MessageCircle size={14} />
@@ -92,7 +94,7 @@ import { ArrowLeft, Home, MessageCircle } from '@lucide/astro';
     font-style: italic;
     line-height: 0.85;
     letter-spacing: -0.06em;
-    color: var(--c-yellow);
+    color: var(--c-master);
     opacity: 0.12;
     text-align: center;
     user-select: none;
@@ -115,7 +117,7 @@ import { ArrowLeft, Home, MessageCircle } from '@lucide/astro';
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 2px;
-    color: var(--c-yellow);
+    color: var(--c-master);
   }
 
   .title-404 {
@@ -155,7 +157,7 @@ import { ArrowLeft, Home, MessageCircle } from '@lucide/astro';
   }
 
   .btn-404.primary {
-    background: var(--c-yellow);
+    background: var(--c-master);
     color: var(--c-ink);
   }
   .btn-404.primary:hover {

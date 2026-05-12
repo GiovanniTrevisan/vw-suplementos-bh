@@ -1,5 +1,9 @@
 ---
 import { MapPin, Clock, Phone, Map, MessageCircle } from '@lucide/astro';
+import { WHATSAPP_NUMBER } from '../lib/config';
+import { buildWhatsAppLink } from '../lib/format';
+
+const whatsappLink = buildWhatsAppLink(WHATSAPP_NUMBER, 'Olá! Gostaria de mais informações sobre os produtos da VW Suplementos.');
 ---
 
 <section class="localizacao" id="localizacao">
@@ -10,21 +14,21 @@ import { MapPin, Clock, Phone, Map, MessageCircle } from '@lucide/astro';
 
       <div class="addr-block">
         <div class="addr-line">
-          <MapPin size={22} color="var(--c-yellow)" />
+          <MapPin size={22} color="var(--c-master)" />
           <div class="addr-text">
             <span class="addr-label">ENDEREÇO</span>
             <span class="addr-value">Av. Pres. Tancredo Neves, 2337 - Castelo, Belo Horizonte - MG, 31330-472</span>
           </div>
         </div>
         <div class="addr-line">
-          <Clock size={22} color="var(--c-yellow)" />
+          <Clock size={22} color="var(--c-master)" />
           <div class="addr-text">
             <span class="addr-label">HORÁRIO</span>
             <span class="addr-value">Seg–Sex 9h–19h · Sáb 9h–14h · Dom fechado</span>
           </div>
         </div>
         <div class="addr-line">
-          <Phone size={22} color="var(--c-yellow)" />
+          <Phone size={22} color="var(--c-master)" />
           <div class="addr-text">
             <span class="addr-label">WHATSAPP</span>
             <span class="addr-phone">(31) 99267-0586</span>
@@ -37,7 +41,7 @@ import { MapPin, Clock, Phone, Map, MessageCircle } from '@lucide/astro';
           <Map size={16} />
           <span>VER NO GOOGLE MAPS</span>
         </a>
-        <a href="https://wa.me/313992670586" class="loc-btn filled" target="_blank" rel="noopener noreferrer">
+        <a href={whatsappLink} class="loc-btn filled" target="_blank" rel="noopener noreferrer">
           <MessageCircle size={16} />
           <span>CHAMAR NO WHATSAPP</span>
         </a>
@@ -170,7 +174,7 @@ import { MapPin, Clock, Phone, Map, MessageCircle } from '@lucide/astro';
   .loc-btn.outline:hover { background: var(--c-ink); color: var(--c-paper); }
 
   .loc-btn.filled {
-    background: var(--c-yellow);
+    background: var(--c-master);
   }
   .loc-btn.filled:hover { box-shadow: 0 12px 26px -10px rgba(245, 195, 0, 0.55); }
 
@@ -233,7 +237,7 @@ import { MapPin, Clock, Phone, Map, MessageCircle } from '@lucide/astro';
   .pin-head {
     width: 48px;
     height: 48px;
-    background: var(--c-yellow);
+    background: var(--c-master);
     border-radius: var(--radius-pill);
     border: 3px solid var(--c-ink);
     display: flex;

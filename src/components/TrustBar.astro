@@ -13,7 +13,7 @@ const stats = [
       <>
         {i > 0 && <div class="divider" aria-hidden="true" />}
         <div class="stat">
-          <span class:list={['stat-value', { yellow: stat.highlight }]}>{stat.value}</span>
+          <span class:list={['stat-value', { highlight: stat.highlight }]}>{stat.value}</span>
           <span class="stat-label">{stat.label}</span>
         </div>
       </>
@@ -54,8 +54,8 @@ const stats = [
     color: var(--c-paper);
   }
 
-  .stat-value.yellow {
-    color: var(--c-yellow);
+  .stat-value.highlight {
+    color: #F5C300;
   }
 
   .stat-label {
