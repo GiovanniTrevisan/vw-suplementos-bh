@@ -205,53 +205,23 @@ sendBtn.addEventListener('click', () => {
 
 ---
 
-### 5. Deploy condicional para GitHub Pages
-
-**Desafio:** GitHub Pages exige um `base` path (`/vw-suplementos-bh/`) para todos os assets e links internos. Rodar localmente com esse base quebra tudo. Era preciso que o mesmo código funcionasse nos dois ambientes sem condicionais espalhados pelo projeto.
-
-**Solução:** A variável de ambiente `DEPLOY_TARGET` define o alvo do build. O [astro.config.mjs](astro.config.mjs) lê essa variável e aplica `site` e `base` condicionalmente. Os componentes usam `import.meta.env.BASE_URL` (injetado pelo Astro) em vez de strings hardcoded — o mesmo código serve para `localhost:4321/`, `vw-suplementos-bh/` no GitHub Pages e o root no Cloudflare Workers.
-
-```javascript
-// astro.config.mjs
-const isGithubPages = process.env.DEPLOY_TARGET === 'github-pages';
-
-export default defineConfig({
-  site: isGithubPages ? 'https://giovannitrevisan.github.io' : undefined,
-  base: isGithubPages ? '/vw-suplementos-bh/' : undefined,
-});
-```
-
-```yaml
-# .github/workflows/deploy.yml
-- name: Build
-  env:
-    DEPLOY_TARGET: github-pages
-    PUBLIC_GAS_URL: ${{ vars.PUBLIC_GAS_URL }}
-    PUBLIC_WHATSAPP_NUMBER: ${{ vars.PUBLIC_WHATSAPP_NUMBER }}
-  run: npm run build
-```
-
-**Impacto:** `npm run dev` funciona localmente sem nenhuma config extra. O CI cuida do resto.
-
----
-
 ## Arquitetura
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                        Cliente                          │
-│  ┌──────────┐  ┌───────────┐  ┌──────────┐             │
-│  │ Homepage │  │ Catálogo  │  │ Checkout │  ...        │
-│  └────┬─────┘  └─────┬─────┘  └────┬─────┘             │
-│       │               │              │                   │
-│  ┌────▼───────────────▼──────────────▼────────────────┐ │
-│  │           lib/ (módulos TypeScript)                 │ │
-│  │  api.ts · cart.ts · format.ts · config.ts           │ │
-│  └────────────────────────┬────────────────────────────┘ │
-└───────────────────────────┼─────────────────────────────┘
+┌───────────────────────────────────────────────────────────┐
+│                        Cliente                            │
+│  ┌──────────┐  ┌───────────┐  ┌──────────┐                │
+│  │ Homepage │  │ Catálogo  │  │ Checkout │  ...           │
+│  └────┬─────┘  └─────┬─────┘  └────┬─────┘                │
+│       │               │              │                    │
+│  ┌────▼───────────────▼──────────────▼─────────────────┐  │
+│  │           lib/ (módulos TypeScript)                 │  │
+│  │  api.ts · cart.ts · format.ts · config.ts           │  │
+│  └────────────────────────┬────────────────────────────┘  │
+└───────────────────────────┼───────────────────────────────┘
                             │
-          ┌─────────────────┼─────────────────┐
-          │                 │                 │
+          ┌─────────────────┼────────────────┐
+          │                 │                │
    ┌──────▼──────┐  ┌───────▼──────┐  ┌──────▼──────┐
    │ Google Apps │  │  localStorage│  │  WhatsApp   │
    │   Script    │  │   (carrinho) │  │    API      │
