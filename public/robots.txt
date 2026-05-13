@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /checkout
+Disallow: /confirmacao
+
+Sitemap: https://vwsuplementosbh.com.br/sitemap.xml

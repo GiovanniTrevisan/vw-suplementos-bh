@@ -4,9 +4,23 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description?: string;
+  robots?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
 }
 
-const { title, description = 'Whey, creatina, pré-treino e acessórios das principais marcas. Originais, com nota fiscal e entrega rápida em Belo Horizonte.' } = Astro.props;
+const {
+  title,
+  description = 'Whey, creatina, pré-treino e acessórios das principais marcas. Originais, com nota fiscal e entrega rápida em Belo Horizonte.',
+  robots = 'index, follow',
+  ogImage = new URL('og-image.jpg', Astro.site).href,
+  canonicalUrl = (() => {
+    const p = Astro.url.pathname;
+    // Strip trailing slash on all paths except root "/"
+    const normalized = p.length > 1 && p.endsWith('/') ? p.slice(0, -1) : p;
+    return new URL(normalized, Astro.site).href;
+  })(),
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -15,9 +29,39 @@ const { title, description = 'Whey, creatina, pré-treino e acessórios das prin
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="description" content={description} />
+    <meta name="robots" content={robots} />
     <meta name="theme-color" content="#0A0A09" />
-    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="sitemap" href="/sitemap.xml" />
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} type="image/svg+xml" />
+    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.png`} type="image/png" />
+    <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}favicon.png`} />
+
+    <!-- Fonts: preconnect + non-blocking load (remove render-blocking @import) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,700;0,800;1,400;1,700;1,800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,700;0,800;1,400;1,700;1,800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" />
+    </noscript>
+
     <title>{title}</title>
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+
+    <!-- Slot para preloads e meta tags específicos por página -->
+    <slot name="head" />
   </head>
   <body>
     <slot />

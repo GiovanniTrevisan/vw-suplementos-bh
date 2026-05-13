@@ -10,9 +10,116 @@ import Reviews from '../components/Reviews.astro';
 import Localizacao from '../components/Localizacao.astro';
 import CtaFinal from '../components/CtaFinal.astro';
 import Footer from '../components/Footer.astro';
+
+const SITE = 'https://vwsuplementosbh.com.br';
+
+const schemaLocalBusiness = {
+  "@context": "https://schema.org",
+  "@type": ["LocalBusiness", "Store"],
+  "name": "VW Suplementos BH",
+  "url": SITE,
+  "telephone": "+55-31-99267-0586",
+  "email": "contato@vwsuplementos.com.br",
+  "description": "Loja de suplementos esportivos em Belo Horizonte. Whey, creatina, pré-treino e acessórios das melhores marcas com nota fiscal e entrega rápida em BH.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Av. Pres. Tancredo Neves, 2337 - Loja 8",
+    "addressLocality": "Belo Horizonte",
+    "addressRegion": "MG",
+    "postalCode": "31330-472",
+    "addressCountry": "BR"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": -19.887413681489625,
+    "longitude": -43.99642592395568
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "08:00",
+      "closes": "19:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "Saturday",
+      "opens": "08:00",
+      "closes": "14:00"
+    }
+  ],
+  "image": `${SITE}/og-image.jpg`,
+  "logo": `${SITE}/favicon.png`,
+  "priceRange": "$$",
+  "currenciesAccepted": "BRL",
+  "paymentAccepted": "Dinheiro, Cartão de Crédito, Cartão de Débito, PIX",
+  "sameAs": [
+    "https://wa.me/5531992670586",
+    "https://www.instagram.com/vwsuplementosbh"
+  ]
+};
+
+const schemaFAQ = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Os suplementos da VW são originais?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim! Todos os produtos são 100% originais, adquiridos diretamente de distribuidores autorizados. Emitimos nota fiscal em todas as compras."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Vocês fazem entrega em Belo Horizonte?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim, realizamos entrega rápida em Belo Horizonte e na Grande BH. Pedidos feitos antes das 14h costumam ser entregues no mesmo dia."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quais formas de pagamento são aceitas?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Aceitamos PIX, cartão de crédito (parcelado), cartão de débito e dinheiro, tanto na loja física quanto nas compras pelo WhatsApp."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Posso retirar meu pedido na loja?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim! Nossa loja fica na Av. Pres. Tancredo Neves, 2337 - Loja 8, Castelo, Belo Horizonte. Atendemos de segunda a sexta das 8h às 19h e sábados das 8h às 14h."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Como faço para comprar pelo WhatsApp?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Acesse nosso catálogo, escolha o produto e clique em 'Comprar via WhatsApp'. Você será direcionado para uma conversa com nossa equipe para confirmar o pedido, pagamento e entrega."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Os produtos têm garantia ou prazo de troca?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim. Produtos com defeito de fabricação ou fora da validade podem ser trocados em até 7 dias corridos após a compra, mediante apresentação da nota fiscal."
+      }
+    }
+  ]
+};
 ---
 
-<Layout title="VW Suplementos BH — Whey, Creatina e Pré-Treino em Belo Horizonte">
+<Layout
+  title="VW Suplementos BH — Whey, Creatina e Pré-Treino em BH"
+  description="Compre suplementos originais em Belo Horizonte. Whey, creatina, pré-treino e acessórios das melhores marcas com nota fiscal e entrega rápida em BH."
+>
+  <link slot="head" rel="preload" as="image" href="/wallpaper_2.webp" fetchpriority="high" />
   <Header />
   <Hero />
   <TrustBar />
@@ -23,4 +130,6 @@ import Footer from '../components/Footer.astro';
   <Localizacao />
   <CtaFinal />
   <Footer />
+  <Fragment set:html={`<script type="application/ld+json">${JSON.stringify(schemaLocalBusiness)}</script>`} />
+  <Fragment set:html={`<script type="application/ld+json">${JSON.stringify(schemaFAQ)}</script>`} />
 </Layout>

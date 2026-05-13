@@ -195,6 +195,19 @@ const base = import.meta.env.BASE_URL;
   const relSection = document.querySelector<HTMLElement>('[data-related-section]')!;
   const relGrid    = document.querySelector<HTMLElement>('[data-related-grid]')!;
 
+  const SITE = 'https://vwsuplementosbh.com.br';
+
+  function injectSchema(id: string, data: object) {
+    let el = document.getElementById(id) as HTMLScriptElement | null;
+    if (!el) {
+      el = document.createElement('script');
+      el.id = id;
+      el.type = 'application/ld+json';
+      document.head.appendChild(el);
+    }
+    el.textContent = JSON.stringify(data);
+  }
+
   let qty = 1;
   let current: Product | null = null;
 
@@ -237,6 +250,40 @@ const base = import.meta.env.BASE_URL;
       p.modo_uso || 'Modo de uso não informado.';
     document.querySelector<HTMLElement>('[data-detail-sobre-marca]')!.textContent =
       p.sobre_marca || 'Informações sobre a marca não disponíveis.';
+
+    injectSchema('schema-product', {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": p.nome,
+      "description": p.descricao_produto || p.descricao || '',
+      "image": p.imagem || '',
+      "sku": `VW-${p.id}`,
+      "brand": { "@type": "Brand", "name": p.categoria || 'VW Suplementos' },
+      "offers": {
+        "@type": "Offer",
+        "price": p.preco,
+        "priceCurrency": "BRL",
+        "availability": "https://schema.org/InStock",
+        "url": `${SITE}/produto?id=${encodeURIComponent(p.id)}`,
+        "seller": { "@type": "Organization", "name": "VW Suplementos BH" }
+      }
+    });
+
+    const canonicalEl = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (canonicalEl) {
+      canonicalEl.href = `${SITE}/produto?id=${encodeURIComponent(p.id)}`;
+    }
+
+    injectSchema('schema-breadcrumb', {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Início", "item": `${SITE}/` },
+        { "@type": "ListItem", "position": 2, "name": "Catálogo", "item": `${SITE}/catalogo` },
+        { "@type": "ListItem", "position": 3, "name": p.categoria || 'Categoria', "item": `${SITE}/catalogo?categoria=${encodeURIComponent(p.categoria || '')}` },
+        { "@type": "ListItem", "position": 4, "name": p.nome, "item": `${SITE}/produto?id=${encodeURIComponent(p.id)}` }
+      ]
+    });
   }
 
   // Ficha técnica accordion toggle
