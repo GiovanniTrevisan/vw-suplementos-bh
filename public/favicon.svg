@@ -1,20 +1,17 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
- "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
- width="136.000000pt" height="65.000000pt" viewBox="0 0 136.000000 65.000000"
- preserveAspectRatio="xMidYMid meet">
-
-<g transform="translate(0.000000,65.000000) scale(0.100000,-0.100000)"
-fill="#ffffff" stroke="none">
-<path d="M16 622 c-5 -8 245 -577 261 -593 6 -6 43 -9 83 -7 l72 3 44 99 c24
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 136 136" width="136" height="136">
+  <!-- Fundo escuro para garantir contraste em qualquer contexto (Google, favicons, etc.) -->
+  <rect width="136" height="136" fill="#0A0A09" rx="18"/>
+  <!-- Letras VW centralizadas verticalmente no quadrado -->
+  <g transform="translate(0,100.5) scale(0.100000,-0.100000)" fill="#ffffff" stroke="none">
+    <path d="M16 622 c-5 -8 245 -577 261 -593 6 -6 43 -9 83 -7 l72 3 44 99 c24
 54 44 106 44 115 0 25 -67 206 -75 204 -4 -1 -24 -39 -44 -84 -20 -45 -41 -84
 -47 -86 -5 -2 -43 72 -83 164 -41 93 -78 174 -84 181 -11 13 -162 18 -171 4z"/>
-<path d="M410 616 c0 -18 199 -579 209 -589 4 -4 39 -7 77 -5 l69 3 50 148
+    <path d="M410 616 c0 -18 199 -579 209 -589 4 -4 39 -7 77 -5 l69 3 50 148
 c27 81 53 147 57 147 3 0 28 -66 55 -147 l50 -148 75 -3 75 -3 16 43 c40 106
 197 552 197 560 0 5 -39 7 -86 6 l-87 -3 -52 -148 c-28 -82 -55 -149 -60 -150
 -4 -1 -28 61 -53 138 -24 77 -49 146 -55 153 -7 9 -32 12 -81 10 l-71 -3 -50
 -148 c-27 -81 -54 -146 -59 -144 -6 2 -30 64 -55 138 -25 74 -50 140 -54 147
 -12 18 -167 17 -167 -2z"/>
-</g>
+  </g>
 </svg>
