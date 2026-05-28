@@ -50,15 +50,19 @@ const COSMOS_TOKEN  = (import.meta.env.PUBLIC_COSMOS_TOKEN  ?? '').trim();
           <h2 class="card-title">EAN / CÓDIGO DE BARRAS</h2>
         </div>
         <div class="ean-row">
-          <input
-            type="text"
-            id="ean-input"
-            inputmode="numeric"
-            placeholder="Ex.: 7898215155017"
-            maxlength="14"
-            autocomplete="off"
-            aria-label="Código EAN"
-          />
+          <div class="ean-input-wrap">
+            <label for="ean-input">CÓDIGO EAN / GTIN</label>
+            <input
+              class="field-input"
+              type="text"
+              id="ean-input"
+              inputmode="numeric"
+              placeholder="Ex.: 7898215155017"
+              maxlength="14"
+              autocomplete="off"
+              aria-label="Código EAN"
+            />
+          </div>
           <button type="button" id="ean-btn" class="btn-primary">BUSCAR</button>
         </div>
         <div id="ean-state" class="ean-state" hidden></div>
@@ -416,10 +420,17 @@ const COSMOS_TOKEN  = (import.meta.env.PUBLIC_COSMOS_TOKEN  ?? '').trim();
   .ean-row {
     display: flex;
     gap: 12px;
+    align-items: flex-end;
+  }
+
+  .ean-input-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
   }
 
   #ean-input {
-    flex: 1;
     font-family: var(--font-mono);
     font-size: 16px;
     letter-spacing: 2px;
