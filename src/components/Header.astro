@@ -1,7 +1,10 @@
 ---
 import { Image } from 'astro:assets';
 import { ShoppingBag, ArrowRight, Menu, X } from '@lucide/astro';
+import WhatsAppIcon from './WhatsAppIcon.astro';
 import logoDark from '../assets/logo_dark.webp';
+import { WHATSAPP_NUMBER } from '../lib/config';
+import { buildWhatsAppLink } from '../lib/format';
 
 interface Props {
   variant?: 'dark' | 'light';
@@ -9,6 +12,7 @@ interface Props {
 
 const { variant = 'dark' } = Astro.props;
 const base = import.meta.env.BASE_URL;
+const whatsappLink = buildWhatsAppLink(WHATSAPP_NUMBER, 'Olá! Gostaria de mais informações sobre os produtos da VW Suplementos.');
 ---
 
 <header class:list={['header', variant]} data-header>
@@ -34,6 +38,9 @@ const base = import.meta.env.BASE_URL;
         <ShoppingBag size={22} color="var(--c-paper)" />
         <span class="cart-badge" data-cart-badge hidden>0</span>
       </a>
+      <a href={whatsappLink} class="cta-whatsapp" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+        <WhatsAppIcon size={22} color="var(--c-paper)" />
+      </a>
       <button class="menu-toggle" aria-label="Menu" data-menu-toggle>
         <Menu size={24} color="var(--c-paper)" class="icon-open" />
         <X size={24} color="var(--c-paper)" class="icon-close" />
@@ -51,6 +58,10 @@ const base = import.meta.env.BASE_URL;
     <a href={`${base}catalogo`} class="mobile-cta">
       <span>VER CATÁLOGO</span>
       <ArrowRight size={18} />
+    </a>
+    <a href={whatsappLink} class="mobile-wa" target="_blank" rel="noopener noreferrer">
+      <WhatsAppIcon size={18} color="var(--c-ink)" />
+      <span>CHAMAR NO WHATSAPP</span>
     </a>
   </div>
 </header>
@@ -197,6 +208,14 @@ const base = import.meta.env.BASE_URL;
     gap: clamp(12px, 1.5vw, 20px);
   }
 
+  .cta-whatsapp {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    transition: transform var(--t-fast) var(--ease-out), opacity var(--t-fast) var(--ease-out);
+  }
+  .cta-whatsapp:hover { transform: scale(1.08); opacity: 0.8; }
+
   .cta-catalogo {
     display: inline-flex;
     align-items: center;
@@ -303,9 +322,30 @@ const base = import.meta.env.BASE_URL;
     letter-spacing: 1px;
   }
 
+  .mobile-wa {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 24px;
+    background: #25D366;
+    border-radius: var(--radius-pill);
+    color: var(--c-ink);
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    transition: background var(--t-fast) var(--ease-out), transform var(--t-med) var(--ease-out);
+  }
+  .mobile-wa:hover {
+    background: #1ebe5d;
+    transform: translateY(-2px);
+  }
+
   @media (max-width: 960px) {
     .nav { display: none; }
     .cta-catalogo { display: none; }
+    .cta-whatsapp { display: none; }
     .menu-toggle { display: inline-flex; }
 
     .header.menu-open .mobile-menu {

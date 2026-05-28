@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { Camera, MessageCircle } from '@lucide/astro';
+import WhatsAppIcon from './WhatsAppIcon.astro';
 import { WHATSAPP_NUMBER } from '../lib/config';
 import { buildWhatsAppLink } from '../lib/format';
 import logoDark from '../assets/logo_dark.webp';
@@ -30,7 +30,10 @@ const base = import.meta.env.BASE_URL;
       <div class="fc fc3">
         <span class="fc-title">// CONTATO</span>
         <p class="fc-addr">Av. Pres. Tancredo Neves, 2337 — Loja 8<br/>Castelo, Belo Horizonte/MG</p>
-        <a href={whatsappLink} class="fc-wa" target="_blank" rel="noopener noreferrer">WhatsApp: (31) 98979-5391</a>
+        <a href={whatsappLink} class="fc-wa" target="_blank" rel="noopener noreferrer">
+          <WhatsAppIcon size={14} color="currentColor" />
+          <span>(31) 98979-5391</span>
+        </a>
         <span class="fc-email">contato@vwsuplementos.com.br</span>
       </div>
 
@@ -175,6 +178,9 @@ const base = import.meta.env.BASE_URL;
   }
 
   .fc-wa {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
     color: var(--c-paper);
     font-family: var(--font-mono);
     font-size: 13px;
@@ -184,7 +190,7 @@ const base = import.meta.env.BASE_URL;
   }
 
   .fc-wa:hover {
-    color: var(--c-master);
+    color: #25D366;
   }
 
   .fc-email {

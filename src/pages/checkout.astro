@@ -1,7 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
-import { Info, ArrowRight, ShoppingBag, Truck, Package, MessageCircle } from '@lucide/astro';
+import { Info, ArrowRight, ShoppingBag, Truck, Package } from '@lucide/astro';
+import WhatsAppIcon from '../components/WhatsAppIcon.astro';
 
 const base = import.meta.env.BASE_URL;
 ---
@@ -81,7 +82,7 @@ const base = import.meta.env.BASE_URL;
       </div>
 
       <button class="cta-send" type="button" data-send>
-        <MessageCircle size={20} />
+        <WhatsAppIcon size={20} color="var(--c-ink)" />
         <span>ENVIAR PEDIDO PELO WHATSAPP →</span>
       </button>
 
@@ -271,7 +272,7 @@ const base = import.meta.env.BASE_URL;
     color: var(--c-ink);
     transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out);
   }
-  .btn-back:hover { transform: translateY(-2px); box-shadow: 0 12px 26px -8px rgba(245, 195, 0, 0.5); }
+  .btn-back:hover { transform: translateY(-2px); box-shadow: 0 12px 26px -8px rgba(245, 0, 0, 0.5); }
   .btn-back :global(svg) { transition: transform var(--t-med) var(--ease-out); }
   .btn-back:hover :global(svg) { transform: translateX(4px); }
 
@@ -415,7 +416,7 @@ const base = import.meta.env.BASE_URL;
   }
   .cta-send:hover {
     transform: translateY(-3px);
-    box-shadow: 0 18px 40px -14px rgba(245, 195, 0, 0.6);
+    box-shadow: 0 18px 40px -14px rgba(245, 0, 0, 0.6);
   }
   .cta-send :global(svg) { color: var(--c-ink); }
 

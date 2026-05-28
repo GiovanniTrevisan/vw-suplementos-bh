@@ -1,7 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
-import { ChevronRight, ChevronLeft, ChevronDown, Plus, Minus, ShoppingBag, MessageCircle, Heart, Share2, Shield } from '@lucide/astro';
+import { ChevronRight, ChevronLeft, ChevronDown, Plus, Minus, ShoppingBag, Shield } from '@lucide/astro';
+import WhatsAppIcon from '../components/WhatsAppIcon.astro';
 
 const base = import.meta.env.BASE_URL;
 ---
@@ -74,7 +75,7 @@ const base = import.meta.env.BASE_URL;
           <span>ADICIONAR AO CARRINHO</span>
         </button>
         <button class="btn-whatsapp" type="button" data-buy-wa>
-          <MessageCircle size={18} />
+          <WhatsAppIcon size={18} color="currentColor" />
           <span>COMPRAR VIA WHATSAPP</span>
         </button>
       </div>
