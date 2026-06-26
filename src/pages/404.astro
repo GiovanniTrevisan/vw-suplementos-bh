@@ -1,9 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
-import { ArrowLeft, Home, MessageCircle } from '@lucide/astro';
+import { ArrowLeft, Home } from '@lucide/astro';
+import WhatsAppIcon from '../components/WhatsAppIcon.astro';
+import { WHATSAPP_NUMBER } from '../lib/config';
+import { buildWhatsAppLink } from '../lib/format';
 
 const base = import.meta.env.BASE_URL;
+const whatsappLink = buildWhatsAppLink(WHATSAPP_NUMBER, 'Olá! Gostaria de mais informações sobre os produtos da VW Suplementos.');
 ---
 
 <Layout title="404 — Página não encontrada · VW Suplementos BH" robots="noindex, follow">
@@ -35,8 +39,8 @@ const base = import.meta.env.BASE_URL;
         <span class="dot">·</span>
         <a href={`${base}#localizacao`}>Localização</a>
         <span class="dot">·</span>
-        <a href="#">
-          <MessageCircle size={14} />
+        <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+          <WhatsAppIcon size={14} color="currentColor" />
           <span>WhatsApp</span>
         </a>
       </div>
@@ -79,7 +83,7 @@ const base = import.meta.env.BASE_URL;
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 50% 50%, rgba(245, 195, 0, 0.08), transparent 60%);
+    background: radial-gradient(circle at 50% 50%, rgba(245, 0, 0, 0.08), transparent 60%);
     pointer-events: none;
   }
 
@@ -162,7 +166,7 @@ const base = import.meta.env.BASE_URL;
   }
   .btn-404.primary:hover {
     transform: translateY(-3px);
-    box-shadow: 0 16px 36px -12px rgba(245, 195, 0, 0.55);
+    box-shadow: 0 16px 36px -12px rgba(245, 0, 0, 0.55);
   }
 
   .btn-404.secondary {

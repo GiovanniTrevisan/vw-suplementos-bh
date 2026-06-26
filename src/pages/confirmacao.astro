@@ -1,7 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
-import { CircleCheck, ArrowRight, MessageCircle, MapPin } from '@lucide/astro';
+import { CircleCheck, ArrowRight, MapPin } from '@lucide/astro';
+import WhatsAppIcon from '../components/WhatsAppIcon.astro';
 
 const base = import.meta.env.BASE_URL;
 
@@ -57,7 +58,7 @@ const orderNumber = `#VW-${today.getFullYear()}${String(today.getMonth() + 1).pa
           <span>VOLTAR AO INÍCIO</span>
         </a>
         <a href="#" class="cb-secondary">
-          <MessageCircle size={18} />
+          <WhatsAppIcon size={18} color="currentColor" />
           <span>ABRIR WHATSAPP</span>
         </a>
       </div>
@@ -150,7 +151,7 @@ const orderNumber = `#VW-${today.getFullYear()}${String(today.getMonth() + 1).pa
     transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out), background var(--t-fast) var(--ease-out);
   }
   .cb-primary { background: var(--c-master); }
-  .cb-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 28px -10px rgba(245, 195, 0, 0.55); }
+  .cb-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 28px -10px rgba(245, 0, 0, 0.55); }
   .cb-secondary { border: 2px solid var(--c-ink); background: transparent; }
   .cb-secondary:hover { background: var(--c-ink); color: var(--c-paper); transform: translateY(-3px); }
 

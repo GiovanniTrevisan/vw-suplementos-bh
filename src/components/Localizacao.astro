@@ -1,5 +1,6 @@
 ---
-import { MapPin, Clock, Phone, Map, MessageCircle } from '@lucide/astro';
+import { MapPin, Clock, Phone, Map } from '@lucide/astro';
+import WhatsAppIcon from './WhatsAppIcon.astro';
 import { WHATSAPP_NUMBER } from '../lib/config';
 import { buildWhatsAppLink } from '../lib/format';
 
@@ -42,7 +43,7 @@ const whatsappLink = buildWhatsAppLink(WHATSAPP_NUMBER, 'Olá! Gostaria de mais 
           <span>VER NO GOOGLE MAPS</span>
         </a>
         <a href={whatsappLink} class="loc-btn filled" target="_blank" rel="noopener noreferrer">
-          <MessageCircle size={16} />
+          <WhatsAppIcon size={16} color="var(--c-ink)" />
           <span>CHAMAR NO WHATSAPP</span>
         </a>
       </div>
