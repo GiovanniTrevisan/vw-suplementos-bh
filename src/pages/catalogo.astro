@@ -603,7 +603,7 @@ const base = import.meta.env.BASE_URL;
     background: var(--c-paper); font-family: var(--font-ui); font-size: 13px; color: var(--c-ink);
     outline: none; transition: border-color var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out);
   }
-  .search-input:focus { border-color: var(--c-master); box-shadow: 0 0 0 3px rgba(245, 195, 0, 0.18); }
+  .search-input:focus { border-color: var(--c-master); box-shadow: 0 0 0 3px var(--c-amber-ring); }
 
   .filter-pills { display: flex; flex-direction: column; gap: 8px; }
 
@@ -618,7 +618,7 @@ const base = import.meta.env.BASE_URL;
     cursor: pointer;
     transition: border-color var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out);
   }
-  .sort-select:focus { outline: none; border-color: var(--c-master); box-shadow: 0 0 0 3px rgba(245, 195, 0, 0.18); }
+  .sort-select:focus { outline: none; border-color: var(--c-master); box-shadow: 0 0 0 3px var(--c-amber-ring); }
 
   .clear-link {
     display: flex; align-items: center; justify-content: center; gap: 6px;
@@ -688,7 +688,7 @@ const base = import.meta.env.BASE_URL;
   .load-more:hover {
     transform: translateY(-2px);
     background: var(--c-master); color: var(--c-ink);
-    box-shadow: 0 14px 28px -12px rgba(245, 195, 0, 0.55);
+    box-shadow: 0 14px 28px -12px var(--c-master-glow);
   }
   .pagination-info {
     font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; color: var(--c-muted);
@@ -1054,7 +1054,7 @@ const base = import.meta.env.BASE_URL;
   }
   .product-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 22px -8px rgba(245, 195, 0, 0.55);
+    box-shadow: 0 10px 22px -8px var(--c-master-glow);
   }
   .product-btn.added { background: var(--c-ink); color: var(--c-master); }
 

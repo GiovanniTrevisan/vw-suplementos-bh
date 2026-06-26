@@ -69,7 +69,6 @@ import { ArrowRight } from '@lucide/astro';
     grid.innerHTML = '';
     top.forEach((c, i) => {
       const a = document.createElement('a');
-      // Segundo card (índice 1) é destacado em amarelo conforme o design.
       a.className = 'cat-card';
       a.href = `${import.meta.env.BASE_URL}catalogo?categoria=${encodeURIComponent(c.name)}`;
       a.innerHTML = `
@@ -188,14 +187,6 @@ import { ArrowRight } from '@lucide/astro';
   .cat-card:hover::before { opacity: 1; }
   .cat-card:hover .cat-icon { color: var(--c-ink); }
   .cat-card:hover .cat-sub { color: rgba(10, 10, 9, 0.7); }
-
-  /* Card destacado (segundo do grid no design) */
-  .cat-card.featured {
-    background: var(--c-master);
-    color: var(--c-ink);
-  }
-  .cat-card.featured .cat-icon { color: var(--c-ink); }
-  .cat-card.featured .cat-sub { color: rgba(10, 10, 9, 0.7); }
 
   .cat-icon {
     position: relative;

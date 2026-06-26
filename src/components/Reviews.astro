@@ -38,7 +38,7 @@ const reviews = [
 
 <style>
   .reviews {
-    background: linear-gradient(to bottom, rgba(10, 10, 9, 0.85), rgba(10, 10, 9, 0.7)), url('/wallpaper_1.webp');
+    background: linear-gradient(to bottom, rgba(11, 15, 28, 0.88), rgba(11, 15, 28, 0.72)), url('/wallpaper_1.webp');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -164,5 +164,7 @@ const reviews = [
 
   @media (max-width: 900px) {
     .rev-inset { grid-template-columns: 1fr; }
+    /* parallax fixo trava/quebra em iOS — usa scroll normal no mobile */
+    .reviews { background-attachment: scroll; }
   }
 </style>

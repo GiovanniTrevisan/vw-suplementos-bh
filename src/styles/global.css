@@ -9,6 +9,20 @@
   --c-red: #C0392B;
   --c-master: #EE4444;
 
+  /* Superfície escura: navy profundo (alinhado ao <meta theme-color> #060B17),
+     mais sofisticado que preto puro em áreas grandes. Reverter = igualar a --c-ink. */
+  --c-surface: #0A0A09;
+  /* Linha/divisor sobre superfície escura (unifica os antigos #F5F0E81A / #F5F0E833). */
+  --c-line-on-dark: rgba(245, 240, 232, 0.18);
+
+  /* Acento secundário da marca (amarelo) — antes hardcoded #F5C300 em vários lugares. */
+  --c-amber: #F5C300;
+  --c-amber-ring: rgba(245, 195, 0, 0.18);   /* foco de inputs */
+  --c-amber-wash: rgba(245, 195, 0, 0.80);   /* hover de imagem em produto */
+  /* Glow de hover dos botões: derivado do vermelho da marca, para o halo
+     "sair" do próprio botão (antes havia laranja e amarelo misturados). */
+  --c-master-glow: rgba(238, 68, 68, 0.45);
+
   --font-display: 'Barlow Condensed', sans-serif;
   --font-ui: 'DM Sans', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -90,28 +104,17 @@ input, select, textarea {
 /* ---------- Selection ---------- */
 ::selection {
   background: var(--c-master);
-  color: var(--c-ink);
+  color: var(--c-paper);
 }
 
-/* ---------- Scrollbar ---------- */
+/* ---------- Scrollbar (definição única: sutil por padrão, marca no hover) ---------- */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
   background: var(--c-line-hard);
   border-radius: var(--radius-pill);
 }
-::-webkit-scrollbar-thumb:hover { background: var(--c-ink); }
-
-/* Custom scrollbar for better visibility */
-::-webkit-scrollbar {
-  width: 4px;
-  height: 12px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--c-master);
-  border-radius: 6px;
-}
+::-webkit-scrollbar-thumb:hover { background: var(--c-master); }
 
 /* ---------- Animations ---------- */
 @keyframes fadeUp {
@@ -143,8 +146,8 @@ input, select, textarea {
   50%      { transform: translate3d(0, -8px, 0); }
 }
 @keyframes pulseDot {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(169, 65, 44, 0.6); }
-  50%      { box-shadow: 0 0 0 10px rgba(245, 195, 0, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(238, 68, 68, 0.55); }
+  50%      { box-shadow: 0 0 0 10px rgba(238, 68, 68, 0); }
 }
 
 /* ---------- Scroll reveal ---------- */
