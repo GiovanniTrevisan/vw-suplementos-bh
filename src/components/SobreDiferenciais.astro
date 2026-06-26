@@ -5,7 +5,7 @@ const diferenciais = [
   { title: 'Atendimento especializado',           desc: 'Equipe que treina e conhece cada produto da loja.' },
   { title: 'Produtos originais com nota fiscal',  desc: 'Trabalhamos só com marcas autorizadas. Sem falsificação.' },
   { title: 'Entrega em BH ou retirada na loja',   desc: 'Recebe no mesmo dia ou retira no Castelo no horário que quiser.' },
-  { title: 'PIX e cartão',                        desc: 'Compreendemos várias formas de pagamento para sua conveniência.' },
+  { title: 'PIX e cartão',                        desc: 'Aceitamos PIX, crédito, débito e dinheiro — na loja ou pelo WhatsApp.' },
 ];
 ---
 
@@ -35,7 +35,7 @@ const diferenciais = [
 
 <style>
   .sobre {
-    background: var(--c-ink);
+    background: var(--c-surface);
     width: 100%;
   }
 
@@ -74,20 +74,20 @@ const diferenciais = [
     font-family: var(--font-ui);
     font-size: clamp(15px, 1vw, 17px);
     line-height: 1.65;
-    color: #F5F0E8B3;
+    color: var(--c-paper-muted);
   }
 
   .about-right {
     display: flex;
     flex-direction: column;
-    border-top: 1px solid #F5F0E833;
+    border-top: 1px solid var(--c-line-on-dark);
   }
 
   .diff {
     display: flex;
     gap: 20px;
     padding: 22px 0;
-    border-bottom: 1px solid #F5F0E833;
+    border-bottom: 1px solid var(--c-line-on-dark);
     transition: padding var(--t-med) var(--ease-out);
   }
 
@@ -133,7 +133,7 @@ const diferenciais = [
     font-family: var(--font-ui);
     font-size: 14px;
     line-height: 1.55;
-    color: #F5F0E8B3;
+    color: var(--c-paper-muted);
   }
 
   @media (max-width: 900px) {

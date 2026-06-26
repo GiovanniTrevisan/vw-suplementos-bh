@@ -126,7 +126,7 @@ const whatsappLink = buildWhatsAppLink(WHATSAPP_NUMBER, 'Olá! Gostaria de mais 
     position: sticky;
     top: 0;
     z-index: 50;
-    background: var(--c-ink);
+    background: var(--c-surface);
     width: 100%;
     transition: transform var(--t-med) var(--ease-out), background var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out);
     animation: fadeIn var(--t-slow) var(--ease-out) both;
@@ -233,7 +233,7 @@ const whatsappLink = buildWhatsAppLink(WHATSAPP_NUMBER, 'Olá! Gostaria de mais 
 
   .cta-catalogo:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 24px -8px rgba(255, 69, 0, 0.4);
+    box-shadow: 0 10px 24px -8px var(--c-master-glow);
   }
   .cta-catalogo:active { transform: translateY(0); }
   .cta-catalogo :global(svg) { transition: transform var(--t-med) var(--ease-out); }
@@ -288,8 +288,8 @@ const whatsappLink = buildWhatsAppLink(WHATSAPP_NUMBER, 'Olá! Gostaria de mais 
     flex-direction: column;
     gap: 24px;
     padding: 24px var(--gutter) 40px;
-    background: var(--c-ink);
-    border-top: 1px solid #F5F0E81A;
+    background: var(--c-surface);
+    border-top: 1px solid var(--c-line-on-dark);
   }
   .mobile-nav {
     display: flex;
@@ -303,7 +303,7 @@ const whatsappLink = buildWhatsAppLink(WHATSAPP_NUMBER, 'Olá! Gostaria de mais 
     font-weight: 700;
     letter-spacing: -0.5px;
     padding: 10px 0;
-    border-bottom: 1px solid #F5F0E81A;
+    border-bottom: 1px solid var(--c-line-on-dark);
     transition: color var(--t-fast) var(--ease-out), padding-left var(--t-med) var(--ease-out);
   }
   .mobile-nav a:hover { color: var(--c-master); padding-left: 8px; }

@@ -74,10 +74,10 @@ const base = import.meta.env.BASE_URL;
         <div class="filter-divider"></div>
 
         <div class="filter-section">
-          <div class="filter-head">
+          <button class="filter-head filter-head-toggle" type="button" data-cat-toggle aria-expanded="false">
             <span>CATEGORIA</span>
-            <ChevronDown size={14} />
-          </div>
+            <ChevronDown size={14} class="cat-chevron" />
+          </button>
           <div class="filter-pills" data-category-pills></div>
         </div>
 
@@ -86,7 +86,6 @@ const base = import.meta.env.BASE_URL;
         <div class="filter-section">
           <div class="filter-head">
             <span>FAIXA DE PREÇO</span>
-            <ChevronDown size={14} />
           </div>
           <div class="filter-pills" data-price-pills></div>
         </div>
@@ -96,7 +95,6 @@ const base = import.meta.env.BASE_URL;
         <div class="filter-section">
           <div class="filter-head">
             <span>ORDENAR POR</span>
-            <ChevronDown size={14} />
           </div>
           <div class="select-wrap">
             <select class="sort-select" data-sort>
@@ -179,6 +177,7 @@ const base = import.meta.env.BASE_URL;
 
   const grid       = document.querySelector<HTMLElement>('[data-product-grid]')!;
   const pillsBox   = document.querySelector<HTMLElement>('[data-category-pills]')!;
+  const catToggle  = document.querySelector<HTMLButtonElement>('[data-cat-toggle]');
   const pricePills = document.querySelector<HTMLElement>('[data-price-pills]')!;
   const sortSel    = document.querySelector<HTMLSelectElement>('[data-sort]')!;
   const searchEl   = document.querySelector<HTMLInputElement>('[data-search]')!;
@@ -215,6 +214,7 @@ const base = import.meta.env.BASE_URL;
     { id: '200+',    label: 'Acima de R$ 200',   min: 200,       max: Infinity },
   ];
   const PAGE_SIZE = 12;
+  const CATEGORY_COLLAPSED_COUNT = 0;
 
   let allProducts: Product[] = [];
   let categories: CategoryInfo[] = [];
@@ -223,6 +223,7 @@ const base = import.meta.env.BASE_URL;
   let sortBy: SortKey = 'default';
   let searchTerm = '';
   let visibleCount = PAGE_SIZE;
+  let categoriesExpanded = false;
 
   // Aceita ?categoria=Nome via URL
   const urlParams = new URLSearchParams(location.search);
@@ -292,7 +293,18 @@ const base = import.meta.env.BASE_URL;
     todos.addEventListener('click', () => selectCategory(''));
     pillsBox.appendChild(todos);
 
-    categories.forEach((c) => {
+    // Quando recolhido, mostra apenas os primeiros N — garantindo que a
+    // categoria ativa apareça mesmo se estiver fora da faixa visível.
+    let visibleCategories = categories;
+    if (!categoriesExpanded && categories.length > CATEGORY_COLLAPSED_COUNT) {
+      visibleCategories = categories.slice(0, CATEGORY_COLLAPSED_COUNT);
+      const activeIdx = categories.findIndex((c) => c.name === activeCategory);
+      if (activeIdx >= CATEGORY_COLLAPSED_COUNT) {
+        visibleCategories = [...visibleCategories, categories[activeIdx]];
+      }
+    }
+
+    visibleCategories.forEach((c) => {
       const el = document.createElement('div');
       el.className = 'pill' + (c.name === activeCategory ? ' active' : '');
       el.innerHTML = `<span></span><span class="pill-count">${c.count}</span>`;
@@ -300,6 +312,17 @@ const base = import.meta.env.BASE_URL;
       el.addEventListener('click', () => selectCategory(c.name));
       pillsBox.appendChild(el);
     });
+
+    updateCategoryToggle();
+  }
+
+  function updateCategoryToggle() {
+    if (!catToggle) return;
+    const hasMore = categories.length > CATEGORY_COLLAPSED_COUNT;
+    catToggle.classList.toggle('no-toggle', !hasMore);
+    catToggle.classList.toggle('expanded', categoriesExpanded);
+    catToggle.disabled = !hasMore;
+    catToggle.setAttribute('aria-expanded', String(categoriesExpanded));
   }
 
   function renderPricePills() {
@@ -507,6 +530,11 @@ const base = import.meta.env.BASE_URL;
     if (e.key === 'Escape' && sidebarEl.classList.contains('drawer-open')) closeDrawer();
   });
 
+  catToggle?.addEventListener('click', () => {
+    categoriesExpanded = !categoriesExpanded;
+    renderCategoryPills();
+  });
+
   retryBtn.addEventListener('click', () => load(true));
 
   clearBtn.addEventListener('click', () => {
@@ -577,12 +605,19 @@ const base = import.meta.env.BASE_URL;
     padding: 24px; border: 1px solid var(--c-line);
     border-radius: var(--radius-md); background: var(--c-paper);
     align-self: flex-start; position: sticky; top: 88px;
+    max-height: calc(100vh - 88px - 24px);
   }
 
   .sb-header { display: flex; justify-content: space-between; align-items: center; }
   .sb-title { font-family: var(--font-display); font-size: 20px; font-weight: 800; letter-spacing: 1px; }
   .sb-count { font-family: var(--font-mono); font-size: 11px; color: var(--c-muted); }
-  .sb-body { display: flex; flex-direction: column; gap: 24px; min-height: 0; }
+  .sb-body {
+    display: flex; flex-direction: column; gap: 24px; min-height: 0;
+    flex: 1; overflow-y: auto; padding-right: 8px;
+  }
+  .sb-body::-webkit-scrollbar { width: 2px; }
+  .sb-body::-webkit-scrollbar-track { background: transparent; }
+  .sb-body::-webkit-scrollbar-thumb { background: var(--c-line-hard); border-radius: 999px; }
 
   /* Drawer-only elements: hidden on desktop */
   .drawer-close-btn,
@@ -595,6 +630,30 @@ const base = import.meta.env.BASE_URL;
     display: flex; justify-content: space-between; align-items: center;
     font-family: var(--font-display); font-size: 14px; font-weight: 800; letter-spacing: 1px;
   }
+  .filter-head-toggle {
+    width: 100%; padding: 0; margin: 0;
+    background: none; border: none; color: inherit; text-align: left;
+    cursor: pointer;
+  }
+  .filter-head-toggle.no-toggle { cursor: default; }
+  .filter-head-toggle.no-toggle .cat-chevron { opacity: 0; }
+  .cat-chevron {
+    flex-shrink: 0;
+    transition: transform var(--t-fast) var(--ease-out);
+  }
+  .filter-head-toggle.expanded .cat-chevron { animation: none; transform: rotate(180deg); }
+
+  @keyframes cat-chevron-bounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30%           { transform: translateY(4px); }
+  }
+  .filter-head-toggle:not(.expanded):not(.no-toggle) .cat-chevron {
+    animation: cat-chevron-bounce 2s ease-in-out infinite;
+  }
+  .filter-head-toggle:not(.expanded):not(.no-toggle):hover .cat-chevron {
+    animation: none;
+    transform: translateY(5px);
+  }
 
   .search-wrap { position: relative; }
   .search-input {
@@ -603,7 +662,7 @@ const base = import.meta.env.BASE_URL;
     background: var(--c-paper); font-family: var(--font-ui); font-size: 13px; color: var(--c-ink);
     outline: none; transition: border-color var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out);
   }
-  .search-input:focus { border-color: var(--c-master); box-shadow: 0 0 0 3px rgba(245, 0, 0, 0.18); }
+  .search-input:focus { border-color: var(--c-master); box-shadow: 0 0 0 3px var(--c-amber-ring); }
 
   .filter-pills { display: flex; flex-direction: column; gap: 8px; }
 
@@ -618,7 +677,7 @@ const base = import.meta.env.BASE_URL;
     cursor: pointer;
     transition: border-color var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out);
   }
-  .sort-select:focus { outline: none; border-color: var(--c-master); box-shadow: 0 0 0 3px rgba(245, 0, 0, 0.18); }
+  .sort-select:focus { outline: none; border-color: var(--c-master); box-shadow: 0 0 0 3px var(--c-amber-ring); }
 
   .clear-link {
     display: flex; align-items: center; justify-content: center; gap: 6px;
@@ -688,7 +747,7 @@ const base = import.meta.env.BASE_URL;
   .load-more:hover {
     transform: translateY(-2px);
     background: var(--c-master); color: var(--c-ink);
-    box-shadow: 0 14px 28px -12px rgba(245, 0, 0, 0.55);
+    box-shadow: 0 14px 28px -12px var(--c-master-glow);
   }
   .pagination-info {
     font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; color: var(--c-muted);
@@ -1054,7 +1113,7 @@ const base = import.meta.env.BASE_URL;
   }
   .product-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 22px -8px rgba(245, 0, 0, 0.55);
+    box-shadow: 0 10px 22px -8px var(--c-master-glow);
   }
   .product-btn.added { background: var(--c-ink); color: var(--c-master); }
 

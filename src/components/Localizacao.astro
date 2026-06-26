@@ -25,7 +25,7 @@ const whatsappLink = buildWhatsAppLink(WHATSAPP_NUMBER, 'Olá! Gostaria de mais 
           <Clock size={22} color="var(--c-master)" />
           <div class="addr-text">
             <span class="addr-label">HORÁRIO</span>
-            <span class="addr-value">Seg–Sex 9h–19h · Sáb 9h–14h · Dom fechado</span>
+            <span class="addr-value">Seg–Sex 9h–20h · Sáb 9h–14h · Dom fechado</span>
           </div>
         </div>
         <div class="addr-line">
@@ -50,6 +50,7 @@ const whatsappLink = buildWhatsAppLink(WHATSAPP_NUMBER, 'Olá! Gostaria de mais 
     </div>
 
     <iframe
+      class="loc-map"
       src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3752.126462497645!2d-43.99642592395568!3d-19.887413681489625!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xa69108f4ed16e3%3A0x90cd24d786c2c9be!2sVW%20suplementos!5e0!3m2!1spt-BR!2sbr!4v1715180000000!5m2!1spt-BR!2sbr"
       width="100%"
       height="450"
@@ -177,110 +178,22 @@ const whatsappLink = buildWhatsAppLink(WHATSAPP_NUMBER, 'Olá! Gostaria de mais 
   .loc-btn.filled {
     background: var(--c-master);
   }
-  .loc-btn.filled:hover { box-shadow: 0 12px 26px -10px rgba(245, 0, 0, 0.55); }
+  .loc-btn.filled:hover { box-shadow: 0 12px 26px -10px var(--c-master-glow); }
 
-  .map-placeholder {
-    position: relative;
+  /* Mapa real (iframe Google) — estilizado para casar com os cards */
+  .loc-map {
     width: 100%;
-    min-height: 420px;
-    aspect-ratio: 5 / 4;
-    max-height: 560px;
-    background: var(--c-mid);
+    min-height: 450px;
+    height: 100%;
+    border: 0;
     border-radius: var(--radius-md);
-    overflow: hidden;
-    box-shadow: 0 30px 80px -40px rgba(10, 10, 9, 0.4);
-  }
-
-  .grid-h {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: #F5F0E81A;
-  }
-
-  .grid-v {
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: 1px;
-    background: #F5F0E81A;
-  }
-
-  .road-h {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    width: 100%;
-    height: 6px;
-    background: #0A0A0959;
-    transform: translateY(-50%);
-  }
-
-  .road-v {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    width: 6px;
-    height: 100%;
-    background: #0A0A0959;
-    transform: translateX(-50%);
-  }
-
-  .pin {
-    position: absolute;
-    left: 50%;
-    top: 45%;
-    transform: translate(-50%, -50%);
-    animation: floatY 3.5s var(--ease-in-out) infinite;
-  }
-
-  .pin-head {
-    width: 48px;
-    height: 48px;
-    background: var(--c-master);
-    border-radius: var(--radius-pill);
-    border: 3px solid var(--c-ink);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: pulseDot 2.4s var(--ease-in-out) infinite;
-  }
-
-  .pin-shadow {
-    position: absolute;
-    left: 50%;
-    top: calc(45% + 30px);
-    width: 16px;
-    height: 6px;
-    background: #0A0A0959;
-    border-radius: var(--radius-pill);
-    transform: translateX(-50%);
-    filter: blur(2px);
-  }
-
-  .map-badge {
-    position: absolute;
-    top: 24px;
-    left: 24px;
-    background: var(--c-paper);
-    border-radius: var(--radius-sm);
-    padding: 8px 12px;
-    box-shadow: 0 8px 18px -6px rgba(0,0,0,0.25);
-  }
-
-  .map-badge span {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: var(--c-ink);
+    box-shadow: 0 30px 80px -40px rgba(11, 15, 28, 0.45);
   }
 
   @media (max-width: 900px) {
     .loc-inner { grid-template-columns: 1fr; }
     .loc-btns { flex-direction: column; }
     .loc-btn { justify-content: center; }
-    .map-placeholder { min-height: 320px; aspect-ratio: 16 / 11; }
+    .loc-map { min-height: 320px; }
   }
 </style>
