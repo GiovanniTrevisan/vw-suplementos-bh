@@ -114,7 +114,18 @@ input, select, textarea {
   background: var(--c-line-hard);
   border-radius: var(--radius-pill);
 }
-::-webkit-scrollbar-thumb:hover { background: var(--c-master); }
+
+::-webkit-scrollbar-thumb:hover { background: var(--c-ink); }
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--c-master);
+  border-radius: 6px;
+}
 
 /* ---------- Animations ---------- */
 @keyframes fadeUp {
