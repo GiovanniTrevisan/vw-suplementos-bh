@@ -1,0 +1,1346 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const ADMIN_PIN     = (import.meta.env.PUBLIC_ADMIN_PIN     ?? '').trim();
+const GAS_URL       = (import.meta.env.PUBLIC_GAS_URL       ?? '').trim();
+const COSMOS_TOKEN  = (import.meta.env.PUBLIC_COSMOS_TOKEN  ?? '').trim();
+---
+
+<Layout
+  title="Cadastro Admin — VW Suplementos"
+  description="Painel de cadastro de produtos."
+  robots="noindex, nofollow"
+>
+  <!-- PIN Gate -->
+  <div id="pin-gate" data-expected-pin={ADMIN_PIN} role="dialog" aria-modal="true" aria-label="Autenticação admin">
+    <div class="pin-box">
+      <span class="pin-kicker">// ÁREA RESTRITA</span>
+      <h1 class="pin-title">ACESSO<br/>ADMIN</h1>
+      <p class="pin-sub">Digite o PIN de 4 dígitos para continuar.</p>
+      <div class="pin-inputs" aria-label="PIN de 4 dígitos">
+        <input class="pin-digit" type="password" inputmode="numeric" maxlength="1" autocomplete="off" />
+        <input class="pin-digit" type="password" inputmode="numeric" maxlength="1" autocomplete="off" />
+        <input class="pin-digit" type="password" inputmode="numeric" maxlength="1" autocomplete="off" />
+        <input class="pin-digit" type="password" inputmode="numeric" maxlength="1" autocomplete="off" />
+      </div>
+      <p class="pin-error" id="pin-error" hidden>PIN incorreto. Tente novamente.</p>
+    </div>
+  </div>
+
+  <!-- Admin Shell -->
+  <div id="admin-shell" data-gas-url={GAS_URL} data-cosmos-token={COSMOS_TOKEN} hidden>
+    <!-- Topbar -->
+    <div class="admin-topbar">
+      <a href="/" class="admin-back">← VW Suplementos</a>
+      <span class="admin-badge">ADMIN</span>
+      <button type="button" id="btn-logout">SAIR</button>
+    </div>
+
+    <div class="admin-page">
+      <div class="page-header">
+        <span class="kicker">// CATÁLOGO</span>
+        <h1 class="page-title">CADASTRO DE PRODUTOS</h1>
+        <p class="page-sub">Busque pelo EAN, revise os dados e adicione ao lote. Exporte o CSV ao final.</p>
+      </div>
+
+      <!-- Card: EAN Lookup -->
+      <section class="card" id="ean-section">
+        <div class="card-header">
+          <span class="kicker">// 1. BUSCA</span>
+          <h2 class="card-title">EAN / CÓDIGO DE BARRAS</h2>
+        </div>
+        <div class="ean-row">
+          <div class="ean-input-wrap">
+            <label for="ean-input">CÓDIGO EAN / GTIN</label>
+            <input
+              class="field-input"
+              type="text"
+              id="ean-input"
+              inputmode="numeric"
+              placeholder="Ex.: 7898215155017"
+              maxlength="14"
+              autocomplete="off"
+              aria-label="Código EAN"
+            />
+          </div>
+          <button type="button" id="ean-btn" class="btn-primary">BUSCAR</button>
+        </div>
+        <div id="ean-state" class="ean-state" hidden></div>
+      </section>
+
+      <!-- Card: Product Form -->
+      <section class="card" id="form-section">
+        <div class="card-header">
+          <span class="kicker">// 2. DADOS DO PRODUTO</span>
+          <h2 class="card-title">FORMULÁRIO</h2>
+        </div>
+
+        <form id="product-form" novalidate>
+          <div class="form-grid">
+            <!-- Nome -->
+            <div class="form-group full">
+              <label for="f-nome">NOME <span class="req">*</span> <span class="auto-badge" id="badge-nome" hidden>AUTO</span></label>
+              <input class="field-input" type="text" id="f-nome" placeholder="Nome do produto" />
+              <span class="field-error" id="err-nome" hidden></span>
+            </div>
+
+            <!-- Preço -->
+            <div class="form-group">
+              <label for="f-preco">PREÇO (R$) <span class="req">*</span></label>
+              <input class="field-input" type="number" id="f-preco" step="0.01" min="0.01" placeholder="0,00" />
+              <span class="field-error" id="err-preco" hidden></span>
+            </div>
+
+            <!-- Categoria -->
+            <div class="form-group">
+              <label for="f-categoria">CATEGORIA <span class="req">*</span></label>
+              <div class="cat-wrap">
+                <select class="field-input" id="f-categoria">
+                  <option value="">-- Carregando categorias... --</option>
+                  <option value="__new__">+ Nova categoria (digitar)</option>
+                </select>
+                <input class="field-input" type="text" id="f-categoria-nova" placeholder="Nome da nova categoria" hidden />
+              </div>
+              <span class="field-error" id="err-categoria" hidden></span>
+            </div>
+
+            <!-- Descrição curta -->
+            <div class="form-group full">
+              <label for="f-descricao">DESCRIÇÃO CURTA <span class="req">*</span> <span class="auto-badge" id="badge-descricao" hidden>AUTO</span></label>
+              <input class="field-input" type="text" id="f-descricao" placeholder="Ex.: Optimum Nutrition" />
+              <span class="field-error" id="err-descricao" hidden></span>
+            </div>
+
+            <!-- Imagem -->
+            <div class="form-group">
+              <label for="f-imagem">URL DA IMAGEM <span class="auto-badge" id="badge-imagem" hidden>AUTO</span></label>
+              <input class="field-input" type="url" id="f-imagem" placeholder="https://..." />
+            </div>
+
+            <!-- Image Preview -->
+            <div class="form-group">
+              <label>PRÉ-VISUALIZAÇÃO</label>
+              <div class="img-preview" id="img-preview">
+                <span class="img-placeholder">Sem imagem</span>
+                <img id="img-preview-img" src="" alt="Preview" hidden />
+              </div>
+            </div>
+
+            <!-- Ativo -->
+            <div class="form-group">
+              <label>STATUS</label>
+              <label class="check-label">
+                <input type="checkbox" id="f-ativo" checked />
+                <span>Produto ativo (visível no catálogo)</span>
+              </label>
+            </div>
+
+            <!-- Sobre a marca -->
+            <div class="form-group">
+              <label for="f-sobre-marca">SOBRE A MARCA <span class="auto-badge" id="badge-sobre-marca" hidden>AUTO</span></label>
+              <input class="field-input" type="text" id="f-sobre-marca" placeholder="Nome da marca" />
+            </div>
+
+            <!-- Descrição completa -->
+            <div class="form-group full">
+              <label for="f-descricao-produto">DESCRIÇÃO COMPLETA <span class="auto-badge" id="badge-descricao-produto" hidden>AUTO</span></label>
+              <textarea class="field-input" id="f-descricao-produto" rows="4" placeholder="Ingredientes, benefícios, etc."></textarea>
+            </div>
+
+            <!-- Info nutricional -->
+            <div class="form-group full">
+              <label for="f-info-nutricional">INFORMAÇÃO NUTRICIONAL <span class="auto-badge" id="badge-info-nutricional" hidden>AUTO</span></label>
+              <textarea class="field-input" id="f-info-nutricional" rows="6" placeholder="Porção: 30g&#10;Proteínas: 25g&#10;..."></textarea>
+            </div>
+
+            <!-- Modo de uso -->
+            <div class="form-group full">
+              <label for="f-modo-uso">MODO DE USO</label>
+              <textarea class="field-input" id="f-modo-uso" rows="3" placeholder="Como usar o produto..."></textarea>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" id="btn-clear-form" class="btn-secondary">LIMPAR FORM</button>
+            <button type="button" id="btn-add-batch" class="btn-primary">ADICIONAR AO LOTE</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Card: Batch Table -->
+      <section class="card" id="batch-section">
+        <div class="card-header batch-card-header">
+          <div>
+            <span class="kicker">// 3. LOTE</span>
+            <h2 class="card-title">PRODUTOS PARA IMPORTAR</h2>
+          </div>
+          <span class="batch-count" id="batch-count">0 produtos</span>
+        </div>
+
+        <div class="batch-empty" id="batch-empty">
+          <span>Nenhum produto adicionado ao lote ainda.</span>
+          <span class="batch-empty-hint">Use o formulário acima para adicionar produtos.</span>
+        </div>
+
+        <div class="table-wrap" id="table-wrap" hidden>
+          <table id="batch-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Preço</th>
+                <th>Categoria</th>
+                <th>Ativo</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="batch-tbody"></tbody>
+          </table>
+        </div>
+
+        <div class="batch-actions" id="batch-actions" hidden>
+          <button type="button" id="btn-clear-batch" class="btn-secondary btn-danger">LIMPAR LOTE</button>
+          <button type="button" id="btn-export-csv" class="btn-primary">EXPORTAR CSV</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" hidden role="status" aria-live="polite"></div>
+</Layout>
+
+<style>
+  /* ===== PIN GATE ===== */
+  #pin-gate {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: var(--c-paper);
+    display: grid;
+    place-items: center;
+    padding: var(--gutter);
+  }
+
+  .pin-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .pin-kicker {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--c-master);
+    text-transform: uppercase;
+  }
+
+  .pin-title {
+    font-family: var(--font-display);
+    font-size: clamp(52px, 10vw, 80px);
+    font-weight: 800;
+    font-style: italic;
+    line-height: 0.9;
+    color: var(--c-ink);
+  }
+
+  .pin-sub {
+    font-family: var(--font-ui);
+    font-size: 14px;
+    color: var(--c-muted);
+    max-width: 260px;
+  }
+
+  .pin-inputs {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .pin-digit {
+    width: 60px;
+    height: 72px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 28px;
+    font-weight: 700;
+    border: 2px solid var(--c-line-hard);
+    border-radius: var(--radius-md);
+    background: var(--c-paper);
+    color: var(--c-ink);
+    outline: none;
+    transition: border-color var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out);
+  }
+
+  .pin-digit:focus {
+    border-color: var(--c-master);
+    box-shadow: 0 0 0 3px rgba(238, 68, 68, 0.18);
+  }
+
+  .pin-error {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--c-red);
+    letter-spacing: 0.5px;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    15%       { transform: translateX(-8px); }
+    30%       { transform: translateX(8px); }
+    45%       { transform: translateX(-6px); }
+    60%       { transform: translateX(6px); }
+    75%       { transform: translateX(-3px); }
+    90%       { transform: translateX(3px); }
+  }
+
+  .pin-box.shake {
+    animation: shake 420ms var(--ease-out);
+  }
+
+  /* ===== ADMIN SHELL ===== */
+  .admin-topbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px var(--gutter);
+    border-bottom: 1px solid var(--c-line);
+    background: var(--c-paper);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .admin-back {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--c-muted);
+    transition: color var(--t-fast);
+    margin-right: auto;
+  }
+
+  .admin-back:hover { color: var(--c-ink); }
+
+  .admin-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--c-paper);
+    background: var(--c-master);
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+  }
+
+  #btn-logout {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: var(--c-muted);
+    padding: 6px 12px;
+    border: 1px solid var(--c-line-hard);
+    border-radius: var(--radius-pill);
+    transition: color var(--t-fast), border-color var(--t-fast);
+  }
+
+  #btn-logout:hover { color: var(--c-ink); border-color: var(--c-ink); }
+
+  /* ===== PAGE ===== */
+  .admin-page {
+    max-width: 900px;
+    margin-inline: auto;
+    padding: 40px var(--gutter) 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .page-header { display: flex; flex-direction: column; gap: 8px; }
+
+  .page-title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 800;
+    font-style: italic;
+    line-height: 1;
+  }
+
+  .page-sub {
+    font-family: var(--font-ui);
+    font-size: 14px;
+    color: var(--c-muted);
+    max-width: 520px;
+  }
+
+  /* ===== CARDS ===== */
+  .card {
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-md);
+    padding: 28px 32px;
+    background: var(--c-paper);
+  }
+
+  .card-header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-bottom: 1px solid var(--c-line);
+    padding-bottom: 18px;
+    margin-bottom: 24px;
+  }
+
+  .batch-card-header {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .kicker {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--c-master);
+    text-transform: uppercase;
+  }
+
+  .card-title {
+    font-family: var(--font-display);
+    font-size: clamp(20px, 3vw, 28px);
+    font-weight: 800;
+    font-style: italic;
+    line-height: 1;
+  }
+
+  /* ===== EAN SECTION ===== */
+  .ean-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+  }
+
+  .ean-input-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  #ean-input {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    letter-spacing: 2px;
+  }
+
+  .ean-state {
+    margin-top: 12px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+  }
+
+  .ean-state.loading { color: var(--c-muted); background: rgba(10,10,9,0.04); }
+  .ean-state.error   { color: var(--c-red);   background: rgba(192,57,43,0.08); }
+  .ean-state.success { color: #1a6b2e;         background: rgba(26,107,46,0.08); }
+
+  /* ===== FORM ===== */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 24px;
+  }
+
+  @media (max-width: 600px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .form-group.full { grid-column: 1; }
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-group.full { grid-column: 1 / -1; }
+
+  label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--c-muted);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .req { color: var(--c-master); }
+
+  .auto-badge {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--c-paper);
+    background: var(--c-master);
+    padding: 2px 6px;
+    border-radius: var(--radius-pill);
+  }
+
+  .field-input {
+    font-family: var(--font-ui);
+    font-size: 14px;
+    color: var(--c-ink);
+    background: var(--c-paper);
+    border: 1.5px solid var(--c-line-hard);
+    border-radius: var(--radius-md);
+    padding: 10px 14px;
+    outline: none;
+    width: 100%;
+    transition: border-color var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out);
+  }
+
+  .field-input:focus {
+    border-color: var(--c-master);
+    box-shadow: 0 0 0 3px rgba(238, 68, 68, 0.14);
+  }
+
+  .field-input.invalid {
+    border-color: var(--c-red);
+    box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.12);
+  }
+
+  textarea.field-input { resize: vertical; }
+
+  .cat-wrap { display: flex; flex-direction: column; gap: 8px; }
+
+  .check-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-ui);
+    font-size: 14px;
+    color: var(--c-ink);
+    cursor: pointer;
+    letter-spacing: 0;
+    font-weight: 400;
+    text-transform: none;
+  }
+
+  .check-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--c-master);
+    cursor: pointer;
+  }
+
+  .field-error {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--c-red);
+    letter-spacing: 0.5px;
+  }
+
+  /* Image preview */
+  .img-preview {
+    width: 100%;
+    aspect-ratio: 1;
+    max-height: 180px;
+    border: 1.5px dashed var(--c-line-hard);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: rgba(10,10,9,0.03);
+  }
+
+  .img-placeholder {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--c-muted);
+  }
+
+  #img-preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  /* Form actions */
+  .form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--c-line);
+  }
+
+  /* ===== BUTTONS ===== */
+  .btn-primary {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 800;
+    font-style: italic;
+    letter-spacing: 1px;
+    color: var(--c-paper);
+    background: var(--c-master);
+    border: none;
+    border-radius: var(--radius-pill);
+    padding: 12px 28px;
+    cursor: pointer;
+    transition: opacity var(--t-fast), transform var(--t-fast);
+    white-space: nowrap;
+  }
+
+  .btn-primary:hover  { opacity: 0.88; }
+  .btn-primary:active { transform: scale(0.97); }
+
+  .btn-secondary {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 800;
+    font-style: italic;
+    letter-spacing: 1px;
+    color: var(--c-ink);
+    background: transparent;
+    border: 1.5px solid var(--c-line-hard);
+    border-radius: var(--radius-pill);
+    padding: 12px 28px;
+    cursor: pointer;
+    transition: border-color var(--t-fast), color var(--t-fast);
+  }
+
+  .btn-secondary:hover { border-color: var(--c-ink); }
+
+  .btn-danger { color: var(--c-red); border-color: var(--c-red); }
+  .btn-danger:hover { border-color: var(--c-red); background: rgba(192,57,43,0.06); }
+
+  /* ===== BATCH TABLE ===== */
+  .batch-count {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--c-muted);
+    align-self: flex-end;
+    padding-bottom: 2px;
+  }
+
+  .batch-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 40px 20px;
+    text-align: center;
+    font-family: var(--font-ui);
+    font-size: 14px;
+    color: var(--c-muted);
+  }
+
+  .batch-empty-hint {
+    font-size: 12px;
+    font-family: var(--font-mono);
+    color: var(--c-line-hard);
+  }
+
+  .table-wrap { overflow-x: auto; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-ui);
+    font-size: 14px;
+  }
+
+  th {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--c-line-hard);
+    color: var(--c-muted);
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--c-line);
+    vertical-align: middle;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(10,10,9,0.025); }
+
+  .td-mono {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--c-muted);
+    white-space: nowrap;
+  }
+
+  .td-name { max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .td-price {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .td-actions {
+    display: flex;
+    gap: 8px;
+    white-space: nowrap;
+  }
+
+  .btn-row {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--c-line-hard);
+    color: var(--c-muted);
+    transition: color var(--t-fast), border-color var(--t-fast);
+  }
+
+  .btn-row:hover { color: var(--c-ink); border-color: var(--c-ink); }
+  .btn-row-del { color: var(--c-red); border-color: rgba(192,57,43,0.3); }
+  .btn-row-del:hover { border-color: var(--c-red); background: rgba(192,57,43,0.06); }
+
+  .batch-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--c-line);
+  }
+
+  /* ===== TOAST ===== */
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 200;
+    background: var(--c-ink);
+    color: var(--c-paper);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-style: italic;
+    font-size: 14px;
+    padding: 12px 22px;
+    border-radius: var(--radius-pill);
+    animation: slideInRight var(--t-med) var(--ease-out);
+    max-width: 320px;
+    box-shadow: 0 4px 24px rgba(10,10,9,0.22);
+  }
+
+  @keyframes toastOut {
+    from { opacity: 1; transform: translateX(0); }
+    to   { opacity: 0; transform: translateX(40px); }
+  }
+
+  .toast.exiting { animation: toastOut var(--t-med) var(--ease-out) forwards; }
+</style>
+
+<script>
+  import { formatBRL } from '../../lib/format';
+
+  // ── Types ─────────────────────────────────────────────────────────────
+  interface Product {
+    id: string;
+    nome: string;
+    preco: number;
+    descricao: string;
+    imagem: string;
+    categoria: string;
+    ativo: boolean;
+    descricao_produto: string;
+    info_nutricional: string;
+    modo_uso: string;
+    sobre_marca: string;
+  }
+
+  // ── Constants ─────────────────────────────────────────────────────────
+  const gateEl      = document.getElementById('pin-gate')!;
+  const shellEl     = document.getElementById('admin-shell')!;
+  const EXPECTED      = (gateEl as HTMLElement).dataset.expectedPin ?? '';
+  const GAS_URL       = (shellEl as HTMLElement).dataset.gasUrl ?? '';
+  const COSMOS_TOKEN  = (shellEl as HTMLElement).dataset.cosmosToken ?? '';
+  const SESSION_AUTH = 'vw_admin_auth';
+  const SESSION_BATCH = 'vw_admin_batch_v1';
+
+  const CSV_HEADERS: (keyof Product)[] = [
+    'id', 'nome', 'preco', 'descricao', 'imagem', 'categoria',
+    'ativo', 'descricao_produto', 'info_nutricional', 'modo_uso', 'sobre_marca',
+  ];
+
+  // ── State ─────────────────────────────────────────────────────────────
+  let batch: Product[] = loadBatchFromSession();
+  let editingIdx: number | null = null;
+
+  // ── PIN Gate ──────────────────────────────────────────────────────────
+  function initPinGate() {
+    if (!EXPECTED) {
+      console.warn('[Admin] PUBLIC_ADMIN_PIN não definido — gate desativado.');
+      unlockAdmin();
+      return;
+    }
+    if (sessionStorage.getItem(SESSION_AUTH) === '1') {
+      unlockAdmin();
+      return;
+    }
+
+    const digits = gateEl.querySelectorAll<HTMLInputElement>('.pin-digit');
+    const errorEl = document.getElementById('pin-error')!;
+
+    digits.forEach((d, i) => {
+      d.addEventListener('input', () => {
+        d.value = d.value.replace(/\D/g, '').slice(0, 1);
+        if (d.value && i < digits.length - 1) digits[i + 1].focus();
+        if ([...digits].every(x => x.value.length === 1)) checkPin();
+      });
+
+      d.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Backspace' && !d.value && i > 0) {
+          digits[i - 1].focus();
+        }
+      });
+    });
+
+    digits[0].focus();
+
+    function checkPin() {
+      const entered = [...digits].map(d => d.value).join('');
+      if (entered === EXPECTED) {
+        sessionStorage.setItem(SESSION_AUTH, '1');
+        unlockAdmin();
+      } else {
+        errorEl.hidden = false;
+        const box = gateEl.querySelector<HTMLElement>('.pin-box')!;
+        box.classList.remove('shake');
+        void box.offsetWidth; // reflow
+        box.classList.add('shake');
+        digits.forEach(d => { d.value = ''; });
+        digits[0].focus();
+      }
+    }
+  }
+
+  function unlockAdmin() {
+    gateEl.style.transition = 'opacity 300ms';
+    gateEl.style.opacity = '0';
+    gateEl.style.pointerEvents = 'none';
+    setTimeout(() => { gateEl.hidden = true; }, 320);
+    shellEl.hidden = false;
+    onAdminReady();
+  }
+
+  // ── Admin Init ────────────────────────────────────────────────────────
+  function onAdminReady() {
+    loadCategories();
+    renderBatchTable();
+    wireEvents();
+  }
+
+  // ── Category Loading ──────────────────────────────────────────────────
+  async function loadCategories() {
+    const sel = document.getElementById('f-categoria') as HTMLSelectElement;
+
+    if (!GAS_URL) {
+      sel.innerHTML = '<option value="">-- Sem GAS URL configurada --</option><option value="__new__">+ Nova categoria (digitar)</option>';
+      return;
+    }
+
+    try {
+      const res  = await fetch(GAS_URL);
+      const json = await res.json();
+      if (!json.ok || !Array.isArray(json.categories)) throw new Error('invalid');
+
+      sel.innerHTML = '<option value="">-- Selecionar categoria --</option>';
+      (json.categories as { name: string }[]).forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.name;
+        opt.textContent = c.name;
+        sel.appendChild(opt);
+      });
+      const newOpt = document.createElement('option');
+      newOpt.value = '__new__';
+      newOpt.textContent = '+ Nova categoria (digitar)';
+      sel.appendChild(newOpt);
+    } catch {
+      sel.innerHTML = '<option value="">-- Erro ao carregar --</option><option value="__new__">+ Nova categoria (digitar)</option>';
+    }
+  }
+
+  // ── EAN Lookup ────────────────────────────────────────────────────────
+  async function lookupEAN(ean: string) {
+    ean = ean.trim();
+    if (!/^\d{8}$|^\d{12,14}$/.test(ean)) {
+      showEanState('error', 'EAN inválido. Use 8, 12, 13 ou 14 dígitos numéricos.');
+      return;
+    }
+
+    // 1. Cosmos Bluesoft
+    if (COSMOS_TOKEN) {
+      showEanState('loading', 'Consultando Cosmos Bluesoft...');
+      const cosmos = await fetchCosmos(ean);
+      if (cosmos) return;
+    }
+
+    // 2. Open Food Facts (fallback)
+    showEanState('loading', COSMOS_TOKEN
+      ? 'Cosmos: não encontrado. Consultando Open Food Facts...'
+      : 'Consultando Open Food Facts...'
+    );
+    await fetchOpenFoodFacts(ean);
+  }
+
+  async function fetchCosmos(ean: string): Promise<boolean> {
+    try {
+      const res = await fetch(`https://api.cosmos.bluesoft.com.br/gtins/${ean}`, {
+        headers: { 'X-Cosmos-Token': COSMOS_TOKEN },
+      });
+
+      if (res.status === 404) return false;
+      if (res.status === 401 || res.status === 403) {
+        showEanState('error', `Cosmos: token inválido (${res.status}). Verifique PUBLIC_COSMOS_TOKEN.`);
+        return true; // impede fallback — erro de config, não de dados
+      }
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      const p = await res.json();
+      if (!p || !p.description) return false;
+
+      prefillFormCosmos(p);
+      showEanState('success', `✓ Cosmos: "${p.description}". Revise e complete os dados.`);
+      return true;
+
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      showEanState('error', `Cosmos falhou (${msg}). Tentando Open Food Facts...`);
+      await new Promise(r => setTimeout(r, 1200)); // mostra o erro por 1.2s antes de continuar
+      return false;
+    }
+  }
+
+  async function fetchOpenFoodFacts(ean: string): Promise<void> {
+    try {
+      const res  = await fetch(`https://world.openfoodfacts.org/api/v0/product/${ean}.json`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+
+      if (json.status === 0 || !json.product) {
+        showEanState('error', 'Produto não encontrado em nenhuma base. Preencha manualmente.');
+        return;
+      }
+
+      prefillFormOFF(json.product);
+      const name = json.product.product_name_pt || json.product.product_name || ean;
+      showEanState('success', `✓ Open Food Facts: "${name}". Revise e complete os dados.`);
+
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      showEanState('error', `Falha na consulta: ${msg}. Preencha manualmente.`);
+    }
+  }
+
+  function showEanState(state: 'loading' | 'error' | 'success', msg: string) {
+    const el = document.getElementById('ean-state')!;
+    el.hidden = false;
+    el.className = `ean-state ${state}`;
+    el.textContent = msg;
+  }
+
+  // Cosmos field mapping
+  function prefillFormCosmos(p: Record<string, any>) {
+    const nome     = p.description ?? '';
+    const marca    = p.brand?.name ?? p.brand_name ?? '';
+    const imagem   = p.thumbnail ?? p.picture ?? '';
+
+    setField('f-nome',            nome,   'badge-nome');
+    setField('f-descricao',       marca,  'badge-descricao');
+    setField('f-imagem',          imagem, 'badge-imagem');
+    setField('f-sobre-marca',     marca,  'badge-sobre-marca');
+    // Cosmos não fornece info nutricional — deixa vazio para preenchimento manual
+    setField('f-info-nutricional', '', 'badge-info-nutricional');
+    setField('f-descricao-produto', '', 'badge-descricao-produto');
+
+    updateImagePreview(imagem);
+    document.getElementById('form-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Open Food Facts field mapping
+  function prefillFormOFF(p: Record<string, any>) {
+    setField('f-nome',             p.product_name_pt || p.product_name || '',            'badge-nome');
+    setField('f-descricao',        p.brands || '',                                        'badge-descricao');
+    setField('f-imagem',           p.image_front_url || p.image_url || '',                'badge-imagem');
+    setField('f-sobre-marca',      p.brands || '',                                        'badge-sobre-marca');
+    setField('f-info-nutricional', formatNutriments(p.nutriments || {}, p.serving_size), 'badge-info-nutricional');
+
+    const ingredients = p.ingredients_text_pt || p.ingredients_text || '';
+    setField('f-descricao-produto', ingredients ? `Ingredientes: ${ingredients}` : '', 'badge-descricao-produto');
+
+    updateImagePreview(p.image_front_url || p.image_url || '');
+    document.getElementById('form-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function formatNutriments(n: Record<string, number | string>, serving?: string): string {
+    if (!n) return '';
+    const lines: string[] = [];
+    if (serving) lines.push(`Porção: ${serving}`);
+
+    const fields: [string, string, string][] = [
+      ['energy-kcal_100g',   'Energia (100g)',            'kcal'],
+      ['proteins_100g',      'Proteínas (100g)',          'g'],
+      ['carbohydrates_100g', 'Carboidratos (100g)',       'g'],
+      ['sugars_100g',        'Açúcares (100g)',           'g'],
+      ['fat_100g',           'Gorduras totais (100g)',    'g'],
+      ['saturated-fat_100g', 'Gorduras saturadas (100g)', 'g'],
+      ['fiber_100g',         'Fibras (100g)',             'g'],
+      ['sodium_100g',        'Sódio (100g)',              'mg'],
+    ];
+
+    for (const [key, label, unit] of fields) {
+      const val = n[key];
+      if (val != null && val !== '') {
+        const num = typeof val === 'number' ? val : parseFloat(String(val));
+        if (!isNaN(num)) {
+          const display = key === 'sodium_100g'
+            ? (num * 1000).toFixed(0)
+            : num % 1 === 0 ? num.toFixed(0) : num.toFixed(1);
+          lines.push(`${label}: ${display} ${unit}`);
+        }
+      }
+    }
+
+    return lines.join('\n');
+  }
+
+  // ── Form Helpers ──────────────────────────────────────────────────────
+  function setField(id: string, value: string, badgeId?: string) {
+    const el = document.getElementById(id) as HTMLInputElement | HTMLTextAreaElement;
+    if (!el) return;
+    el.value = value;
+
+    if (badgeId) {
+      const badge = document.getElementById(badgeId)!;
+      badge.hidden = !value;
+      if (value) {
+        el.addEventListener('input', () => { badge.hidden = true; }, { once: true });
+      }
+    }
+  }
+
+  function getFormProduct(): Product | null {
+    const nome     = (document.getElementById('f-nome') as HTMLInputElement).value.trim();
+    const precoRaw = (document.getElementById('f-preco') as HTMLInputElement).value;
+    const descricao = (document.getElementById('f-descricao') as HTMLInputElement).value.trim();
+    const catSel   = (document.getElementById('f-categoria') as HTMLSelectElement).value;
+    const catNova  = (document.getElementById('f-categoria-nova') as HTMLInputElement).value.trim();
+    const categoria = catSel === '__new__' ? catNova : catSel;
+    const preco    = parseFloat(precoRaw);
+
+    let valid = true;
+
+    function err(id: string, msg: string) {
+      const el = document.getElementById(id)!;
+      el.textContent = msg;
+      el.hidden = false;
+      const input = el.previousElementSibling as HTMLElement;
+      input?.classList?.add('invalid');
+      if (valid) {
+        (document.getElementById(id.replace('err-', 'f-')) as HTMLElement)?.focus();
+      }
+      valid = false;
+    }
+
+    function clearErr(inputId: string, errId: string) {
+      document.getElementById(errId)!.hidden = true;
+      (document.getElementById(inputId) as HTMLElement)?.classList.remove('invalid');
+    }
+
+    clearErr('f-nome', 'err-nome');
+    clearErr('f-preco', 'err-preco');
+    clearErr('f-descricao', 'err-descricao');
+    clearErr('f-categoria', 'err-categoria');
+
+    if (!nome)              err('err-nome',      'Nome é obrigatório.');
+    if (!precoRaw || isNaN(preco) || preco <= 0) err('err-preco', 'Informe um preço válido maior que zero.');
+    if (!descricao)         err('err-descricao', 'Descrição curta é obrigatória.');
+    if (!categoria)         err('err-categoria', catSel === '__new__' ? 'Informe o nome da nova categoria.' : 'Selecione uma categoria.');
+
+    if (!valid) return null;
+
+    return {
+      id:               `prod_${Date.now()}`,
+      nome,
+      preco,
+      descricao,
+      imagem:           (document.getElementById('f-imagem') as HTMLInputElement).value.trim(),
+      categoria,
+      ativo:            (document.getElementById('f-ativo') as HTMLInputElement).checked,
+      descricao_produto:(document.getElementById('f-descricao-produto') as HTMLTextAreaElement).value.trim(),
+      info_nutricional: (document.getElementById('f-info-nutricional') as HTMLTextAreaElement).value.trim(),
+      modo_uso:         (document.getElementById('f-modo-uso') as HTMLTextAreaElement).value.trim(),
+      sobre_marca:      (document.getElementById('f-sobre-marca') as HTMLInputElement).value.trim(),
+    };
+  }
+
+  function resetForm() {
+    (document.getElementById('product-form') as HTMLFormElement).reset();
+    // Reset badges and errors
+    document.querySelectorAll<HTMLElement>('.auto-badge').forEach(b => { b.hidden = true; });
+    document.querySelectorAll<HTMLElement>('.field-error').forEach(e => { e.hidden = true; });
+    document.querySelectorAll<HTMLElement>('.field-input').forEach(i => { i.classList.remove('invalid'); });
+    updateImagePreview('');
+    // Hide "nova categoria" input
+    (document.getElementById('f-categoria-nova') as HTMLInputElement).hidden = true;
+  }
+
+  function updateImagePreview(url: string) {
+    const img  = document.getElementById('img-preview-img') as HTMLImageElement;
+    const ph   = document.querySelector<HTMLElement>('.img-placeholder')!;
+    if (url) {
+      img.src = url;
+      img.hidden = false;
+      ph.hidden  = true;
+    } else {
+      img.hidden = true;
+      ph.hidden  = false;
+    }
+  }
+
+  function fillFormWithProduct(p: Product) {
+    setField('f-nome',             p.nome);
+    setField('f-descricao',        p.descricao);
+    setField('f-imagem',           p.imagem);
+    setField('f-sobre-marca',      p.sobre_marca);
+    setField('f-descricao-produto', p.descricao_produto);
+    setField('f-info-nutricional', p.info_nutricional);
+    setField('f-modo-uso',         p.modo_uso);
+
+    (document.getElementById('f-preco') as HTMLInputElement).value    = String(p.preco);
+    (document.getElementById('f-ativo') as HTMLInputElement).checked  = p.ativo;
+
+    // Set categoria
+    const sel = document.getElementById('f-categoria') as HTMLSelectElement;
+    const opt = [...sel.options].find(o => o.value === p.categoria);
+    if (opt) {
+      sel.value = p.categoria;
+    } else {
+      sel.value = '__new__';
+      const novaInput = document.getElementById('f-categoria-nova') as HTMLInputElement;
+      novaInput.hidden = false;
+      novaInput.value  = p.categoria;
+    }
+
+    updateImagePreview(p.imagem);
+  }
+
+  // ── Batch State ───────────────────────────────────────────────────────
+  function loadBatchFromSession(): Product[] {
+    try {
+      const raw = sessionStorage.getItem(SESSION_BATCH);
+      return raw ? JSON.parse(raw) : [];
+    } catch { return []; }
+  }
+
+  function saveBatchToSession() {
+    try { sessionStorage.setItem(SESSION_BATCH, JSON.stringify(batch)); }
+    catch { showToast('Aviso: não foi possível salvar o lote na sessão.'); }
+  }
+
+  // ── Batch Rendering ───────────────────────────────────────────────────
+  function renderBatchTable() {
+    const tbody   = document.getElementById('batch-tbody')!;
+    const empty   = document.getElementById('batch-empty')!;
+    const wrap    = document.getElementById('table-wrap')!;
+    const actions = document.getElementById('batch-actions')!;
+    const count   = document.getElementById('batch-count')!;
+
+    const n = batch.length;
+    count.textContent = `${n} produto${n !== 1 ? 's' : ''}`;
+    empty.hidden   = n > 0;
+    wrap.hidden    = n === 0;
+    actions.hidden = n === 0;
+
+    tbody.innerHTML = '';
+    batch.forEach((p, idx) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="td-mono">${p.id}</td>
+        <td class="td-name"></td>
+        <td class="td-price">${formatBRL(p.preco)}</td>
+        <td>${escHtml(p.categoria)}</td>
+        <td class="td-mono">${p.ativo ? 'Sim' : 'Não'}</td>
+        <td class="td-actions">
+          <button type="button" class="btn-row btn-row-edit" data-idx="${idx}">EDITAR</button>
+          <button type="button" class="btn-row btn-row-del"  data-idx="${idx}">REMOVER</button>
+        </td>
+      `;
+      (tr.querySelector('.td-name') as HTMLElement).textContent = p.nome;
+      tbody.appendChild(tr);
+    });
+
+    // Delegate row actions
+    tbody.querySelectorAll<HTMLButtonElement>('.btn-row-edit').forEach(btn => {
+      btn.addEventListener('click', () => startEditing(Number(btn.dataset.idx)));
+    });
+    tbody.querySelectorAll<HTMLButtonElement>('.btn-row-del').forEach(btn => {
+      btn.addEventListener('click', () => removeFromBatch(Number(btn.dataset.idx)));
+    });
+  }
+
+  function escHtml(s: string): string {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function removeFromBatch(idx: number) {
+    batch.splice(idx, 1);
+    saveBatchToSession();
+    renderBatchTable();
+    if (editingIdx === idx) clearEditing();
+  }
+
+  function startEditing(idx: number) {
+    editingIdx = idx;
+    fillFormWithProduct(batch[idx]);
+    document.getElementById('btn-add-batch')!.textContent = 'SALVAR EDIÇÃO';
+    document.getElementById('form-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function clearEditing() {
+    editingIdx = null;
+    document.getElementById('btn-add-batch')!.textContent = 'ADICIONAR AO LOTE';
+  }
+
+  // ── CSV Export ────────────────────────────────────────────────────────
+  function exportCSV() {
+    if (!batch.length) return;
+
+    const escCsv = (val: unknown): string => {
+      const s = val == null ? '' : String(val);
+      if (s.includes(',') || s.includes('"') || s.includes('\n') || s.includes('\r')) {
+        return '"' + s.replace(/"/g, '""') + '"';
+      }
+      return s;
+    };
+
+    const rows = [
+      CSV_HEADERS.join(','),
+      ...batch.map(p => CSV_HEADERS.map(h => escCsv(p[h])).join(',')),
+    ];
+
+    const csv  = rows.join('\r\n');
+    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+    const date = new Date().toISOString().slice(0, 10);
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `produtos_${date}.csv`;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 30_000);
+
+    showToast(`CSV exportado: ${batch.length} produto${batch.length !== 1 ? 's' : ''}`);
+  }
+
+  // ── Toast ─────────────────────────────────────────────────────────────
+  let toastTimer: ReturnType<typeof setTimeout> | null = null;
+
+  function showToast(msg: string) {
+    const el = document.getElementById('toast')!;
+    if (toastTimer) clearTimeout(toastTimer);
+    el.textContent = msg;
+    el.hidden = false;
+    el.classList.remove('exiting');
+    toastTimer = setTimeout(() => {
+      el.classList.add('exiting');
+      setTimeout(() => { el.hidden = true; }, 320);
+    }, 3000);
+  }
+
+  // ── Event Wiring ──────────────────────────────────────────────────────
+  function wireEvents() {
+    // EAN
+    const eanInput = document.getElementById('ean-input') as HTMLInputElement;
+    document.getElementById('ean-btn')!.addEventListener('click', () => lookupEAN(eanInput.value));
+    eanInput.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Enter') lookupEAN(eanInput.value);
+    });
+
+    // Imagem preview
+    (document.getElementById('f-imagem') as HTMLInputElement).addEventListener('input', (e) => {
+      updateImagePreview((e.target as HTMLInputElement).value.trim());
+    });
+
+    // Categoria nova
+    const catSel   = document.getElementById('f-categoria') as HTMLSelectElement;
+    const catNova  = document.getElementById('f-categoria-nova') as HTMLInputElement;
+    catSel.addEventListener('change', () => {
+      catNova.hidden = catSel.value !== '__new__';
+      if (!catNova.hidden) catNova.focus();
+    });
+
+    // Logout
+    document.getElementById('btn-logout')!.addEventListener('click', () => {
+      sessionStorage.removeItem(SESSION_AUTH);
+      location.reload();
+    });
+
+    // Clear form
+    document.getElementById('btn-clear-form')!.addEventListener('click', () => {
+      resetForm();
+      clearEditing();
+    });
+
+    // Add / save to batch
+    document.getElementById('btn-add-batch')!.addEventListener('click', () => {
+      const product = getFormProduct();
+      if (!product) return;
+
+      if (editingIdx !== null) {
+        product.id = batch[editingIdx].id; // Keep original id on edit
+        batch[editingIdx] = product;
+        clearEditing();
+        showToast('Produto atualizado no lote.');
+      } else {
+        batch.push(product);
+        showToast(`Produto adicionado! (${batch.length} no lote)`);
+      }
+
+      saveBatchToSession();
+      renderBatchTable();
+      resetForm();
+      (document.getElementById('ean-input') as HTMLInputElement).focus();
+      document.getElementById('ean-state')!.hidden = true;
+    });
+
+    // Clear batch
+    document.getElementById('btn-clear-batch')!.addEventListener('click', () => {
+      if (!window.confirm('Tem certeza? Todos os produtos do lote serão removidos.')) return;
+      batch = [];
+      saveBatchToSession();
+      renderBatchTable();
+      clearEditing();
+    });
+
+    // Export CSV
+    document.getElementById('btn-export-csv')!.addEventListener('click', exportCSV);
+  }
+
+  // ── Boot ──────────────────────────────────────────────────────────────
+  initPinGate();
+</script>
